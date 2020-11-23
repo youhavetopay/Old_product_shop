@@ -4,8 +4,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//routes 추가하면 넣기
 var indexRouter = require('./server/routes/index');
 var usersRouter = require('./server/routes/users');
+
+// 세션
+const session = require('express-session');
+const mysqlStore = require("express-mysql-session")(session)
+
+const options = {
+  host: 'nodeprojectdb.cwjgblhoizab.ap-northeast-2.rds.amazonaws.com',
+    port: 3306,
+    user: 'admin',
+    password: 'zkwpdlxm12',
+    database: 'dbpro'
+}
+
+const sessionStore = new mysqlStore(options);
 
 var app = express();
 
@@ -19,6 +34,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 세션
+app.use(session({
+  secret: 'session!',
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+}));
+
+// 경로설정
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
