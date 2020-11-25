@@ -12,21 +12,36 @@
         <br>
         <br>
         
-        <form class="join-form" method="POST" action="/users">
+        <form class="signup-form" method="POST" action="/users">
             <div>
                 <label for="user_id">아이디</label>
                 <input id="user_id" name="user_id" type="text"/>
             </div>
             <div>
                 <label for="user_pw">비밀번호</label>
-                <input id="user_pw" name="user_pw" type="text"/>
+                <input id="user_pw" name="user_pw" type="password"/>
             </div>
             <div>
                 <label for="user_name">이름</label>
                 <input id="user_name" name="user_name" type="text"/>
             </div>
+            <div>
+                <label for="user_tel">전화번호</label>
+                <input id="user_tel" name="user_tel" type="text"/>
+            </div>
+            <div>
+                <label for="area_name">지역 선택</label>
+                <select name="area_name">
+                    <option value="">지역 선택</option>
+                    <% for (let i=0; i < area.length; i++) { %>
+                        <option value="<%=area[i].area_name%>">
+                            <%=area[i].area_name%>
+                        </option>
+                    <% } %>
+                </select>
+            </div>
             
-            <button type="submit" >JOIN</button>
+            <button type="submit" >회원가입</button>
         </form>
 
         <button type="button" onclick="location.href='/'">취소</button>
