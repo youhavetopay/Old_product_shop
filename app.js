@@ -7,6 +7,7 @@ var logger = require('morgan');
 //routes 추가하면 넣기
 var indexRouter = require('./server/routes/index');
 var usersRouter = require('./server/routes/users');
+const orderRouter = require('./server/routes/order');
 
 // 세션
 const session = require('express-session');
@@ -45,6 +46,7 @@ app.use(session({
 // 경로설정
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.user('/order', orderRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
