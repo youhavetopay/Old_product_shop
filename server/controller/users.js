@@ -1,6 +1,26 @@
 const pool = require("../dbconfig/dbconfig")
+const moment = require('moment');
+const e = require("express");
+const { post } = require("../routes/users");
 
 class userController {
+
+    async selectArea (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM area`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.area = row;
+                        next();
+                    }
+                })
+            }
+        })
+    }
 
     // 회원가입
     async signupInput(req, res, next) {
@@ -11,26 +31,36 @@ class userController {
         pool.getConnection((err, conn) => {
             if(err) throw res.json({success: false, err});
             else{
-                var val = [user.user_id, user.user_pw, user.user_name]
-                const {user_id, user_pw, user_name} = req.body
-                console.log(val)
-                var sql = "INSERT INTO users VALUES (?,?,?)";
-                conn.query(sql, val, (err, row)=>{
-                    conn.release();
-                    if(err) {
-                        if (req.body.user_id == undefined || req.body.user_pw == undefined || req.body.user_name == undefined){
-                            console.log("33333"+user.user_id);
-                            res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
-                        }
+                
+                const areaSql = `SELECT * FROM area WHERE area_num = "${req.body.area_num}"`
+                console.log(req.params.area_num);
+               
+                var sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
+
+                if (req.body.user_id == '' || req.body.user_pw == '' || req.body.user_name == '' || req.body.user_tel == '' || req.body.area_id == '') {
+                    console.log("33333" + user.user_id);
+                    res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
+                }
+                else {
+                    conn.query(areaSql, (err, area) => {
+                        console.log("에러1");
+                        console.log(area);
+                        if (err) throw err;
                         else {
-                            res.send('<script type="text/javascript">alert("아이디가 중복입니다.");history.back();</script>');
+                            const val = [user.user_id, user.user_pw, user.user_name, moment().format("YYYY-MM-DD"), user.user_tel, area[0].area_num]
+                            console.log(val);
+
+                            conn.query(sql, val, (err, row) => {
+                                if (err) {
+                                    res.send('<script type="text/javascript">alert("아이디가 중복입니다.");history.back();</script>');
+                                }
+                                else {
+                                    next();
+                                }
+                            })
                         }
-                        
-                    }
-                    else{
-                            next();
-                        }
-                })               
+                    })
+                }            
             }
         })
     }
@@ -38,14 +68,10 @@ class userController {
 
     // 로그인
     async userLogin(req, res, next){
-        const {user_id, user_pw } = req.body;
-        console.log(req.body);
-
         pool.getConnection((err, conn) => {
             if(err) throw err;
             else{
-               
-                var sql = `SELECT * FROM users WHERE user_id = "${user_id }" AND user_pw = "${user_pw }"`;
+                var sql = `SELECT * FROM users WHERE user_id = "${req.body.user_id}" AND user_pw = "${req.body.user_pw}"`;
 
                 conn.query(sql, (err, row)=>{
                     conn.release();
@@ -65,6 +91,275 @@ class userController {
         })
     }
 
+
+
+    //마이페이지
+    async getMyPage (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const couponSql = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}"`
+                const orderStateSql = `SELECT COUNT(order_state) FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
+                const directSql = `SELECT COUNT(order_direct_whether) FROM orders WHERE user_id = "${req.session.user_id}" AND order_direct_whether = "Y"`
+                const MyOrderListSql = `SELECT * FROM orders WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(couponSql, (err, coupon) => {
+                    console.log("에러1");
+                    if (err) throw err;
+                    else {
+                        
+                        conn.query(orderStateSql, (err, orderstate) => {
+                            console.log("에러2");
+                            if (err) throw err;
+                            else {
+
+                                conn.query(directSql, (err, direct) => {
+                                    console.log("에러3");
+                                    if (err) throw err;
+                                    else {
+
+                                        conn.query(MyOrderListSql, (err, myorderlist) => {
+                                            console.log("에러4");
+                                            if (err) throw err;
+                                            else {
+
+                                                req.coupon = coupon[0];
+                                                req.orderstate = orderstate[0];
+                                                req.direct = direct[0];
+                                                req.myorderlist = myorderlist;
+
+                                                next();
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //카드 select
+    async selectCard (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(sql, (err,row)=> {
+                    if (err) throw err;
+                    else {
+                        req.cardinfo = row;
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //카드 insert
+    async insertCard (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `INSERT INTO card VALUES (?,?,?,?)`
+                const val = [req.body.card_num, req.body.card_date, req.body.card_cvc, req.session.user_id]
+
+                conn.query(sql, val, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+    //카드 delete
+    async deleteCard (req, res, next) {
+        pool.getConnection((err, conn)=>{
+            if(err) throw err;
+            const sql = `DELETE FROM card WHERE card_num = "${req.params.card_num}"`
+            conn.query(sql, (err, row)=>{
+                conn.release();
+                if(err) throw err;
+                else{
+                    next();
+                }
+            })
+        })
+    }
+
+
+
+
+    //배송지 select
+    async selectPlace (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM place WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(sql, (err,row)=> {
+                    if (err) throw err;
+                    else {
+                        req.cardinfo = row;
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //배송지 insert
+    async insertPlace (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `INSERT INTO place(?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?)`
+                const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.user_nm, req.body.user_tel, req.session.user_id]
+
+                conn.query(sql, val, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+      //배송지 delete
+      async deletePlace (req, res, next) {
+        pool.getConnection((err, conn)=>{
+            if(err) throw err;
+            const sql = `DELETE FROM place WHERE place_id = "${req.params.place_id}"`
+            conn.query(sql, (err, row)=>{
+                conn.release();
+                if(err) throw err;
+                else{
+                    next();
+                }
+            })
+        })
+    }
+
+
+    // 배송지 update
+    async updatePlace(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if(err) throw err;
+
+            const place = req.body;
+
+            const sql = `UPDATE place(?,?,?,?,?,?) SET place_num = ?, place_addr = ?, place_addrinfo= ? WHERE place_id = "${req.params.place_id}"`;
+            const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo];
+
+            conn.query(sql, val, (err, row)=>{
+                if (err) {
+                    if (place.place_num == '' || place.place_addr == '' || place.place_addrinfo == ''){
+                        res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");location.href="/";</script>');
+                    }
+                    else {
+                        res.send('<script type="text/javascript">alert("이미 있는 배송지 입니다.");location.href="/";</script>');
+                    }
+                }
+    
+                else {
+                    next();
+                }
+            })
+        })
+    }
+
+
+
+    //즐겨찾기 select
+    async selectBookmark (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM bookmark WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.bookmarkinfo = row;
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //즐겨찾기 delete
+    async deleteBookmark (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `DELETE FROM bookmark WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //장바구니 select 
+    async selectBasket (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM basket WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.basketinfo = row;
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //coupon select 
+    async selectCoupon (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.couponinfo = row;
+                        next();
+                    }
+                })
+            }
+        })
+    }
 }
 
 module.exports = userController;
