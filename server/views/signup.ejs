@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>sss</title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+
+        <h1>로그인</h1>
+
+        <button type="button" onclick="location.href='/'">홈</button>
+        <br>
+        <br>
+        
+        <form class="signup-form" method="POST" action="/users">
+            <div>
+                <label for="user_id">아이디</label>
+                <input id="user_id" name="user_id" type="text"/>
+            </div>
+            <div>
+                <label for="user_pw">비밀번호</label>
+                <input id="user_pw" name="user_pw" type="password"/>
+            </div>
+            <div>
+                <label for="user_name">이름</label>
+                <input id="user_name" name="user_name" type="text"/>
+            </div>
+            <div>
+                <label for="user_tel">전화번호</label>
+                <input id="user_tel" name="user_tel" type="text"/>
+            </div>
+            <div>
+                <label for="area_num">지역 선택</label>
+                <select name="area_num">
+                    <option value="">지역 선택</option>
+                    <% for (let i=0; i < area.length; i++) { %>
+                        <option value="<%=area[i].area_num%>">
+                            <%=area[i].area_name%>
+                        </option>
+                    <% } %>
+                </select>
+            </div>
+            
+            <button type="submit" >회원가입</button>
+        </form>
+
+        <button type="button" onclick="location.href='/'">취소</button>
+    </body>
+</html>
