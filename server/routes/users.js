@@ -9,6 +9,7 @@ router.get('/', user.selectArea, function (req, res, next) {
   res.render('signup.ejs', {area: req.area});
 });
 
+
 router.post('/', user.signupInput, (req, res)=>{
   res.send('<script type="text/javascript">alert("가입 되었습니다.");location.href="/";</script>');
 })
@@ -121,5 +122,6 @@ router.get('/mypage/selectBasket', user.selectBasket, (req, res, next) => {
 router.get('/mypage/selectBasket', user.selectCoupon, (req, res, next) => {
   res.render('coupon.ejs', {couponinfo: req.couponinfo})
 })
+
 
 module.exports = router;
