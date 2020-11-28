@@ -6,3 +6,116 @@ body {
 a {
   color: #00B7FF;
 }
+
+.area {
+
+  position: relative;
+  width: 1500px;
+  height: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  box-shadow: 1px 3px 10px #ABE0A8;
+}
+
+
+.login_area {
+
+  position: absolute;
+  width: 50%;
+  height: 900px;
+  right: 0;
+}
+
+.login_info {
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 350px;
+  top: 0; 
+  bottom:0; 
+  margin-top:auto;
+  margin-bottom:auto;
+
+}
+
+.vegeta {
+
+  position: absolute;
+  width: 50%;
+  height: 900px;
+  background-color: #97C794;
+  display: block;
+
+}
+
+.vegeta h1 {
+
+  position: absolute;
+  color: white;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 150px;
+  font-weight: bolder;
+ 
+}
+
+.vegeta span {
+
+  position: absolute;
+  font-size: 30px;
+  color: white;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 250px;
+
+
+}
+
+
+.makingimg {
+  position: absolute;
+  height: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+.login_css {
+
+
+    outline: none;
+    border: none;
+    border-bottom: solid 3px #ABE0A8;
+    text-align: center;
+    font-size: 20px;
+    
+
+  
+}
+
+.row {
+
+  margin-top: 30px;
+  margin-bottom: 10px;
+  height: 50px;
+ 
+}
+
+.homebtn {
+
+  position: absolute;
+  border: 0;
+  outline: 0;
+  background-color: white;
+  right: 0;
+  margin-right: 10px;
+  color: rgba(209, 209, 209, 0.857);
+  font-size: 40px;
+
+}
