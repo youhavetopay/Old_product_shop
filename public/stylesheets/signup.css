@@ -1,0 +1,70 @@
+.signup_form {
+
+    position: absolute;
+    width: 800px;
+
+    bottom: 40%;
+    left: 30%;
+
+    bottom: 20%
+
+
+
+
+  }
+  
+ 
+  .signup_btn {
+  
+    
+    font-size: 30px;
+    color: #5A854B;
+  }
+  
+  .userbtn {
+  
+    position: absolute;
+    left: 0px;
+  
+  
+  }
+  
+  .companybtn {
+    position: absolute;
+    right: 0px;
+  }
+
+.signup_css {
+
+    padding: 15px;
+  
+
+
+}
+
+.signup_css label{
+
+    position: absolute;
+    font-size: 27px;
+    left: -130px;
+    color: #5A854B;
+    font-weight: bold;
+ 
+}
+
+.company_signup_css {
+
+    padding: 15px;
+  
+}
+
+.company_signup_css label {
+
+    position: absolute;
+    font-size: 27px;
+    left: -160px;
+    color: #5A854B;
+    font-weight: bold;
+
+}
+
