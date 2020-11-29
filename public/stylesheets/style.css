@@ -72,6 +72,7 @@ a {
   bottom: 250px;
 
 
+
 }
 
 
@@ -94,10 +95,25 @@ a {
     border-bottom: solid 3px #ABE0A8;
     text-align: center;
     font-size: 20px;
-    
-
-  
 }
+
+.login_css:focus{
+  animation-name: input-focus;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+ 
+}
+@keyframes input-focus{
+  from{
+      
+  }
+  to{
+           
+      border-bottom: solid 3px #58da51 ;
+  }
+}
+
+
 
 .row {
 
