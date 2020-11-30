@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <title>로그인</title>
         <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel="stylesheet" href='/bootstrap/css/bootstrap.css' />
+        <link rel="stylesheet" href='/stylesheets/signup.css' />
     </head>
     <body>
 
-        <h1>로그인</h1>
+       <div class="area">
+      
 
-        <button type="button" onclick="location.href='/'">홈</button>
-    <br>
-    <br>
+        <div class="vegeta">
+            <img class="makingimg" src="../../images/야채.png">
+
+            <span>값싼 가격에 만나보는<br>식자재 거래소 </span>
+            
+            <h1>파지 팜</h1>
+        </div>
+
+        <div class="login_area">
+       <div class="login_info">
+        <h1 class="display-1">Sign In</h1>
+     
+ 
     
         <form class="login-form" method="POST" action="/users/login">
-            <div>
-                <label for="user_id">아이디</label>
-                <input id="user_id" name="user_id" type="text"/>
-            </div>
-            <div>
-                <label for="user_pw">비밀번호</label>
-                <input id="user_pw" name="user_pw" type="password"/>
-            </div>
 
-            <button type="submit" >LOGIN</button>
-            
+            <div class="row">
+                <input id="user_id" class="login_css" name="user_id" type="text" placeholder="아이디" size="40px"/>
+            </div>
+          
+            <div class="row">
+                <input id="user_pw" class="login_css" name="user_pw" type="password" placeholder="비밀번호"size="40px"/>
+            </div>
+        
+            <button type="submit" class="btn btn-outline-success" >LOGIN</button>
+           
         </form>
 
+        <button class="btn btn-outline-success" onclick="location.href='/users'">Sign Up</button>
+     
+        </div>
+        <button type="button" onclick="location.href='/'" class="homebtn">Home</button>
+    </div>
+    </div>
 
-        <button type="button" onclick="location.href='/'">취소</button>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>
