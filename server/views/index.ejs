@@ -3,6 +3,10 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
   </head>
   <body>
     <h1><%= title %></h1>
@@ -22,6 +26,55 @@
       <button type="button" onclick="location.href='/users/mypage'">마이페이지</button>
     <% } %>
 
+    <select name="" id="sort_select" onchange="sort_select()">
+      <option value="1">등록순</option>
+      <option value="2">높은가격순</option>
+      <option value="3">낮은가격순</option>
+      <option value="4">리뷰순</option>
+    </select>
+    
 
   </body>
+
+  <!-- Ajax 서버 통신하는 부분임 정렬때문에 -->
+  <script>
+    function sort_select(){
+      console.log($('#sort_select option:selected').val())
+
+      var URL = 'http://localhost:3000/sortSelect';
+
+
+      sendSortValues(URL, $('#sort_select option:selected').val())
+
+      async function sendSortValues(url, data){
+
+        var data = {'sortValue': data};
+
+        var dataInfo = {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers:{
+            "Content-Type" : "application/json"
+          }
+        };
+
+        const reqURL = await fetch(url, dataInfo)
+        const result = await reqURL.json();
+
+        if(result){
+          if(result.result == 'ok'){
+            console.log(result.result)
+          }
+        }
+        else{
+          console.log('값 빔')
+        }
+
+
+
+      }
+    }
+
+  </script>
 </html>
+
