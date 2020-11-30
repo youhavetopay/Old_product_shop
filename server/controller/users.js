@@ -62,17 +62,16 @@ class userController {
                                 conn.query('select * from users where user_id = ?', [
                                     req.body.recomend_id
                                 ], (err, check_recm) => {
-                                    if (err) throw err;
+                                    if (err) throw err;}
 
-                                    if (check_recm.length <= 0) {
+
+                                conn.query(sql, val, (err, row) => {
+                                    if (err) {
+                                        res.send('<script type="text/javascript">alert("아이디가 중복입니다.");history.back();</script>');
+                                    }
+                                    else {
                                         conn.release();
-                                        res.send('<script type="text/javascript">alert("추천인 정보가 잘못되었습니다.");history.back();</script>');
-                                    } else {
-                                        conn.query('insert into recommend values(?,?,?)', [
-                                            null, 'N', check_recm[0].user_id
-                                        ], (err) => {
-                                            if (err) throw err;
-                                        })
+                                        next();
                                     }
                                 })
 
@@ -90,9 +89,23 @@ class userController {
                                     next();
                                 }
                             })
-
-                        }
-                    })
+                                conn.query(yn, (err, ynrow) => {
+                                    if (err) {
+                                        res.send('<script type="text/javascript">alert("아이디나 비밀번호가 틀렸습니다.");history.back();</script>');
+                                    } else {
+                                        conn.query(sql2, val2, (err, row) => {
+                                            if (err) {
+                                                res.send('<script type="text/javascript">alert("이미 등록된 공급업체가 있습니다.");history.back();</script>');
+                                            } else {
+                                                conn.release();
+                                                next();
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
                 }
             }
         })
@@ -116,6 +129,7 @@ class userController {
                         } else {
                             req.session.user_id = row[0].user_id;
                             console.log(row[0].user_id, row[0].user_pw, row[0].user_pw);
+
 
                             var last_login_time = moment(row[0].user_date, 'YYYY-MM-DD');
                             var nowTime = moment();
@@ -168,7 +182,7 @@ class userController {
             else {
 
                 // 사용자가 가지고 있는 쿠폰가져오기
-                const couponSql = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}"`
+                const couponSql = `SELECT COUNT(*) FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"`
 
                 // 배송중인 주문 수 가져오기
                 const orderStateSql = `SELECT COUNT(order_state) FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
@@ -204,11 +218,17 @@ class userController {
                                             if (err) throw err;
                                             else {
 
-                                                req.coupon = coupon[0];
-                                                req.orderstate = orderstate[0];
-                                                req.direct = direct[0];
+                                                req.session.coupon = coupon[0];
+                                                req.session.orderstate = orderstate[0];
+                                                req.session.direct = direct[0];
                                                 req.myorderlist = myorderlist;
 
+                                                console.log(coupon);
+                                                console.log(orderstate);
+                                                console.log(direct);
+                                                console.log(myorderlist);
+
+                                                conn.release();
                                                 next();
                                             }
                                         })
@@ -237,6 +257,7 @@ class userController {
                     if (err) throw err;
                     else {
                         req.cardinfo = row;
+                        conn.release();
                         next();
                     }
                 })
@@ -251,7 +272,9 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-
+                if (req.body.card_num == '' || req.body.card_validity == '' || req.body.card_cvc == '') {
+                    res.send('<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>');
+                }
                 // 카드 새로 추가하기
                 const sql = `INSERT INTO card VALUES (?,?,?,?)`
                 const val = [req.body.card_num, req.body.card_validity, req.body.card_cvc, req.session.user_id]
@@ -259,6 +282,7 @@ class userController {
                 conn.query(sql, val, (err, row) => {
                     if (err) throw err;
                     else {
+                        conn.release();
                         next();
                     }
                 })
@@ -278,6 +302,7 @@ class userController {
                 conn.release();
                 if (err) throw err;
                 else {
+                    conn.release();
                     next();
                 }
             })
@@ -300,6 +325,7 @@ class userController {
                     if (err) throw err;
                     else {
                         req.cardinfo = row;
+                        conn.release();
                         next();
                     }
                 })
@@ -314,6 +340,9 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+                if (req.body.place_num == '' || req.body.place_addr == '' || req.body.place_addrinfo == '' || req.body.place_name == '' || req.body.place_userNM == '' || req.body.place_tel == ''){
+                    res.send('<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>');
+                }
 
                 // 배송지 추가하기
                 const sql = `INSERT INTO place(?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?)`
@@ -322,6 +351,7 @@ class userController {
                 conn.query(sql, val, (err, row) => {
                     if (err) throw err;
                     else {
+                        conn.release();
                         next();
                     }
                 })
@@ -341,6 +371,7 @@ class userController {
                 conn.release();
                 if (err) throw err;
                 else {
+                    conn.release();
                     next();
                 }
             })
@@ -355,8 +386,12 @@ class userController {
 
             const place = req.body;
 
+            if (req.body.place_num == '' || req.body.place_addr == '' || req.body.place_addrinfo == '' || req.body.place_name == '' || req.body.place_userNM == '' || req.body.place_tel == ''){
+                res.send('<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>');
+            }
+
             // 배송지 수정하기
-            const sql = `UPDATE place(?,?,?,?,?,?) SET (?,?,?,?,?,?)  WHERE place_id = "${req.params.place_id}"`;
+            const sql = `UPDATE place SET place_num = ?, place_addr = ?, place_addrinfo = ?, place_name = ?, place_userNM = ?, place_tel = ? WHERE place_id = "${req.params.place_id}"`;
             const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.place_userNM, req.body.place_tel];
 
             if (place.place_num == '' || place.place_addr == '' || place.place_addrinfo == '' || place.place_name == '' || place.place_userNM == '' || place.place_tel == '') {
@@ -365,7 +400,10 @@ class userController {
             conn.query(sql, val, (err, row) => {
                 if (err) {
                     res.send('<script type="text/javascript">alert("이미 있는 배송지 입니다.");history.back();</script>');
-                } else {
+                }
+                else {
+                    conn.release();
+
                     next();
                 }
             })
@@ -387,6 +425,7 @@ class userController {
                     if (err) throw err;
                     else {
                         req.bookmarkinfo = row;
+                        conn.release();
                         next();
                     }
                 })
@@ -408,6 +447,7 @@ class userController {
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
                     else {
+                        conn.release();
                         next();
                     }
                 })
@@ -430,6 +470,7 @@ class userController {
                     if (err) throw err;
                     else {
                         req.basketinfo = row;
+                        conn.release();
                         next();
                     }
                 })
@@ -452,6 +493,7 @@ class userController {
                     if (err) throw err;
                     else {
                         req.couponinfo = row;
+                        conn.release();
                         next();
                     }
                 })
