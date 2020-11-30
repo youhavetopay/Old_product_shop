@@ -1,7 +1,11 @@
 const pool = require("../dbconfig/dbconfig")
-const moment = require('moment');
+let moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
 const e = require("express");
-const { post } = require("../routes/users");
+const {
+    post
+} = require("../routes/users");
 
 class userController {
 
@@ -26,32 +30,40 @@ class userController {
     // 회원가입
     async signupInput(req, res, next) {
         console.log(req.body);
+
         const user = req.body;
 
+        pool.getConnection((err, conn) => {
+            if (err) throw res.json({
+                success: false,
+                err
+            });
+            else {
 
-        if (req.body.user_signup != null) {
-            pool.getConnection((err, conn) => {
-                if (err) throw res.json({ success: false, err });
-                else {
+                // 지역정보 가져오기
+                const areaSql = `SELECT * FROM area WHERE area_num = "${req.body.area_num}"`
+                console.log(req.params.area_num);
 
-                    const areaSql = `SELECT * FROM area WHERE area_num = "${req.body.area_num}"`
-                    console.log(req.params.area_num);
+                // 회원가입 정보 넣기
+                var sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
 
-                    var sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
+                if (req.body.user_id == '' || req.body.user_pw == '' || req.body.user_name == '' || req.body.user_tel == '' || req.body.area_id == '') {
+                    console.log("33333" + user.user_id);
+                    res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
+                } else {
+                    conn.query(areaSql, (err, area) => {
+                        console.log("에러1");
+                        console.log(area);
+                        if (err) throw err;
+                        else {
+                            // 추천인 입력했을 때 
+                            if (req.body.recomend_id) {
 
-                    if (req.body.user_id == '' || req.body.user_pw == '' || req.body.user_name == '' || req.body.user_tel == '' || req.body.area_id == '') {
-                        console.log("33333" + user.user_id);
-                        res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
-                    }
-                    else {
-                        conn.query(areaSql, (err, area) => {
-                            console.log("에러1");
-                            console.log(area);
-                            if (err) throw err;
-                            else {
+                                conn.query('select * from users where user_id = ?', [
+                                    req.body.recomend_id
+                                ], (err, check_recm) => {
+                                    if (err) throw err;}
 
-                                const val = [user.user_id, user.user_pw, user.user_name, moment().format("YYYY-MM-DD"), user.user_tel, area[0].area_num]
-                                console.log(val);
 
                                 conn.query(sql, val, (err, row) => {
                                     if (err) {
@@ -62,33 +74,21 @@ class userController {
                                         next();
                                     }
                                 })
+
                             }
-                        })
-                    }
-                }
-            })
-        } else {
-            pool.getConnection((err, conn) => {
-                if (err) throw err;
-                else {
 
-                    const areaSql = `SELECT * FROM area WHERE area_num = "${req.body.area_num}"`
-                    console.log(req.params.area_num);
-                    if (req.body.user_id == '' || req.body._pw == '' || req.body.company_name == '' || req.body.company_id == '') {
-                        res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
-                    }
-                    else {
-                        conn.query(areaSql, (err, area) => {
-                            console.log("에러2");
-                            console.log(area);
-                            if (err) throw err;
-                            else {
+                            // 추천인 입력 안했을 때
+                            const val = [user.user_id, user.user_pw, user.user_name, moment().format("YYYY-MM-DD"), user.user_tel, area[0].area_num]
+                            console.log(val);
 
-                                const yn = `SELECT * FROM users WHERE user_id = "${req.body.user_id}"`
-                                const sql2 = `INSERT INTO company(company_id,company_name,area_num,user_id) VALUES (?,?,?,?)`
-                                const val2 = [req.body.company_id, req.body.company_name, area[0].area_num, req.body.user_id]
-                                console.log(val2);
-
+                            conn.query(sql, val, (err, row) => {
+                                if (err) {
+                                    res.send('<script type="text/javascript">alert("아이디가 중복입니다.");history.back();</script>');
+                                } else {
+                                    conn.release();
+                                    next();
+                                }
+                            })
                                 conn.query(yn, (err, ynrow) => {
                                     if (err) {
                                         res.send('<script type="text/javascript">alert("아이디나 비밀번호가 틀렸습니다.");history.back();</script>');
@@ -107,8 +107,8 @@ class userController {
                         })
                     }
                 }
-            })
-        }
+            }
+        })
     }
 
 
@@ -117,10 +117,11 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
                 var sql = `SELECT * FROM users WHERE user_id = "${req.body.user_id}" AND user_pw = "${req.body.user_pw}"`;
 
                 conn.query(sql, (err, row) => {
-                    conn.release();
+                    
                     if (err) throw err;
                     else {
                         if (row.length === 0) {
@@ -128,8 +129,42 @@ class userController {
                         } else {
                             req.session.user_id = row[0].user_id;
                             console.log(row[0].user_id, row[0].user_pw, row[0].user_pw);
-                            conn.release();
-                            next();
+
+
+                            var last_login_time = moment(row[0].user_date, 'YYYY-MM-DD');
+                            var nowTime = moment();
+
+                            var d = new Date();
+                            var last_use_day = moment(d.getTime()).add("1", "M").format("YYYY-MM-DD");
+
+
+                            req.couponCheck = false;
+
+                            console.log(moment.duration(nowTime.diff(last_login_time)).asDays());
+
+                            //현재 시간이랑 비교하기 
+                            if(moment.duration(nowTime.diff(last_login_time)).asDays() >= 30){
+                                conn.query('insert into coupon values (?,?,?,?,?,?,?)',[
+                                    null, '컴백기념1천원할인쿠폰', last_use_day,1000, 'N', nowTime,req.body.user_id
+                                ], (err)=>{
+                                    if(err) throw err;
+
+                                    req.couponCheck = true;
+                                })
+                            }
+
+                    
+
+                            // 로그인 시간 업데이트
+                            conn.query('update users set user_date = ? where user_id = ?',[
+                                moment().format("YYYY-MM-DD"), req.body.user_id
+                            ], (err)=>{
+                                if(err) throw err;
+                                
+                                conn.release();
+                                next();
+                            })
+                        
                         }
 
                     }
@@ -260,6 +295,8 @@ class userController {
     async deleteCard(req, res, next) {
         pool.getConnection((err, conn) => {
             if (err) throw err;
+
+            // 카드 삭제하기
             const sql = `DELETE FROM card WHERE card_num = "${req.params.card_num}"`
             conn.query(sql, (err, row) => {
                 conn.release();
@@ -327,6 +364,8 @@ class userController {
     async deletePlace(req, res, next) {
         pool.getConnection((err, conn) => {
             if (err) throw err;
+
+            // 배송지 삭제하기
             const sql = `DELETE FROM place WHERE place_id = "${req.params.place_id}"`
             conn.query(sql, (err, row) => {
                 conn.release();
@@ -364,6 +403,7 @@ class userController {
                 }
                 else {
                     conn.release();
+
                     next();
                 }
             })

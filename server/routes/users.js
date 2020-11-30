@@ -21,7 +21,12 @@ router.get('/login', function (req, res, next) {
 })
 
 router.post('/login', user.userLogin, (req, res)=>{
-  res.send('<script type="text/javascript">alert("로그인 되었습니다.");location.href="/";</script>');
+  if(req.couponCheck){
+    res.send('<script type="text/javascript">alert("오랜만이네요 ^^ \n 기념으로 쿠폰을 발급했습니다.\n 마이페이지에서 확인해주세요..");location.href="/";</script>');
+  }
+  else{
+    res.send('<script type="text/javascript">alert("로그인 되었습니다.");location.href="/";</script>');
+  }
 })
 
 
