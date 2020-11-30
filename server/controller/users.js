@@ -169,7 +169,7 @@ class userController {
             if (err) throw err;
             else {
                 const sql = `INSERT INTO card VALUES (?,?,?,?)`
-                const val = [req.body.card_num, req.body.card_date, req.body.card_cvc, req.session.user_id]
+                const val = [req.body.card_num, req.body.card_validity, req.body.card_cvc, req.session.user_id]
 
                 conn.query(sql, val, (err, row) => {
                     if (err) throw err;
@@ -226,7 +226,7 @@ class userController {
             if (err) throw err;
             else {
                 const sql = `INSERT INTO place(?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?)`
-                const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.user_nm, req.body.user_tel, req.session.user_id]
+                const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.place_userNM, req.body.place_tel, req.session.user_id]
 
                 conn.query(sql, val, (err, row) => {
                     if (err) throw err;
@@ -262,19 +262,16 @@ class userController {
 
             const place = req.body;
 
-            const sql = `UPDATE place(?,?,?,?,?,?) SET place_num = ?, place_addr = ?, place_addrinfo= ? WHERE place_id = "${req.params.place_id}"`;
-            const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo];
+            const sql = `UPDATE place(?,?,?,?,?,?) SET (?,?,?,?,?,?)  WHERE place_id = "${req.params.place_id}"`;
+            const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.place_userNM, req.body.place_tel];
 
+            if (place.place_num == '' || place.place_addr == '' || place.place_addrinfo == '' || place.place_name == '' || place.place_userNM == '' || place.place_tel == ''){
+                res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
+            }
             conn.query(sql, val, (err, row)=>{
                 if (err) {
-                    if (place.place_num == '' || place.place_addr == '' || place.place_addrinfo == ''){
-                        res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");location.href="/";</script>');
-                    }
-                    else {
-                        res.send('<script type="text/javascript">alert("이미 있는 배송지 입니다.");location.href="/";</script>');
-                    }
+                        res.send('<script type="text/javascript">alert("이미 있는 배송지 입니다.");history.back();</script>');
                 }
-    
                 else {
                     next();
                 }
