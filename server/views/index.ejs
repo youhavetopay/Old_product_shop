@@ -1,80 +1,237 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <h1>izone</h1>
-    <h2>test</h2>
 
-    <p><%=sess%></p>
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='bootstrap/css/bootstrap.css' />
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
 
-    <% if(sess === undefined) { %>
-      <button type="button" onclick="location.href='/users/login'">로그인</button>
-    <% } else if (sess == "host") { %>
-      <button type="button" onclick="location.href='/users/mypage'">마이페이지</button>
-      <button type="button" onclick="location.href='/users/logout'">로그아웃</button>
-    <% } else { %>
-      <button type="button" onclick="location.href='/users/logout'">로그아웃</button>
-      <button type="button" onclick="location.href='/users/mypage'">마이페이지</button>
-    <% } %>
 
-    <select name="" id="sort_select" onchange="sort_select()">
+  <style>
+    body {
+      width: 1500px;
+      height: 100%;
+      display: flex;
+      padding-top: 10px;
+      flex-direction: column;
+      margin: 0 auto;
+      color: #5A5A5A;
+    }
+
+    #main_body {
+      display: flex;
+      flex-direction: row;
+      margin-top: 25px;
+    }
+
+    #side_nav {
+      flex-basis: 200px;
+      padding: 30px;
+      padding-top: 0px;
+    }
+
+    #main_title {
+      flex-basis: 1100px;
+      display: flex;
+      flex-direction: column;
+      margin-left: 20px;
+    }
+
+    #title_name {
+      margin-top: 100px;
+      text-align: center;
+
+    }
+
+    #title_name h1 {
+      color: #ABE0A8;
+      font-weight: bold;
+    }
+
+    #serch_bar {
+      width: 50%;
+      flex-basis: 50px;
+      border: #ABE0A8 solid 3px;
+      border-radius: 25px;
+
+      margin: 0 auto;
+      margin-top: 25px;
+    }
+
+    #sort_select {
+      margin-left: 80%;
+      margin-top: 20px;
+      justify-content: end;
+    }
+
+    #side_nav_body {
+      width: 100%;
+      height: auto;
+      border: #ABE0A8 solid 5px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    #side_nav_body div p {
+      color: #5A5A5A;
+    }
+
+    #side_nav_body .category_list {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .price_text {
+      font-size: 25px;
+      font-weight: 500;
+      margin-right: 5px;
+    }
+
+    #product_img {
+      border: #5A5A5A solid 1px;
+      padding: 5px;
+    }
+  </style>
+
+
+
+</head>
+
+<body>
+
+  <%- include('./head/nav', {sess:sess})%>
+
+  <div id="title_name">
+    <h1>파지 팜</h1>
+  </div>
+
+  <input id="serch_bar"></input>
+
+  <div><select name="" id="sort_select" onchange="sort_select()">
       <option value="1">등록순</option>
       <option value="2">높은가격순</option>
       <option value="3">낮은가격순</option>
       <option value="4">리뷰순</option>
-    </select>
-    
+    </select></div>
+  <div>
 
-  </body>
+    <div id="main_body">
+      <div id="side_nav">
+        <div id="side_nav_body">
+          <div style="padding: 5px;">
+            <p class="category_list">카테고리</p>
+            <p>인기상품</p>
+            <p>마감임박</p>
+            <p>직거래가능상품</p>
+            <p>감자</p>
+            <p>고구마</p>
+            <p>버섯</p>
+            <p>호박</p>
+            <p>양파</p>
 
-  <!-- Ajax 서버 통신하는 부분임 정렬때문에 -->
-  <script>
-    function sort_select(){
-      console.log($('#sort_select option:selected').val())
+          </div>
+        </div>
+      </div>
 
-      var URL = 'http://localhost:3000/sortSelect';
+      <div id="main_title">
+
+        <div style="display: flex; flex-direction: row; margin-bottom: 50px;">
+
+          <div style="display: flex; flex-direction: column; text-align: center; margin-right: 75px;">
+            <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+            <span>상품명</span>
+            <div style="display: flex; flex-direction: row; text-align: center;">
+              <del style="color: rgb(255, 175, 175); font-size: 20px;" class="price_text">80000</del><span
+                class="price_text">50000원</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; text-align: center; margin-right: 75px;">
+            <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+            <span>상품명</span>
+            <div style="display: flex; flex-direction: row; text-align: center;">
+              <del style="color: rgb(255, 175, 175); font-size: 20px;" class="price_text">80000</del><span
+                class="price_text">50000원</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; text-align: center; margin-right: 75px;">
+            <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+            <span>상품명</span>
+            <div style="display: flex; flex-direction: row; text-align: center;">
+              <del style="color: rgb(255, 175, 175); font-size: 20px;" class="price_text">80000</del><span
+                class="price_text">50000원</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; text-align: center; margin-right: 75px;">
+            <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+            <span>상품명</span>
+            <div style="display: flex; flex-direction: row; text-align: center;">
+              <del style="color: rgb(255, 175, 175); font-size: 20px;" class="price_text">80000</del><span
+                class="price_text">50000원</span>
+            </div>
+          </div>
+
+        </div>
 
 
-      sendSortValues(URL, $('#sort_select option:selected').val())
 
-      async function sendSortValues(url, data){
+        
 
-        var data = {'sortValue': data};
 
-        var dataInfo = {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers:{
-            "Content-Type" : "application/json"
-          }
-        };
 
-        const reqURL = await fetch(url, dataInfo)
-        const result = await reqURL.json();
 
-        if(result){
-          if(result.result == 'ok'){
-            console.log(result.result)
-          }
+
+      </div>
+    </div>
+
+  </div>
+
+
+</body>
+
+<!-- Ajax 서버 통신하는 부분임 정렬때문에 -->
+<script>
+  function sort_select() {
+    console.log($('#sort_select option:selected').val())
+
+    var URL = 'http://localhost:3000/sortSelect';
+
+
+    sendSortValues(URL, $('#sort_select option:selected').val())
+
+    async function sendSortValues(url, data) {
+
+      var data = {
+        'sortValue': data
+      };
+
+      var dataInfo = {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
         }
-        else{
-          console.log('값 빔')
+      };
+
+      const reqURL = await fetch(url, dataInfo)
+      const result = await reqURL.json();
+
+      if (result) {
+        if (result.result == 'ok') {
+          console.log(result.result)
         }
-
-
-
+      } else {
+        console.log('값 빔')
       }
+
+
+
     }
+  }
+</script>
 
-  </script>
 </html>
-
