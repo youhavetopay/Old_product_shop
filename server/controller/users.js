@@ -27,6 +27,7 @@ class userController {
         console.log(req.body);
         const user = req.body;
 
+
         if (req.body.user_signup != null) {
             pool.getConnection((err, conn) => {
                 if (err) throw res.json({ success: false, err });
@@ -140,11 +141,21 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 사용자가 가지고 있는 쿠폰가져오기
                 const couponSql = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}"`
+
+                // 배송중인 주문 수 가져오기
                 const orderStateSql = `SELECT COUNT(order_state) FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
+
+                // 직거래 예정인 주문 수 가져오기
                 const directSql = `SELECT COUNT(order_direct_whether) FROM orders WHERE user_id = "${req.session.user_id}" AND order_direct_whether = "Y"`
+
+                // 내가 주문한 주문 목록 가져오기
                 const MyOrderListSql = `SELECT * FROM orders WHERE user_id = "${req.session.user_id}"`
 
+
+                // 사용자가 가지고 있는 쿠폰가져오기
                 conn.query(couponSql, (err, coupon) => {
                     console.log("에러1");
                     if (err) throw err;
@@ -155,11 +166,14 @@ class userController {
                             if (err) throw err;
                             else {
 
+
+                                // 직거래 예정인 주문 수 가져오기
                                 conn.query(directSql, (err, direct) => {
                                     console.log("에러3");
                                     if (err) throw err;
                                     else {
 
+                                        // 내가 주문한 주문 목록 가져오기
                                         conn.query(MyOrderListSql, (err, myorderlist) => {
                                             console.log("에러4");
                                             if (err) throw err;
@@ -190,6 +204,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                //사용자가 가지고 있는 카드 가져오기
                 const sql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
 
                 conn.query(sql, (err, row) => {
@@ -210,6 +226,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 카드 새로 추가하기
                 const sql = `INSERT INTO card VALUES (?,?,?,?)`
                 const val = [req.body.card_num, req.body.card_validity, req.body.card_cvc, req.session.user_id]
 
@@ -247,6 +265,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 배송지 가져오기
                 const sql = `SELECT * FROM place WHERE user_id = "${req.session.user_id}"`
 
                 conn.query(sql, (err, row) => {
@@ -267,6 +287,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 배송지 추가하기
                 const sql = `INSERT INTO place(?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?)`
                 const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.place_userNM, req.body.place_tel, req.session.user_id]
 
@@ -304,6 +326,7 @@ class userController {
 
             const place = req.body;
 
+            // 배송지 수정하기
             const sql = `UPDATE place(?,?,?,?,?,?) SET (?,?,?,?,?,?)  WHERE place_id = "${req.params.place_id}"`;
             const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.place_userNM, req.body.place_tel];
 
@@ -328,6 +351,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 즐겨찾기 목록 가져오기
                 const sql = `SELECT * FROM bookmark WHERE user_id = "${req.session.user_id}"`
 
                 conn.query(sql, (err, row) => {
@@ -348,6 +373,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 즐겨찾기 삭제하기
                 const sql = `DELETE FROM bookmark WHERE user_id = "${req.session.user_id}"`
 
                 conn.query(sql, (err, row) => {
@@ -367,6 +394,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 장바구니 가져오기???
                 const sql = `SELECT * FROM basket WHERE user_id = "${req.session.user_id}"`
 
                 conn.query(sql, (err, row) => {
@@ -387,6 +416,8 @@ class userController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+
+                // 사용자가 가지고 있는 쿠폰 가져오기
                 const sql = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}"`
 
                 conn.query(sql, (err, row) => {

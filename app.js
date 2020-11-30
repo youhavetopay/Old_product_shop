@@ -14,15 +14,9 @@ var companyRouter = require('./server/routes/company');
 const session = require('express-session');
 const mysqlStore = require("express-mysql-session")(session)
 
-const options = {
-  host: 'nodeprojectdb.cwjgblhoizab.ap-northeast-2.rds.amazonaws.com',
-    port: 3306,
-    user: 'admin',
-    password: 'zkwpdlxm12',
-    database: 'dbpro'
-}
+const option = require('./server/dbconfig/sessionDB');
 
-const sessionStore = new mysqlStore(options);
+const sessionStore = new mysqlStore(option);
 
 var app = express();
 
