@@ -16,6 +16,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -28,6 +29,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -41,6 +43,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -53,6 +56,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -65,6 +69,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -78,6 +83,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -90,6 +96,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                     })
@@ -102,6 +109,7 @@ class mainController {
                         if (err) throw err;
                         else {
                             req.productinfo = row
+                            conn.release();
                             next();
                         }
                      })
