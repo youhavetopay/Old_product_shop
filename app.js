@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./server/routes/index');
 var usersRouter = require('./server/routes/users');
 var orderRouter = require('./server/routes/order');
+var companyRouter = require('./server/routes/company');
 
 // 세션
 const session = require('express-session');
@@ -47,6 +48,7 @@ app.use(session({
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/order', orderRouter);
+app.use('/company', companyRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
