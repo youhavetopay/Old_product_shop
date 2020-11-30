@@ -186,8 +186,6 @@ class userController {
                     if (err) throw err;
                     else {
 
-
-                        // 배송중인 주문 수 가져오기
                         conn.query(orderStateSql, (err, orderstate) => {
                             console.log("에러2");
                             if (err) throw err;

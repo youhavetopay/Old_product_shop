@@ -20,9 +20,8 @@ class companyController {
 
                         // 등록된 상품 갯수 들고 오기
                         const productCountSql = `SELECT COUNT(*) FROM product WHERE company_num = "${yn[0].company_num}"`
-
-                        // 내가 등록한 상품을 주문한 개수
-                        const orderCountSql = `SELECT COUNT(o.order_num) FROM orderinfo WHERE {SELECT product_num FROM prodcut WHERE p.company_num = "${yn[0].company_num}}"`
+                        const orderCountSql = `SELECT COUNT(order_num) FROM orderinfo WHERE {SELECT product_num FROM prodcut WHERE p.company_num = "${yn[0].company_num}}"`
+                        const directCountSql = `SELECT COUNT(o.order_direct_whether) FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_direct_whether = "Y" AND {SELECT product_num FROM prodcut WHERE p.company_num = "${yn[0].company_num}}"`
                     } 
                 })
             }
