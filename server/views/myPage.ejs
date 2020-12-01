@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>My Page</title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel="stylesheet" href='/bootstrap/css/bootstrap.css' />
+        <link rel="stylesheet" href='/stylesheets/signup.css' />
+        <link rel='stylesheet' href="/stylesheets/mypage.css" />
+    </head>
+    <style>
+        .nav-link {
+            cursor: pointer;
+        }
+
+        .span p {
+
+            font-size: 10px;
+        }
+ 
+    </style>
+    <body>
+
+<div class="area">
+    
+   <div class="state_info">
+       <span class="border border-success">MY팜</span>
+
+       <span class="border border-success2">할인쿠폰 0장</span>
+       <span class="border border-success2">배송중 0건</span>
+       <span class="border border-success2">직거래 0건</span>
+    
+   </div>
+
+    <div class="sidenav">    
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" > 주문목록 </a>
+            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">쿠폰</a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">즐겨찾기</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" rclass="nav-link" id="v-pills-settings-tab" data-toggle="pill">배송지 관리</a>
+            <a class="nav-link" id="contact-tab" data-toggle="pill" href="#contact"  role="tab" data-toggle="pill">카드 관리</a>
+            <a class="nav-link">공급업체 메뉴</a>
+        </div>
+    </div>
+    <div class="mypage_info">
+          <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <form >
+                    dd
+                </form>
+            </div>
+            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <form>
+                    <h1 class="coupon_title">내가 보유한 쿠폰</h1>
+                    <table class="table">
+                        <thead>
+                            <th scope="col">쿠폰명</th>
+                            <th scope="col">할인 금액</th>
+                            <th scope="col">사용기한</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <th scope="row">쿠폰명</th>
+                            <td>할인 금액</td>
+                            <td>사용기한</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">쿠폰명</th>
+                                <td>할인 금액</td>
+                                <td>사용기한</td>
+                            </tr>
+                                
+                        </tbody>
+                  
+                    </table>
+            
+                </form>
+            </div>
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                <form>
+                    <h1 class="coupon_title">즐겨찾기한 업체</h1>
+                    <table class="table">
+                        <tr>
+                            <th scope="col">업체명<br>주요 판매 상품</th>
+                            <th scope="col"></th>
+                            <th><button>즐겨찾기 취소</button></th>
+                        </tr>
+                        <tr>
+                            <th scope="col">업체명<br>주요 판매 상품</th>
+                            <th scope="col"></th>
+                            <th>즐겨찾기 취소</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">업체명<br>주요 판매 상품</th>
+                            <th scope="col"></th>
+                            <th>즐겨찾기 취소</th>
+                        </tr>
+                  
+                    </table>
+            
+                </form>
+            </div>
+            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                <form>
+                    <h1 class="coupon_title">배송지 목록</h1>
+                    <a href="javascript:popupOpen();" > 열려라 팝업창! </a>
+                    <table class="table">
+                        <thead>
+                            <th scope="col">배송지명</th>
+                            <th scope="col">주소</th>
+                            <th scope="col">연락처</th>
+                            <th scope="col">수정</th>
+                            <th scope="col">삭제</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>우리집</td>
+                            <td>부산광역시 사하구 하신중앙로2 106동 501호(장림동, 동원로얄듀크아파트)</td>
+                            <td>010-6403-3994</td>
+                            <td><a>수정</a></td>
+                            <td><a>삭제</a></td>
+                            </tr>                   
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <form>
+                    <h1 class="coupon_title">등록한 카드</h1>
+                    <table class="table">
+                        <thead>
+                            <th scope="col">카드</th>
+                            <th scope="col">카드번호</th>
+                            <th scope="col">관리</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>카드</td>
+                            <td>카드번호</td>
+                            <td><a>삭제</a></td>
+                            </tr>                   
+                        </tbody>
+                    </table>
+                </form>                
+            </div>
+          </div>
+    </div> 
+</div>
+
+
+
+    <script>
+        $('#myTab a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+    </script>
+    <script type="text/javascript">    
+        function popupOpen(){
+        
+            var popUrl = "/users/mypage/insertCard";	//팝업창에 출력될 페이지 URL
+        
+            var popOption = "width=500, height=500, resizable=0, scrollbars=no, toolbars=no, menubar=no status=no;";    //팝업창 옵션(optoin)
+        
+                window.open(popUrl,"",popOption);
+        }        
+        </script>
+        
+    
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
