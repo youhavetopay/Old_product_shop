@@ -1,0 +1,36 @@
+<style>
+    #serch_bar {
+        width: 50%;
+        flex-basis: 50px;
+        border: #ABE0A8 solid 1.5px;
+        border-radius: 25px;
+
+        padding: 10px;
+        margin: 0 auto;
+        margin-top: 25px;
+        text-align: center;
+
+        transition: 0.3s;
+    }
+
+    #serch_bar::placeholder{
+        color: #aaaaaa;
+        opacity: 0.7;
+    }
+
+    #serch_bar:focus {
+        outline: none;
+        box-shadow: 1px 1px 10px  #ABE0A8;
+    }
+    #serch_bar:focus::placeholder{
+        color: transparent;
+    }
+
+    #serch_bar:hover{
+        box-shadow: 1px 1px 10px  #ABE0A8;
+        
+    }
+
+</style>
+
+<input id="serch_bar" name="serch_value" autocomplete="off" placeholder="상품을 검색하세요.."></input>
