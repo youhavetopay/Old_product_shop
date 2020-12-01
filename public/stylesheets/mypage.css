@@ -1,0 +1,58 @@
+.sidenav {
+
+    position: relative;
+    width: 307px;
+    top: 10px;
+  
+
+
+}
+
+.mypage_info {
+
+    position: absolute;
+    width: 1170px;
+    right: 0;
+    top: 230px;
+    height: 75%;
+    
+}
+
+.state_info {
+
+    position: relative;
+    height: 209px;
+    width: 100%;
+    background-color:#ABE0A8;
+    
+}
+
+.state_info span{
+
+    position: relative;
+    top: 67px;
+   
+    width: 25%;
+    color: white;
+
+    
+}
+
+    .border_sale {
+    
+
+    position: absolute;
+    font-size: 40px;
+    
+    top: -50%;
+    
+    
+    
+    
+}
+
+.coupon_title {
+
+    text-align: center;
+    height: 100px;
+}
