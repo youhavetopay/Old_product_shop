@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='bootstrap/css/bootstrap.css' />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <style>
+        #title_name {
+            margin-top: 100px;
+            text-align: center;
+
+        }
+
+        #title_name h1 {
+            color: #ABE0A8;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <%- include('./head/nav', {sess:sess})%>
+
+    <div id="title_name">
+        <h1>관리 팜</h1>
+    </div>
+
+    <form  method="POST" action="/admin/insertCoupon">
+        <div>
+            <label for="user_id">소유자</label>
+            <input id="user_id" name="user_id" type="text"/>
+        </div>
+        <div>
+            <label for="coupon_name">쿠폰명</label>
+            <input id="coupon_name" name="coupon_name" type="text"/>
+        </div>
+
+        <div>
+            <label for="coupon_date">쿠폰 마감 일자</label>
+            <input id="coupon_date" name="coupon_date" type="text"/>
+        </div>
+        <div>
+            <label for="coupon_sale_price">쿠폰 할인금액</label>
+            <input id="coupon_sale_price" name="coupon_sale_price" type="text"/>
+        </div>
+
+        <button type="submit" >발급</button>
+        
+    </form>
+    
+</body>
+
+</html>
