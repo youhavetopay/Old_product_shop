@@ -107,13 +107,13 @@
 
 <body>
 
-  <%- include('./head/nav', {sess:sess})%>
+  <%- include('../head/nav', {sess:sess})%>
 
   <div id="title_name">
     <h1>파지 팜</h1>
   </div>
 
-  <%- include('./head/serchBar')%>
+  <%- include('../head/serchBar')%>
 
   <div><select name="" id="sort_select" onchange="sort_select()">
       <option value="1">등록순</option>
@@ -128,9 +128,9 @@
         <div id="side_nav_body">
           <div style="padding: 5px;">
             <p class="category_list">카테고리</p>
-            <p id="like" onclick="select_category(1)" style="font-weight: bold;">인기상품</p>
+            <p id="like" onclick="select_category(1)">인기상품</p>
             <p id="last" onclick="select_category(2)">마감임박</p>
-            <p id="direct" onclick="select_category(3)">직거래가능상품</p>
+            <p id="direct" onclick="select_category(3)" style="font-weight: bold;">직거래가능상품</p>
             <p id="potato" onclick="select_category(4)">감자</p>
             <p id="sweet" onclick="select_category(5)">고구마</p>
             <p id="mush" onclick="select_category(6)">버섯</p>
@@ -145,17 +145,17 @@
         
           
           <div class="product_row">
-          <% for(var data of productinfo){%>
-            <div class="product_item">
-              <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
-              <span><%= data.product_name%></span>
-              <div class="product_content">
-                <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
-                  class="price_text"><%= data.product_price%>원</span>
-              </div>
-            </div>
-
-          <%}%>
+            <% for(var data of productinfo){%>
+                <div class="product_item">
+                  <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+                  <span><%= data.product_name%></span>
+                  <div class="product_content">
+                    <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
+                      class="price_text"><%= data.product_price%>원</span>
+                  </div>
+                </div>
+    
+              <%}%>
           </div>
           
         
@@ -213,7 +213,7 @@
 
       var data = {
         'sortValue': data,
-        'category' : 'index'
+        'category' : 'direct'
       };
 
       var dataInfo = {
