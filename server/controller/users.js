@@ -27,89 +27,116 @@ class userController {
         })
     }
 
-    // 회원가입
+    // 일반회원가입
     async signupInput(req, res, next) {
         console.log(req.body);
 
         const user = req.body;
 
         pool.getConnection((err, conn) => {
-            if (err) throw res.json({
-                success: false,
-                err
-            });
-            else {
+            if (err) throw err;
 
-                // 지역정보 가져오기
-                const areaSql = `SELECT * FROM area WHERE area_num = "${req.body.area_num}"`
-                console.log(req.params.area_num);
+            conn.query('select * from users where user_id = ?', [
+                user.user_id
+            ], (err, check_user) => {
+                if (err) throw err;
 
-                // 회원가입 정보 넣기
-                var sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
-
-                if (req.body.user_id == '' || req.body.user_pw == '' || req.body.user_name == '' || req.body.user_tel == '' || req.body.area_id == '') {
-                    console.log("33333" + user.user_id);
-                    res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
+                // 아이디 중복 체크
+                if (check_user.length > 0) {
+                    conn.release();
+                    res.send('<script type="text/javascript">alert("아이디중복");history.back();</script>');
                 } else {
-                    conn.query(areaSql, (err, area) => {
-                        console.log("에러1");
-                        console.log(area);
-                        if (err) throw err;
-                        else {
-                            // 추천인 입력했을 때 
-                            if (req.body.recomend_id) {
+                    // 추천인 있을 때
+                    if (user.recom_name) {
+                        conn.query('select * from users where user_id = ?', [
+                            user.recom_name
+                        ], (err, check_recom) => {
+                            if (err) throw err;
 
-                                conn.query('select * from users where user_id = ?', [
-                                    req.body.recomend_id
-                                ], (err, check_recm) => {
+                            if (check_recom.length <= 0) {
+                                conn.release();
+                                res.send('<script type="text/javascript">alert("추천인 정보 틀림");history.back();</script>');
+                            } else {
+                                conn.query('insert into users values(?,?,?,?,?,?)', [
+                                    user.user_id, user.user_pw, user.user_name, moment().format('YYYY-MM-DD'), user.user_tel, user.area_num
+                                ], (err) => {
                                     if (err) throw err;
-                                })
 
+                                    conn.query('insert into recommend values(?,?,?)', [
+                                        null, 'N', user.recom_name
+                                    ], (err) => {
+                                        if (err) throw err;
 
-                                conn.query(sql, val, (err, row) => {
-                                    if (err) {
-                                        res.send('<script type="text/javascript">alert("아이디가 중복입니다.");history.back();</script>');
-                                    } else {
                                         conn.release();
                                         next();
-                                    }
-                                })
-
-                            }
-
-                            // 추천인 입력 안했을 때
-                            const val = [user.user_id, user.user_pw, user.user_name, moment().format("YYYY-MM-DD"), user.user_tel, area[0].area_num]
-                            console.log(val);
-
-                            conn.query(sql, val, (err, row) => {
-                                if (err) {
-                                    res.send('<script type="text/javascript">alert("아이디가 중복입니다.");history.back();</script>');
-                                } else {
-                                    conn.release();
-                                    next();
-                                }
-                            })
-                            const yn = `select * from users user_id = ? and user_pw = ?`;
-                            conn.query(yn,[req.body.user_id, req.body.user_pw ],(err, ynrow) => {
-                                if (err) {
-                                    res.send('<script type="text/javascript">alert("아이디나 비밀번호가 틀렸습니다.");history.back();</script>');
-                                } else {
-                                    conn.query(sql2, val2, (err, row) => {
-                                        if (err) {
-                                            res.send('<script type="text/javascript">alert("이미 등록된 공급업체가 있습니다.");history.back();</script>');
-                                        } else {
-                                            conn.release();
-                                            next();
-                                        }
                                     })
-                                }
+
+                                })
+                            }
+                        })
+                    }
+
+                    // 추천인 없을 때
+                    else {
+                        conn.query('insert into users values(?,?,?,?,?,?)', [
+                            user.user_id, user.user_pw, user.user_name, moment().format('YYYY-MM-DD'), user.user_tel, user.area_num
+                        ], (err) => {
+                            if (err) throw err;
+
+                            conn.release();
+                            next();
+                        })
+                    }
+                }
+            })
+        })
+
+    }
+
+
+    // 공급업체 회원가입
+    async companySignUp(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+
+            conn.query('select * from users where user_id = ? and user_pw = ?', [
+                req.body.user_id, req.body.user_pw
+            ], (err, check_user) => {
+                if (err) throw err;
+
+                // 기존 회원정보 체크
+                if (check_user.length <= 0) {
+                    conn.release();
+                    res.send('<script type="text/javascript">alert("기존회원정보가 존재하지 않습니다. 업체등록을 하시려면 회원가입을 먼저 진행해주세요..");history.back();</script>');
+                } else {
+
+
+                    // 이미 등록된 업체인지 확인하기
+                    conn.query('select * from company where user_id = ? and company_whether = ?', [
+                        req.body.user_id, 'Y'
+                    ], (err, check_com) => {
+                        if (err) throw err;
+
+                        if (check_com.length > 0) {
+                            conn.release();
+                            res.send('<script type="text/javascript">alert("이미 등록된 업체 입니다.");history.back();</script>');
+
+                        } else {
+                            // 공급업체 회원가입
+                            conn.query('insert into company values(?,?,?,?,?,?,?,?)', [
+                                null, req.body.company_id, req.body.company_name, 'none', 'N', 'none', req.body.area_num, req.body.user_id
+                            ], (err) => {
+                                if (err) throw err;
+
+                                conn.release();
+                                next();
                             })
                         }
                     })
-                }
-            }
-        })
 
+                }
+            })
+        })
     }
 
 
@@ -146,7 +173,7 @@ class userController {
                             //현재 시간이랑 비교하기 
                             if (moment.duration(nowTime.diff(last_login_time)).asDays() >= 30) {
                                 conn.query('insert into coupon values (?,?,?,?,?,?,?)', [
-                                    null, '컴백기념1천원할인쿠폰', last_use_day, 1000, 'N', nowTime, req.body.user_id
+                                    null, '컴백기념1천원할인쿠폰', last_use_day, 1000, 'N', moment().format('YYYY-MM-DD'), req.body.user_id
                                 ], (err) => {
                                     if (err) throw err;
 
@@ -154,17 +181,57 @@ class userController {
                                 })
                             }
 
-
-
-                            // 로그인 시간 업데이트
-                            conn.query('update users set user_date = ? where user_id = ?', [
-                                moment().format("YYYY-MM-DD"), req.body.user_id
-                            ], (err) => {
+                            // 로그인 할때 추천인 몇명 받았는지 체크
+                            conn.query('select count(*) as recomCount from recommend where user_id = ? and red_whether = ?', [
+                                req.body.user_id, 'N'
+                            ], (err, count_recom) => {
                                 if (err) throw err;
 
-                                conn.release();
-                                next();
+                                console.log(count_recom[0].recomCount);
+                                
+                                if (count_recom[0].recomCount > 2) {
+
+                                    // 추천한 수가 3배수 일때 쿠폰 지급 
+                                    var count = parseInt(count_recom[0].recomCount / 3);
+                                    
+                                    console.log(count);
+
+                                    conn.query('update recommend set red_whether = ? where user_id = ? ',[
+                                        'Y', req.body.user_id
+                                    ], (err)=>{
+                                        if(err) throw err;
+                                        req.couponCheck = true;
+
+                                        for (var i = 0; i < count; i++) {
+                                            conn.query('insert into coupon values (?,?,?,?,?,?,?)', [
+                                                null, '추천인할인쿠폰', last_use_day, 1000, 'N', moment().format('YYYY-MM-DD'), req.body.user_id
+                                            ], (err) => {
+                                                if (err) throw err;
+    
+                                                
+                                            })
+                                        }
+
+                                    })
+
+                                    
+                                }
+
+                                // 로그인 시간 업데이트
+                                conn.query('update users set user_date = ? where user_id = ?', [
+                                    moment().format("YYYY-MM-DD"), req.body.user_id
+                                ], (err) => {
+                                    if (err) throw err;
+
+                                    console.log(req.couponCheck);
+
+                                    conn.release();
+                                    next();
+                                })
+
                             })
+
+
 
                         }
 
