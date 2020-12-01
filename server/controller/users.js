@@ -225,16 +225,16 @@ class userController {
 
                                     console.log(req.couponCheck);
 
+                                    if(req.session.user_id == "host"){
+                                        console.log(req.session.user_id);
+                                        res.redirect('/admin')
+                                    }
+
                                     conn.release();
                                     next();
                                 })
-
                             })
-
-
-
                         }
-
                     }
                 })
             }
@@ -413,7 +413,7 @@ class userController {
                 }
 
                 // 배송지 추가하기
-                const sql = `INSERT INTO place(?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?)`
+                const sql = `INSERT INTO place(place_num, place_addr, place_addrinfo, place_name, place_userNM, place_tel, user_id) VALUES (?,?,?,?,?,?,?)`
                 const val = [req.body.place_num, req.body.place_addr, req.body.place_addrinfo, req.body.place_name, req.body.place_userNM, req.body.place_tel, req.session.user_id]
 
                 conn.query(sql, val, (err, row) => {
