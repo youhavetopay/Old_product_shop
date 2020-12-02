@@ -28,6 +28,7 @@
     }
 
     #side_nav {
+      cursor: pointer;
       flex-basis: 200px;
       padding: 30px;
       padding-top: 0px;
@@ -148,7 +149,7 @@
           <div class="product_row">
           <% for(var data of productinfo){%>
             <div class="product_item">
-              <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+              <img src="../images/야채.png" alt="상품이미지" width="200" height="200" id="product_img">
               <span><%= data.product_name%></span>
               <div class="product_content">
                 <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
@@ -249,7 +250,8 @@
 
             var product_img = document.createElement('img');
             product_img.setAttribute("src", '../images/야채.png');
-            product_img.setAttribute("width", 200)
+            product_img.style.width = '200px';
+            product_img.style.height = '200px';
             
 
             var product_name = document.createElement('span');
