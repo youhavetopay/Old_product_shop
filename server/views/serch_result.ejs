@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+
+    <link rel="stylesheet" href="/stylesheets/main_page.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <style>
+        a{color: black; text-decoration: none;}
+    a:link, a:hover, a:active{text-decoration: none;}
+        body {
+            width: 1500px;
+            height: 100%;
+            display: flex;
+            padding-top: 10px;
+            flex-direction: column;
+            margin: 0 auto;
+            color: #5A5A5A;
+        }
+
+        /* #main_body {
+            display: flex;
+            flex-direction: row;
+            margin-top: 25px;
+        }
+
+        #side_nav {
+            cursor: pointer;
+            flex-basis: 200px;
+            padding: 30px;
+            padding-top: 0px;
+        }
+
+        #main_title {
+            flex-basis: 1100px;
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+        }
+
+        #title_name {
+            margin-top: 100px;
+            text-align: center;
+
+        }
+
+        #title_name h1 {
+            color: #ABE0A8;
+            font-weight: bold;
+        }
+
+
+
+        #sort_select {
+            margin-left: 80%;
+            margin-top: 20px;
+            justify-content: end;
+        }
+
+        #side_nav_body {
+            width: 100%;
+            height: auto;
+            border: #ABE0A8 solid 5px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        #side_nav_body div p {
+            color: #5A5A5A;
+        }
+
+        #side_nav_body .category_list {
+            margin-top: 10px;
+            color: #000;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .price_text {
+            font-size: 20px;
+            font-weight: 500;
+            margin-right: 5px;
+        }
+
+        #product_img {
+
+            padding: 5px;
+        }
+
+        .product_row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .product_item {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            margin: 25px;
+        }
+
+        .product_content {
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+        }
+
+        .price_cancle {
+            color: rgb(255, 175, 175);
+            font-size: 15px;
+        } */
+    </style>
+
+</head>
+
+<body>
+    <%- include('./head/nav', {sess:sess})%>
+
+  <div id="title_name">
+    <h1>파지 팜</h1>
+  </div>
+
+  <%- include('./head/serchBar')%>
+
+  <div>
+    <div id="main_body">
+      <div id="side_nav">
+        <div id="side_nav_body">
+          <div style="padding: 5px;">
+            <p class="category_list">카테고리</p>
+            <p id="like" onclick="select_category(1)" style="font-weight: bold;">인기상품</p>
+            <p id="last" onclick="select_category(2)">마감임박</p>
+            <p id="direct" onclick="select_category(3)">직거래가능상품</p>
+            <p id="potato" onclick="select_category(4)">감자</p>
+            <p id="sweet" onclick="select_category(5)">고구마</p>
+            <p id="mush" onclick="select_category(6)">버섯</p>
+            <p id="pumkin" onclick="select_category(7)">호박</p>
+            <p id="onion" onclick="select_category(8)">양파</p>
+
+          </div>
+        </div>
+      </div>
+
+      <div id="main_title">
+        
+        <h1>"<%= serchValue%>" 에 대한 검색 결과</h1>
+          
+          <% if(serchList.length <= 0 ){%>
+            <h5 style="margin-top: 30px;">검색결과가 없습니다...</h5>
+            <br>
+            <p>다시 검색 해주세요</p>
+          <%}else{%>
+            <div class="product_row">
+                <% for(var data of serchList){%>
+                    <a href="/product/<%= data.product_num%>">
+                        <div class="product_item">
+                          <img src="../images/야채.png" alt="상품이미지" width="200" height="200" id="product_img">
+                          <span><%= data.product_name%></span>
+                          <div class="product_content">
+                            <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
+                              class="price_text"><%= data.product_price%>원</span>
+                          </div>
+                        </div>
+                      </a>
+      
+                <%}%>
+                </div>
+          <%}%>
+          
+          
+        
+
+        
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<script>
+    function select_category(count){
+    switch (count){
+      case 1:
+        location.href="/"
+        break;
+      case 2:
+        location.href="/last"
+        break;
+      case 3:
+        location.href="/direct"
+        break;
+      case 4: 
+        location.href="/potato"
+        break;
+      case 5:
+        location.href="/sweet"
+        break;
+      case 6:
+        location.href="/mush"
+        break;
+      case 7:
+        location.href="/pumkin"
+        break;
+      case 8:
+        location.href="/onion"
+        break;
+      
+    }
+  }
+</script>
+</html>
