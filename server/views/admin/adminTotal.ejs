@@ -4,7 +4,7 @@
 <head>
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
     <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
@@ -25,7 +25,7 @@
 
 <body>
 
-    <%- include('./head/nav', {sess:sess})%>
+    <%- include('../head/nav', {sess:sess})%>
 
     <div id="title_name">
         <h1>관리 팜</h1>
@@ -59,7 +59,7 @@
     
         </div>
 
-        <form method="post" action="/admin/total%>">
+        <form method="post" action="/admin/total">
             <button type="submit" name="total">정산</button>
         </form>
         

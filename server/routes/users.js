@@ -6,7 +6,7 @@ const user = new UsersController();
 
 /* GET join page. */
 router.get('/', user.selectArea, function (req, res, next) {
-  res.render('signup.ejs', {area: req.area});
+  res.render('login/signup.ejs', {area: req.area});
 });
 
 // 일반회원 회원가입
@@ -22,7 +22,7 @@ router.post('/comSignUp', user.companySignUp ,(req, res, next)=>{
 
 //login
 router.get('/login', function (req, res, next) {
-  res.render('login.ejs');
+  res.render('login/login.ejs');
 })
 
 router.post('/login', user.userLogin, (req, res)=>{
@@ -52,19 +52,19 @@ router.get('/logout',(req, res, next) => {
 
 //mypage
 router.get('/mypage', user.getMyPage, (req, res, next) => {
-  res.render('myPage.ejs', {sess: req.session.user_id, coupon : req.coupon, orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
+  res.render('mypage/myPage.ejs', {sess: req.session.user_id, coupon : req.coupon, orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
 })
 
 
 //카드 select
 router.get('/mypage/selectCard', user.selectCard, (req, res, next)=> {
-  res.render('selectCard.ejs', {cardinfo: req.cardinfo})
+  res.render('mypage/selectCard.ejs', {cardinfo: req.cardinfo})
 })
 
 
 //카드 insert
 router.get('/mypage/insertCard', (req, res, next) => {
-  res.render('insertCard.ejs')
+  res.render('mypage/insertCard.ejs')
 })
 
 router.post('/mypage/insertCard', user.insertCard, (req, res, next) => {
@@ -80,7 +80,7 @@ router.get('/mypage/deleteCard/:card_num', user.deleteCard, (req, res, next) => 
 
 //배송지 select 
 router.get('/mypage/selectPlace', user.selectPlace, (req, res, next) => {
-  res.render('selectPlace.ejs', {placeinfo: req.placeinfo})
+  res.render('mypage/selectPlace.ejs', {placeinfo: req.placeinfo})
 })
 
 
@@ -102,7 +102,7 @@ router.get('/mypage/deletePlace/:place_id', user.deletePlace, (req, res, next) =
 
 //배송지 update
 router.get('/mypage/updatePlace/:place_id', (req, res, next) => {
-  res.render('updatePlace.ejs')
+  res.render('mypage/updatePlace.ejs')
 })
 
 router.post('/mypage/updatePlace/:place_id', user.updatePlace, (req, res, next) => {
@@ -112,7 +112,7 @@ router.post('/mypage/updatePlace/:place_id', user.updatePlace, (req, res, next) 
 
 //즐겨찾기 select
 router.get('/mypage/selectBookmark', user.selectBookmark, (req, res, next) => {
-  res.render('Bookmark.ejs', { bookmarkinfo : req.bookmarkinfo})
+  res.render('mypage/Bookmark.ejs', { bookmarkinfo : req.bookmarkinfo})
 }) 
 
 
@@ -124,13 +124,13 @@ router.get('/mypage/selectBookmark/:bookmark_num', user.deleteBookmark, (req, re
 
 //장바구니 select
 router.get('/mypage/selectBasket', user.selectBasket, (req, res, next) => {
-  res.render('basket.ejs', {basketinfo: req.basketinfo})
+  res.render('mypage/basket.ejs', {basketinfo: req.basketinfo})
 })
 
 
 //쿠폰 select
 router.get('/mypage/selectBasket', user.selectCoupon, (req, res, next) => {
-  res.render('coupon.ejs', {couponinfo: req.couponinfo})
+  res.render('mypage/coupon.ejs', {couponinfo: req.couponinfo})
 })
 
 

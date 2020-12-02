@@ -5,13 +5,13 @@ const admin = new adminController();
 
 //관리자 페이지 메인
 router.get('/', admin.selectCompany, (req, res, next) => {
-    res.render('adminHome.ejs', { sess: req.session.user_id, companyinfo: req.companyinfo })
+    res.render('admin/adminHome.ejs', { sess: req.session.user_id, companyinfo: req.companyinfo })
 })
 
 
 //공급업체 승인 거절 화면 가져오기
 router.get('/companyState/:company_num', admin.selectCompanyDetail, (req, res, next) => {
-    res.render('companyDetail.ejs', { sess: req.session.user_id, companyDetail: req.companyDetail })
+    res.render('admin/admin_companyDetail.ejs', { sess: req.session.user_id, companyDetail: req.companyDetail })
 })
 
 
@@ -25,13 +25,13 @@ router.post('/companyState/:company_num', admin.updateCompanyState, (req, res, n
 router.get('/coupon', admin.selectCoupon, (req, res, next) => {
     console.log("라우터",req.count);
     console.log("라우터",req.max);
-    res.render('adminCoupon.ejs', {sess: req.session.user_id, count: req.count, max: req.max, couponinfo: req.couponinfo})
+    res.render('admin/adminCoupon.ejs', {sess: req.session.user_id, count: req.count, max: req.max, couponinfo: req.couponinfo})
 })
 
 
 //쿠폰 추가
 router.get('/insertCoupon', (req, res, next) => {
-    res.render('insertCoupon.ejs', {sess: req.session.user_id})
+    res.render('admin/admin_insertCoupon.ejs', {sess: req.session.user_id})
 })
 
 router.post('/insertCoupon', admin.insertCoupon, (req, res, next) => {
@@ -41,7 +41,7 @@ router.post('/insertCoupon', admin.insertCoupon, (req, res, next) => {
 
 // //정산 화면
 // router.get('/total', admin.selectTotal, (req, res, next) => {
-//     res.render('adminTotal.ejs', {sess: req.session.user_id, total: req.total})
+//     res.render('admin/adminTotal.ejs', {sess: req.session.user_id, total: req.total})
 // })
 
 // router.post('/total', admin.insertTotal, (req, res, next) => {
