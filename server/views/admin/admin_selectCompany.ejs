@@ -39,19 +39,19 @@
         <table>
             <thead>
                 <tr>
+                    <td>공급업체 번호</td>
                     <td>판매자 이름</td>
                     <td>공급업체 명</td>
-                    <td>승인 여부</td>
                 </tr>
 
             </thead>
             <tbody>
                 <% for(var i=0; i < companyinfo.length; i++ ) { %>
                 <tr>
-
-                    <td><a href="/admin/companyState/<%=companyinfo[i].company_num%>"><%=companyinfo[i].user_name%></a></td>
+                    <td><a href="/admin/total/<%=companyinfo[i].company_num%>"><%=companyinfo[i].company_num%></a></td>
+                    <td><%=companyinfo[i].user_name%></td>
                     <td><%=companyinfo[i].company_name%></td>
-                    <td><%=companyinfo[i].company_whether%></td>
+                    
 
                 </tr>
                 <% } %>

@@ -39,13 +39,20 @@ router.post('/insertCoupon', admin.insertCoupon, (req, res, next) => {
 })
 
 
-// //정산 화면
-// router.get('/total', admin.selectTotal, (req, res, next) => {
-//     res.render('admin/adminTotal.ejs', {sess: req.session.user_id, total: req.total})
-// })
+//정산 - 업체 리스트 가져오기
+router.get('/selectCompany', admin.selectCompany, (req, res, next) => {
+    res.render('admin/admin_selectCompany.ejs', {sess: req.session.user_id, companyinfo: req.companyinfo })
+})
 
-// router.post('/total', admin.insertTotal, (req, res, next) => {
-//     res.send('<script type="text/javascript">alert("완료 되었습니다.");location.href="/admin/total";</script>')
-// })
+
+//업체별 정산 화면
+router.get('/total/:company_num', admin.selectTotal, (req, res, next) => {
+    console.log(req.num);
+    res.render('admin/adminTotal.ejs', {sess: req.session.user_id, num: req.num, total: req.total})
+})
+
+router.post('/total/:company_num', admin.insertTotal, (req, res, next) => {
+    res.send('<script type="text/javascript">alert("완료 되었습니다.");location.href="/admin/selectCompany";</script>')
+})
 
 module.exports = router;

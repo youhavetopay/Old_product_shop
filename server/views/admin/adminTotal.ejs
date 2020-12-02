@@ -41,28 +41,38 @@
                         <td>업체 수익</td>
                         <td>사이트 수익</td>
                     </tr>
-    
+
                 </thead>
                 <tbody>
+                    <% if (total != undefined) { %>
                     <% for(var i=0; i < total.length; i++ ) { %>
                     <tr>
-    
-                        <td>><%=total[i].total_date></a></td>
+
+                        <td>><%=total[i].total_date%></a></td>
                         <td><%=total[i].total_sum%></td>
-                        <td><%=total[i].total_company_profit</td>
+                        <td><%=total[i].total_company_profit%></td>
                         <td><%=total[i].total_admin_profit%></td>
-    
+
+                    </tr>
+                    <% } %>
+                    <% } else { %>
+                    <tr>
+                        <td>정산 내역이 없습니다.</td>
                     </tr>
                     <% } %>
                 </tbody>
             </table>
-    
-        </div>
 
-        <form method="post" action="/admin/total">
+        </div>
+    
+        <br>
+        <br>
+        <br>
+        <form method="post" action="/admin/total/<%=num.company_num%>">
+            <input type="month" name="date">
             <button type="submit" name="total">정산</button>
         </form>
-        
+
 
     </div>
 
