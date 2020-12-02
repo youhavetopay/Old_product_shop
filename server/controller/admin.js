@@ -189,17 +189,27 @@ class adminController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                const sql = `SELECT * FROM total`
+                const sql2 = `SELECT * FROM company WHERE company_num = "${req.params.company_num}"`
+                const sql = `SELECT * FROM total WHERE company_num = "${req.params.company_num}"`
 
-                conn.query(sql, (err, row) => {
+                conn.query(sql2, (err, row2) => {
                     if (err) throw err;
                     else {
-                        req.total = row
-                        console.log(total);
-                        conn.release();
-                        next();
+
+                        conn.query(sql, (err, row) => {
+                            if (err) throw err;
+                            else {
+                                req.total = row
+                                req.num = row2[0]
+                                console.log(row2[0]);
+                                conn.release();
+                                next();
+                            }
+                        })
                     }
-                })
+                } )
+
+                
             }
         })
     }
@@ -211,8 +221,33 @@ class adminController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                
-                const inserttotal = `INSERT INTO total(total_date, total_admin_profit, total_sum, total_company_profit, total_sale_price, total_ym, company_num)`
+                //총금액, 할인가 가져옴
+                const select1 = `SELECT SUM(i.order_price) as order_price, SUM(i.order_sale) as order_sale FROM orders as o, orderinfo as i, product as p WHERE p.company_num = "${req.params.company_num}" AND i.product_num = p.product_num AND o.order_num = i.order_num AND o.order_date LIKE ?`
+        
+                const inserttotal = `INSERT INTO total(total_date, total_admin_profit, total_sum, total_company_profit, total_sale_price, total_ym, company_num) VALUES (?,?,?,?,?,?,?)`
+
+                const val = [req.body.date + '-%%']
+                conn.query(select1, val, (err, max) => {
+                    console.log("에러1");
+                    if (err) throw err;
+                    else {
+
+                        console.log(max);
+                        const company_profit = [Number(max[0].order_price) * 0.9]
+                        const admin_profit = [(Number(max[0].order_price) * 0.1) - Number(max[0].order_sale)]
+                        console.log(company_profit);
+                        console.log(admin_profit);
+                        const val2 = [moment().format('YYYY-MM-DD'), admin_profit, max[0].order_price, company_profit, max[0].order_sale, req.body.date, req.params.company_num]
+
+                        conn.query(inserttotal, val2, (err, row) => {
+                            if (err) throw err;
+                            else {
+                                conn.release();
+                                next();
+                            }
+                        })
+                    }
+                })
             }
         })
     }
