@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="stylesheet" href="/stylesheets/main_page.css">
+  <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+
+    <style>
+         a{color: black; text-decoration: none;}
+    a:link, a:hover, a:active{text-decoration: none;}
+    body {
+      width: 1500px;
+      height: 100%;
+      display: flex;
+      padding-top: 10px;
+      flex-direction: column;
+      margin: 0 auto;
+      color: #5A5A5A;
+    }
+    </style>
+
+</head>
+<body>
+    <%- include('../head/nav', {sess:sess})%>
+
+  <div id="title_name">
+    <h1>파지 팜</h1>
+  </div>
+
+
+  <p> 주문</p>
+</body>
+</html>

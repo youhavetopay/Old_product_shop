@@ -5,13 +5,13 @@ const company = new companyController();
 
 //공급업체 마이페이지
 router.get('/', company.selectCount, company.selectProduct, (req, res, next) => {
-    res.render('companyMypage.ejs', {companyinfo: req.companyinfo})
+    res.render('company/companyMypage.ejs', {companyinfo: req.companyinfo})
 })
 
 
 //공급업체 상품 등록
 router.get('/insertProduct', (req, res, next) => {
-    res.render('insertProduct.ejs')
+    res.render('company/insertProduct.ejs')
 })
 
 router.post('/insertProduct', company.insertProduct, (req, res, next) => {
@@ -27,7 +27,7 @@ router.post('/updateProductState/:product_num', company.updateProductState, (req
 
 //공급업체 수정
 router.get('/updateProduct/:product_num', (req, res, next) => {
-    res.render('updateProduct.ejs')
+    res.render('company/updateProduct.ejs')
 })
 
 router.post('updateProduct/:product_num', company.updateProduct, (req, res, next) => {
