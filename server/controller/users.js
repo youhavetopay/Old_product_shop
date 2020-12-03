@@ -261,6 +261,11 @@ class userController {
                 // 내가 주문한 주문 목록 가져오기
                 const MyOrderListSql = `SELECT * FROM orders WHERE user_id = "${req.session.user_id}"`
 
+                // 카드정보
+                const cardsql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
+
+                // 배송지 가져오기
+                const placesql = `SELECT * FROM place WHERE user_id = "${req.session.user_id}"`
 
                 // 사용자가 가지고 있는 쿠폰가져오기
                 conn.query(couponSql, (err, coupon) => {
@@ -286,18 +291,40 @@ class userController {
                                             if (err) throw err;
                                             else {
 
-                                                req.session.coupon = coupon[0];
-                                                req.session.orderstate = orderstate[0];
-                                                req.session.direct = direct[0];
-                                                req.myorderlist = myorderlist;
 
-                                                console.log(coupon);
-                                                console.log(orderstate);
-                                                console.log(direct);
-                                                console.log(myorderlist);
+                                                conn.query(cardsql, (err, cardinfo) => {
+                                                    if (err) throw err;
+                                                    else{
 
-                                                conn.release();
-                                                next();
+                                                        conn.query(placesql, (err, placeinfo) => {
+                                                            if (err) throw err;
+                                                            else{
+
+
+
+                                                                req.cardinfo = cardinfo;
+                                                                req.placeinfo = placeinfo;
+                                                                req.session.coupon = coupon[0];
+                                                                req.session.orderstate = orderstate[0];
+                                                                req.session.direct = direct[0];
+                                                                req.myorderlist = myorderlist;
+                
+                                                                console.log(coupon);
+                                                                console.log(orderstate);
+                                                                console.log(direct);
+                                                                console.log(myorderlist);
+                
+                                                                conn.release();
+                                                                next();
+
+
+                                                            }
+
+                                                        })
+
+
+                                                    }
+                                                })
                                             }
                                         })
                                     }

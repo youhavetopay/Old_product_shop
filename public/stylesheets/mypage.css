@@ -154,3 +154,70 @@
     left: 10px;
    
 }
+
+.table {
+    width: 1100px;
+    margin-bottom: 1rem;
+    color: #212529;
+  
+    
+  }
+
+
+
+.painting_order_product {
+    margin-top: 50px;
+    width: 1150px;
+    padding: 30px;
+    height: 250px;
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 25px;
+    box-shadow: 2.5px 2.5px 0.2em rgb(216, 216, 216);
+    display: flex;
+}
+
+.painting_order_product #img {
+    margin: 20px;
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+}
+
+.painting_order_product #info span {
+    margin-bottom: 10px;
+}
+
+.painting_order_btn {
+    border: 1px solid rgb(216, 216, 216);
+    background: none;
+    width: 200px;
+    height: 50px;
+    margin-left: 70px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+  
+}
+
+.painting_order_btn:active {
+    border: 0;
+    background: rgb(0, 255, 85);
+    width: 200px;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.painting_order_btn:focus {
+    outline: none;
+    border: 0;
+    background:#ABE0A8;
+    width: 200px;
+    height: 50px;
+    margin-bottom: 30px;
+}      
+
+.order_info {
+    text-align: center;
+    font-size: 30px;
+    word-spacing: 60px;
+}

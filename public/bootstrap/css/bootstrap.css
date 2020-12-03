@@ -1676,7 +1676,7 @@ pre code {
   width: 1100px;
   margin-bottom: 1rem;
   color: #212529;
-
+  text-align: center;
   
 }
 
@@ -1691,6 +1691,7 @@ pre code {
   vertical-align: bottom;
   border-bottom: 2px solid #dee2e6;
   text-align: center;
+
 }
 
 
@@ -5070,7 +5071,7 @@ input[type="button"].btn-block {
 }
 
 .pagination {
-  display: -ms-flexbox;
+
   display: flex;
   padding-left: 0;
   list-style: none;
