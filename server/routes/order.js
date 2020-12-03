@@ -4,6 +4,7 @@ const orderController = require("../controller/order.js")
 const order = new orderController();
 
 
+// 주문페이지 렌더링
 router.post('/', order.getOrderProduct,(req, res, next)=>{
 
     console.log(req.totalMoney);
@@ -16,6 +17,15 @@ router.post('/', order.getOrderProduct,(req, res, next)=>{
         count:req.body.order_count,
         totalMoney: req.total_money
     })
+})
+
+
+// 주문하기 POST
+router.post('/buy', (req, res, next)=>{
+    res.send(`<script type="text/javascript">
+            alert("주문이 완료되었습니다. 감사합니다..^^"); 
+            location.href='/';
+            </script>`)
 })
 
 module.exports = router;
