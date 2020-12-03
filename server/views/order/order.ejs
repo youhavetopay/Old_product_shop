@@ -1,37 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel="stylesheet" href="/stylesheets/main_page.css">
   <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
 
-    <style>
-         a{color: black; text-decoration: none;}
-    a:link, a:hover, a:active{text-decoration: none;}
+  <style>
+    a {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:link,
+    a:hover,
+    a:active {
+      text-decoration: none;
+    }
+
     body {
       width: 1500px;
-      height: 100%;
+      height: auto;
       display: flex;
       padding-top: 10px;
       flex-direction: column;
       margin: 0 auto;
       color: #5A5A5A;
     }
-    </style>
+
+    .flex_column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flex_row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .order_product_list {
+      box-shadow: 1px 1px 10px gray;
+      border-radius: 25px;
+      padding: 20px;
+      margin-right: 25px;
+      margin-left: 25px;
+
+
+    }
+
+    .product_info div {
+      margin: 10px;
+    }
+
+    .product {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #5A5A5A;
+    }
+
+    .user_info {
+      flex-basis: 650px;
+      margin-left: 25px;
+      box-shadow: 1px 1px 10px gray;
+      border-radius: 25px;
+      padding: 20px;
+    }
+
+    #price {
+      margin-top: auto;
+      margin-left: auto;
+    }
+
+    .selelct_method {
+      flex-basis: 300px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .selelct_method span {
+      font-size: 25px;
+      padding: 10px;
+      
+      border-bottom: 3px solid #ABE0A8;
+    }
+    #deliver_text{
+      font-weight: bold;
+      border-bottom: 6px solid #ABE0A8;
+    }
+
+    .select_user_info {
+      width: 65%;
+      height: 40px;
+      margin-left: 110px;
+      border: 1px solid #DDDDDD;
+      border-radius: 25px;
+    }
+
+    .deliver {
+      margin-top: 10px;
+      display: inline;
+    }
+
+    .direct {
+      display: none;
+    }
+
+    #total_money_text {
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #total_money_value {
+      margin-left: auto;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #order_start_btn {
+      cursor: pointer;
+      width: 75%;
+      height: 50px;
+      color: white;
+      margin: auto;
+      line-height: 50px;
+      font-size: 25px;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 25px;
+      background-color: #ABE0A8;
+    }
+    
+
+    .alt_msg{
+      text-align: center;
+      
+      color: red;
+    }
+
+    #find_adr_btn{
+      border: none;
+      margin-left: 10px;
+      border-radius: 10px;
+      height: 30px;
+    }
+    #find_adr_btn:focus{
+      outline: none;
+    }
+    .long_adr{
+      width: 400px;
+    }
+
+    .input_address{
+      padding: 5px;
+      padding-left: 20px;
+      border-radius: 25px;
+      border: 1px solid  #DDDDDD;
+      margin-bottom: 20px;
+      margin-left: 110px;
+    }
+    .input_address:focus{
+      outline: none;
+    }
+  </style>
 
 </head>
-<body>
-    <%- include('../head/nav', {sess:sess})%>
 
-  <div id="title_name">
-    <h1>파지 팜</h1>
+<body>
+  <%- include('../head/nav', {sess:sess})%>
+
+  <div id="title_name" style="margin-bottom: 40px;">
+    <h1 style="margin-bottom: 20px;">파지 팜</h1>
+    <h3>주문</h3>
   </div>
 
-  <%= productList[0].product_name%>
-  <p> 주문</p>
+  <div class="order_body flex_row">
+
+    <div class="flex_column" style="flex-basis: 700px;">
+
+      <div class="order_product_list">
+
+        <% if(productList.length == 1){%>
+          <div class="product flex_row">
+            <div style="flex-basis: 210px;">
+              <img src="/images/야채.png" alt="" width="200" height="200">
+            </div>
+  
+            <div class="flex_column product_info" style="flex-basis: 400px;">
+              <div style="font-weight: bold; font-size: 20px;"><%= productList[0].product_name%></div>
+              <div style="font-size: 20px;"><%= count%> BOX</div>
+              <div class="flex_row" id="price" style="font-size: 20px;">
+                <span id="product_price" "><%= productList[0].product_price * count%></span><span>원</span>
+              </div>
+            </div>
+  
+          </div>
+        <%} else{%>
+          <% for(var i=0; i<productList.length; i++){%>
+
+            <div class="product flex_row">
+              <div style="flex-basis: 210px;">
+                <img src="/images/야채.png" alt="" width="200" height="200">
+              </div>
+    
+              <div class="flex_column product_info" style="flex-basis: 400px;">
+                <div><%= productList[i].product_name%></div>
+                <div><%= roductList[i].bakest_sum%></div>
+                <div id="product_price<%= i%>"><%= productList[i].product_price * roductList[i].bakest_sum%>원</div>
+              </div>
+    
+            </div>
+  
+          <%}%>
+
+        <%}%>
+
+
+
+      </div>
+
+
+
+    </div>
+
+    <div class="user_info flex_column">
+
+      <div class="flex_row">
+        <div class="selelct_method" id="deliver_btn" style="flex-basis: 100%;">
+          <span id="deliver_text">배송</span>
+        </div>
+        <!-- <div class="selelct_method" id="direct_btn">
+          <span id="direct_text">직거래</span>
+        </div> -->
+      </div>
+      <!-- <div class="flex_row">
+        <div class="selelct_method" id="deliver_btn">
+          <span id="deliver_text">배송</span>
+        </div>
+        <div class="selelct_method" id="direct_btn">
+          <span id="direct_text">직거래</span>
+        </div>
+      </div> -->
+
+      <select name="card_select_del" id="select_card" class="select_user_info" style="margin-bottom: 0px; margin-top: 50px;">
+        <option value="0" disabled selected>결제카드</option>
+        <% for(var data of user_card){%>
+          <option value="<%= data.card_num%>">카드번호: <%= data.card_num%></option>
+        <%}%>
+        
+      </select>
+      <p class="alt_msg" id="alt_card">카드를 선택해주세요..</p>
+
+      <div class="flex_column deliver">
+
+        <!-- <div>
+
+
+          <select name="card_select_del" id="select_card" class="select_user_info" style="margin-bottom: 40px;">
+            <option value="0" disabled selected>결제카드</option>
+            <% for(var data of user_card){%>
+              <option value="<%= data.card_num%>">카드번호: <%= data.card_num%></option>
+            <%}%>
+            
+          </select>
+
+        </div> -->
+
+        <div>
+
+          <select name="address_select" id="select_address" class="select_user_info">
+            <option value="0" disabled selected>배송지를 선택하세요..</option>
+            <% for(var data of user_address){%>
+            <option value="<%= data.place_id%>">배송지이름: <%= data.place_name%>, 주소: <%= data.place_addr%></option>
+            <%}%>
+            
+          </select>
+          <p class="alt_msg" id="alt_adr_1">배송지를 선택해 주세요..</p>
+        </div>
+      </div>
+
+
+
+
+      <div class="flex_column  direct">
+
+        <div class=" flex_row" style="margin-top: 20px;">
+          <input name="post_num" id="post_num" class="input_address"  type="text" placeholder="우편번호" readonly>
+          <button id="find_adr_btn" onclick="findAdress()">우편번호찾기</button>
+        </div>
+        <div class="r"><input name="main_adr"  id="main_adr" class="input_address long_adr" type="text" placeholder="메인주소" readonly></div>
+        <div class=""><input name="detail_adr" id="detail_adr" class="input_address long_adr" type="text" placeholder="상세주소"></div>
+        <p class="alt_msg" id="alt_adr_2">주소지를 입력해주세요..</p>
+        
+      </div>
+      
+
+      <div class="flex_row"
+        style="border-bottom: 2px solid gray; margin-bottom: 30px; margin-top: 50px; margin-left: 100px; margin-right: 100px;">
+        <div id="total_money_text">총금액</div>
+        <div id="total_money_value"><%= totalMoney%>원</div>
+      </div>
+
+
+      <div id="order_start_btn" onclick="sendToOrder()">주문</div>
+    </div>
+  </div>
+
 </body>
+<!-- 우편번호 찾기 스크립트 -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function findAdress() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if (data.userSelectedType === 'R') {
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+
+                } else {}
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('post_num').value = data.zonecode;
+                document.getElementById("main_adr").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detail_adr").focus();
+            }
+        }).open();
+    }
+</script>
+
+<script>
+  function sendToOrder(){
+
+  }
+</script>
+
+<script>
+
+  $('#direct_btn').click(()=>{
+    $('.direct').show();
+    $('.deliver').hide();
+
+    $('#direct_text').css("font-weight","bold");
+    $('#direct_text').css("border-bottom","6px solid #ABE0A8");
+
+    $('#deliver_text').css("font-weight","normal");
+    $('#deliver_text').css("border-bottom","3px solid #ABE0A8");
+  })
+  $('#deliver_btn').click(()=>{
+    $('.direct').hide();
+    $('.deliver').show();
+
+    $('#deliver_text').css("font-weight","bold");
+    $('#deliver_text').css("border-bottom","6px solid #ABE0A8");
+
+    $('#direct_text').css("font-weight","normal");
+    $('#direct_text').css("border-bottom","3px solid #ABE0A8");
+  })
+</script>
+
 </html>
