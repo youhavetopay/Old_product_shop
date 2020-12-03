@@ -42,7 +42,7 @@ router.get('/logout',(req, res, next) => {
 
 //mypage
 router.get('/mypage', user.getMyPage, (req, res, next) => {
-  res.render('myPage.ejs', {sess: req.session.user_id, coupon : req.coupon, orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
+  res.render('myPage.ejs', {sess: req.session.user_id, coupon : req.coupon, orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist, cardinfo: req.cardinfo })
 })
 
 
@@ -58,7 +58,7 @@ router.get('/mypage/insertCard', (req, res, next) => {
 })
 
 router.post('/mypage/insertCard', user.insertCard, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("카드가 등록 되었습니다.);location.href"/users/mypage/selectCard";</script>')
+  res.send('<script type="text/javascript">alert("카드 등록이 완료되었습니다."); window.close();</script>')
 })
 
 
@@ -76,11 +76,11 @@ router.get('/mypage/selectPlace', user.selectPlace, (req, res, next) => {
 
 //배송지 insert
 router.get('/mypage/insertPlace', (req, res, next) => {
-  res.render('insertCard.ejs')
+  res.render('insertPlace.ejs')
 })
 
 router.post('/mypage/insertPlace', user.insertPlace, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("배송지가 등록되었습니다.);location.href"/users/mypage/selectPalce";</script>')
+  res.send('<script type="text/javascript">alert("배송지 등록이 완료되었습니다."); window.close();</script>')
 })
 
 
