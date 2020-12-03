@@ -4,10 +4,8 @@ const orderController = require("../controller/order.js")
 const order = new orderController();
 
 
-router.post('/', (req, res, next)=>{
-    console.log(req.body.product_num);
-    console.log(req.body.order_count);
-    res.render('order/order', {sess: req.session.user_id})
+router.post('/', order.getOrderProduct,(req, res, next)=>{
+    res.render('order/order', {sess: req.session.user_id, productList:req.order_product_list, userInfo:req.user_info})
 })
 
 module.exports = router;
