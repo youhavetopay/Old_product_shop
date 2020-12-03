@@ -56,3 +56,101 @@
     text-align: center;
     height: 100px;
 }
+
+.cardinfo {
+    position: absolute;
+    width: 700px;
+    height: 600px;
+    border-color: #ABE0A8 !important;
+    font-size: 20px;
+  
+
+}
+
+.cardinfo h1, h5{
+
+    margin: 15px;
+    text-align: center;
+}
+
+.card_css {
+    padding: 50px;
+    transform: translateX(10%);
+  
+}
+
+.card_css label {
+
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    left: 10px;
+   
+}
+
+.cardcss {
+    position: absolute;
+    left: 150px;
+    padding: 10px;
+    padding-top: -5px;
+}
+
+.placeinfo {
+
+    width: 800px;
+    height: 850px;
+}
+.placeinfo h1, h5{
+
+    margin: 15px;
+    text-align: center;
+}
+
+.placecss {
+    position: absolute;
+    left: 150px;
+    padding: 10px;
+    padding-top: -5px;
+}
+
+.place_css {
+    padding: 50px;
+    transform: translateX(10%);
+  
+}
+
+.placecss_addr {
+
+    position: relative;
+    left: 100px;
+    padding: 10px;
+
+}
+
+.place_css label {
+
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    left: 10px;
+   
+}
+.place_css_tel {
+  
+    padding: 50px;
+    transform: translateX(10%);
+    padding: 0px;
+    padding-bottom: 40px;
+}
+
+.place_css_tel label {
+
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    left: 10px;
+   
+}

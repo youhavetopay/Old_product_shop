@@ -2,20 +2,133 @@
 <html>
   <head>
   
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+
     <link rel="stylesheet" href='/bootstrap/css/bootstrap.css' />
     <link rel="stylesheet" href='/stylesheets/signup.css' />
     <link rel='stylesheet' href="/stylesheets/mypage.css" />
     <style>
         .body {
-            
+
             position: relative;
-            width: 500px;
-            height: 500px;
+        }
+        .row {
+
+            margin-top: 30px;
+            margin-bottom: 10px;
+            height: 50px;
+            padding-left: 50px;
         }
     </style>
   </head>
   <body>
-카드만들기
+    <div class="border cardinfo">
+
+          <h1>카드 등록</h1>
+          <hr>
+          <h5>카드 정보를 입력해주세요.</h5>
+          <hr>
+        <form method="post" action="/users/mypage/insertCard">
+            <div class="card_css">
+                <label>카드번호</label>
+                <input class="cardcss" name="card_num" type="text" size="30px" placeholder="0000-0000-0000-0000" maxlength="19" id="com_input_phone"/>
+            </div>
+            <div class="card_css">
+                <label>유효기간</label>
+                <input  class="cardcss" name="card_validity"  type="text" size="30px" placeholder="MMYY"/>
+            </div>
+            <div class="card_css">
+                <label>CVC</label>
+                <input class="cardcss" name="card_cvc" type="password" size="30px" placeholder="카드 뒷면 3자리 숫자"/>
+            </div>            
+
+            <input type="submit" value="등록하기" class="btn btn-light"/>
+            
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+    <script>
+        function showAlert(){
+            alert("카드 등록이 완료되었습니다.")
+            window.close();
+        }
+        function closePopUp(){
+        testPopUp.close();
+    }
+    </script> 
+        <script type="text/javascript">
+        var autoHypenPhone = function (str) {
+            str = str.replace(/[^a-zA-Z0-9]/g, '');
+
+var tmp = '';
+
+if( str.length < 4){
+
+  return str;
+
+}else if(str.length < 8){
+
+  tmp += str.substr(0, 4);
+
+  tmp += '-';
+
+  tmp += str.substr(4);
+
+  return tmp;
+
+}else if(str.length < 12){
+
+  tmp += str.substr(0, 4);
+
+  tmp += '-';
+
+  tmp += str.substr(4, 4);
+
+  tmp += '-';
+
+  tmp += str.substr(8);
+
+  return tmp;
+
+}else{
+
+  tmp += str.substr(0, 4);
+
+  tmp += '-';
+
+  tmp += str.substr(4, 4);
+
+  tmp += '-';
+
+  tmp += str.substr(8, 4);
+
+  tmp += '-';
+
+  tmp += str.substr(12, 4);
+
+  return tmp;
+
+}
+
+return str;
+
+}
+
+         
+
+        var phoneNum = document.getElementById('user_input_phone');
+        var comPhoneNum = document.getElementById('com_input_phone');
+
+        comPhoneNum.onkeyup = function(){
+            console.log(this.value);
+            this.value = autoHypenPhone(this.value);
+        }
+
+        phoneNum.onkeyup = function () {
+            console.log(this.value);
+            this.value = autoHypenPhone(this.value);
+        }
+    </script>
   </body>
 </html>
