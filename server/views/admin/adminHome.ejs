@@ -19,6 +19,90 @@
             color: #ABE0A8;
             font-weight: bold;
         }
+
+        #box {
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0px 0px 20px #D9D9D9;
+            width: 1100px;
+            height: auto;
+            position: absolute;
+            left: 14%;
+        }
+
+        #main_body {
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+            width: 1050px;
+        }
+
+        #side_nav {
+            cursor: pointer;
+            flex-basis: 300px;
+            padding: 30px;
+            padding-top: 0px;
+        }
+
+        #side_nav_body {
+            width: 100%;
+            height: auto;
+            border: #ABE0A8 solid 5px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 40px;
+        }
+
+
+        #color {
+            color: #064601;
+        }
+
+        #table {
+            margin-left: 10px;
+            margin-top: 30px;
+            width: 745px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px #D9D9D9;
+        }
+
+        .table2 {
+            margin-left: 50px;
+            border-spacing: 5px;
+            width: 600px;
+        }
+        
+
+        #thead{
+            font-weight: bold;
+            color: #064601;
+            text-align: center;
+            font-size: 18px;
+            
+        }
+
+        #text{
+            font-weight: bold;
+            font-size: 18px;
+            color: #565756;
+            margin-top: 15px;
+            padding-left: 15px;
+        }
+
+        #tbody{
+            text-align: center;
+            padding: 20px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 0.5px solid#D9D9D9;
+        }
     </style>
 </head>
 
@@ -30,35 +114,61 @@
     <div id="title_name">
         <h1>관리 팜</h1>
     </div>
+    <br>
+    <br>
 
-    <button type="button" onclick="location.href='/admin'">신규 판매자 관리</button>
-    <button type="button" onclick="location.href='/admin/coupon'">쿠폰 관리</button>
-    <button type="button" onclick="location.href='/admin/selectCompany'">정산 관리</button>
+    <div id="box">
 
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <td>판매자 이름</td>
-                    <td>공급업체 명</td>
-                    <td>승인 여부</td>
-                </tr>
+        <div id="main_body">
+            <div id="side_nav">
+                <div id="side_nav_body">
+                    <div style="padding: 5px;">
+                        <p id="color" onclick="location.href='/admin'">신규 판매자 관리</p>
+                        <br>
+                        <br>
+                        <p onclick="location.href='/admin/coupon'">쿠폰 관리</p>
+                        <br>
+                        <br>
+                        <p onclick="location.href='/admin/selectCompany'">정산 관리</p>
 
-            </thead>
-            <tbody>
-                <% for(var i=0; i < companyinfo.length; i++ ) { %>
-                <tr>
+                    </div>
+                </div>
+            </div>
 
-                    <td><a href="/admin/companyState/<%=companyinfo[i].company_num%>"><%=companyinfo[i].user_name%></a></td>
-                    <td><%=companyinfo[i].company_name%></td>
-                    <td><%=companyinfo[i].company_whether%></td>
+            <div id ="table">
+                <table class=table2>
+                    <p id="text">신규 판매자 목록</p>
+                    <thead id="thead">
+                        <tr>
+                            <td>판매자 이름</td>
+                            <td>공급업체 명</td>
+                            <td>승인 여부</td>
+                        </tr>
+    
+                    </thead>
+                    <tbody id="tbody">
+                        <% for(var i=0; i < companyinfo.length; i++ ) { %>
+                        <tr scope = row>
+    
+                            <td><a
+                                    href="/admin/companyState/<%=companyinfo[i].company_num%>"><%=companyinfo[i].user_name%></a>
+                            </td>
+                            <td><%=companyinfo[i].company_name%></td>
+                            <td><%=companyinfo[i].company_whether%></td>
+    
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+    
+            </div>
 
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+        </div>
 
+
+        
     </div>
+
 
 
 </body>
