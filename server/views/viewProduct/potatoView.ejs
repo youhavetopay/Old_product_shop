@@ -5,11 +5,16 @@
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='bootstrap/css/bootstrap.css' />
+
+  <link rel="stylesheet" href="/stylesheets/main_page.css">
+
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
 
 
   <style>
+    a{color: black; text-decoration: none;}
+    a:link, a:hover, a:active{text-decoration: none;}
     body {
       width: 1500px;
       height: 100%;
@@ -20,13 +25,14 @@
       color: #5A5A5A;
     }
 
-    #main_body {
+    /* #main_body {
       display: flex;
       flex-direction: row;
       margin-top: 25px;
     }
 
     #side_nav {
+      cursor: pointer;
       flex-basis: 200px;
       padding: 30px;
       padding-top: 0px;
@@ -98,7 +104,7 @@
     }
     .price_cancle{
       color: rgb(255, 175, 175); font-size: 15px;
-    }
+    } */
   </style>
 
 
@@ -146,14 +152,16 @@
           
           <div class="product_row">
             <% for(var data of productinfo){%>
+              <a href="/product/<%= data.product_num%>">
                 <div class="product_item">
-                  <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
+                  <img src="../images/야채.png" alt="상품이미지" width="200" height="200" id="product_img">
                   <span><%= data.product_name%></span>
                   <div class="product_content">
                     <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
                       class="price_text"><%= data.product_price%>원</span>
                   </div>
                 </div>
+              </a>
     
               <%}%>
           </div>
@@ -243,12 +251,16 @@
               main_title.appendChild(product_row);
             } 
 
+            var linkTagA = document.createElement('a');
+            linkTagA.href = '/product/'+product[i].product_num
+
             var product_item = document.createElement('div');
             product_item.className = 'product_item';
 
             var product_img = document.createElement('img');
             product_img.setAttribute("src", '../images/야채.png');
-            product_img.setAttribute("width", 200)
+            product_img.style.width = '200px';
+            product_img.style.height = '200px';
             
 
             var product_name = document.createElement('span');
@@ -272,8 +284,9 @@
             product_item.appendChild(product_name);
             product_item.appendChild(product_content);
 
-            product_row.appendChild(product_item);
+            linkTagA.appendChild(product_item)
 
+            product_row.appendChild(linkTagA);
           }
 
           

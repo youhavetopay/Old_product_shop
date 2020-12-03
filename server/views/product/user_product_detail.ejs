@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/main_page.css">
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+
+    <style>
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:link,
+        a:hover,
+        a:active {
+            text-decoration: none;
+        }
+
+        body {
+            width: 1500px;
+            height: 100%;
+            display: flex;
+            padding-top: 10px;
+            flex-direction: column;
+            margin: 0 auto;
+            color: #5A5A5A;
+        }
+
+        .box_gradation {
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 1px 1px 10px gray;
+            margin-bottom: 20px;
+        }
+
+        #main_title {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .product_body {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .product_top {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .product_mid {
+            margin-top: 50px;
+            color: aqua;
+        }
+
+        .product_bottom {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        #product_detail {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 450px;
+        }
+
+        #product_detail span {
+            margin-bottom: 10px;
+        }
+
+        #product_img {
+            flex-basis: 300px;
+        }
+
+        #product_addOrder_btn {
+            flex-basis: 250px;
+            margin-top: auto;
+        }
+
+        #basket_add_btn {
+            background-color: rgb(122, 153, 121);
+        }
+
+        #now_buy_btn {
+
+            background-color: rgb(172, 225, 169);
+        }
+
+        .top_btn {
+            margin-left: auto;
+            width: 50%;
+            padding: 2.5px;
+            color: white;
+            font-weight: bold;
+            font-size: 25px;
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        .bottom_btn {
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+
+            margin-right: 10px;
+            font-size: 25px;
+            padding: 5px;
+        }
+
+        #company_add_btn {
+            background-color: rgb(144, 237, 123);
+        }
+
+        #review_add_btn {
+            margin-left: auto;
+            background-color: rgb(122, 153, 121);
+        }
+
+        #goto_list {
+
+            background-color: rgb(172, 225, 169);
+        }
+
+        .review_list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .review_content {
+            display: flex;
+            flex-direction: row;
+            margin-top: 20px;
+            border-bottom: 1px solid gray;
+            padding: 20px;
+        }
+
+        #review_info {
+            display: flex;
+            flex-direction: column;
+            margin-right: 50px;
+
+        }
+
+        #review_img {
+            margin: auto;
+            margin-left: 150px;
+            flex-basis: 200px;
+            width: 150px;
+            height: 150px;
+            border: 1px solid black;
+        }
+
+        .my_btn {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .my_btn:hover {
+            color: black;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+    <%- include('../head/nav', {sess:sess})%>
+
+    <div id="title_name">
+        <h1>파지 팜</h1>
+    </div>
+
+    <%- include('../head/serchBar')%>
+
+
+
+    <div>
+
+        <div id="main_body">
+            <div id="side_nav">
+                <div id="side_nav_body">
+                    <div style="padding: 5px;">
+                        <p class="category_list">카테고리</p>
+                        <p id="like" onclick="select_category(1)">인기상품</p>
+                        <p id="last" onclick="select_category(2)">마감임박</p>
+                        <p id="direct" onclick="select_category(3)">직거래가능상품</p>
+                        <p id="potato" onclick="select_category(4)">감자</p>
+                        <p id="sweet" onclick="select_category(5)">고구마</p>
+                        <p id="mush" onclick="select_category(6)">버섯</p>
+                        <p id="pumkin" onclick="select_category(7)">호박</p>
+                        <p id="onion" onclick="select_category(8)">양파</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="main_title">
+
+                <div class="product_body box_gradation">
+                    <h3><%= productInfo[0].product_name%></h3>
+                    <div class="product_top">
+                        <div id="product_img">
+                            <img src="/images/야채.png" width="200" height="200" alt="">
+                        </div>
+                        <div id="product_detail">
+                            <span>금액: <%= productInfo[0].product_price%></span>
+                            <span>카테고리: <%= productInfo[0].product_sort%></span>
+                            <span>판매 단위: <%= productInfo[0].product_weight%></span>
+                            <span>보관방법: <%= productInfo[0].product_method%></span>
+                            <span>판매마감기간: <%= productInfo[0].product_date%></span>
+                            <span>판매자: <%= productInfo[0].company_name%></span>
+                        </div>
+                        <div id="product_addOrder_btn">
+
+                            <% if(sess){%>
+                                <div class="top_btn my_btn" id="basket_add_btn">
+                                    장바구니
+                                </div>
+                                <div>
+                                    <div style="display: flex; flex-direction: row; margin-top: 10px;">
+                                        <select name="order_count" id="order_count" style="width: 75px; height: 30px; margin: auto;">
+                                            <%for(var data = 1; data< productInfo[0].product_value; data++){%>
+                                            <option value="<%= data%>"><%= data%></option>
+                                            <%}%>
+                                        </select>
+                                        <div class="top_btn my_btn" id="now_buy_btn" onclick="gotoDirectOrder('<%= productInfo[0].product_num%>')">
+                                            주문하기
+                                        </div>
+                                    </div>
+                                </div>
+                            <%} else{%>
+                                <p style="color: red;">로그인을 해야 상품 주문이 가능합니다..</p>
+                            <%}%>
+
+                        </div>
+                    </div>
+
+                    <div class="product_mid">
+                        <textarea name="" id="" cols="30" rows="10" style="resize: none; padding: 20px;  width: 100%; border-radius: 20px;" disabled><%= productInfo[0].product_detail%>
+                                        </textarea>
+                                </div>
+
+                                <div class="product_bottom">
+                                    <% if(sess){%>
+                                        <div class="bottom_btn my_btn" id="company_add_btn">
+                                            업체즐겨찾기
+                                        </div>
+                                        <div class="bottom_btn my_btn" id="review_add_btn">
+                                            리뷰하기
+                                        </div>
+                                        <div class="bottom_btn my_btn" id="goto_list" onclick="javascript: window.history.back() ">
+                                            목록으로
+                                        </div>
+                                    <%} else{%>
+                                        <p style="color: red;">로그인을 해야 모든기능을 사용 할 수 있습니다..</p>
+                                        <div class="bottom_btn my_btn" style="margin-left: auto;" id="goto_list" onclick="javascript: window.history.back() ">
+                                            목록으로
+                                        </div>
+                                    <%}%>
+                                    
+
+                                    
+                                </div>
+                            </div>
+
+
+                            <div class="box_gradation">
+                                <h3>리뷰 목록</h3>
+                                <div class="review_list">
+                                    <%if(reviewList.length <= 0){%>
+                                    <h5>해당 상품의 리뷰가 없습니다...</h5>
+                                    <%} else{%>
+                                    <% for(var i=0; i< reviewList.length; i++){%>
+                                    <div class="review_content">
+                                        <div class="review_info" style="flex-basis: 400px;">
+                                            <div>
+                                                <span><%= reviewList[i].review_date%>
+                                                </span><span><%= reviewList[i].user_id%></span>
+                                            </div>
+                                            <span><%= reviewList[i].review_content%></span>
+                                        </div>
+
+
+                                        <div style="width: 200px; height: 36px; flex-basis: 200px;">
+                                            <img src="/images/star_empty.png" alt="" width="200" height="36"
+                                                style="position: relative;">
+                                            <div id='score<%= i%>'
+                                                style="width: 0%; height: 36px; background-image: url('/images/star_full.png'); background-size: 200px 36px;  position: relative; top: -36px;">
+                                            </div>
+                                            <script>
+                                                var score = document.getElementById('score<%= i%>');
+                                                score.style.width = '<%= reviewList[i].review_score*20%>%'
+                                            </script>
+                                        </div>
+
+
+                                        <div id="review_img">
+                                            <img src="/images/야채.png" alt="" width="150" height="150">
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                    <%}%>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+</body>
+
+<script>
+    function gotoDirectOrder(product_Num){
+        
+        var form = document.createElement('form');
+        form.setAttribute('method','post');
+        form.setAttribute('action', '/order');
+        document.charset = "utf-8";
+
+        var order_count = document.getElementById('order_count');
+
+        var productNum = document.createElement('input');
+        productNum.setAttribute('type', 'hidden');
+        productNum.setAttribute('name', 'product_num');
+        productNum.setAttribute('value', product_Num);
+
+        form.appendChild(productNum);
+        form.appendChild(order_count);
+
+        document.body.appendChild(form);
+
+        form.submit();
+    }
+    function select_category(count) {
+        switch (count) {
+            case 1:
+                location.href = "/"
+                break;
+            case 2:
+                location.href = "/last"
+                break;
+            case 3:
+                location.href = "/direct"
+                break;
+            case 4:
+                location.href = "/potato"
+                break;
+            case 5:
+                location.href = "/sweet"
+                break;
+            case 6:
+                location.href = "/mush"
+                break;
+            case 7:
+                location.href = "/pumkin"
+                break;
+            case 8:
+                location.href = "/onion"
+                break;
+
+        }
+    }
+</script>
+
+</html>

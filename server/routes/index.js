@@ -3,10 +3,17 @@ var router = express.Router();
 const mainController = require("../controller/index.js")
 const main = new mainController();
 
+// 메인화면 렌더링
 router.get('/', main.getProductListMain, (req, res, next) =>{
     res.render('index.ejs', {title: '아이즈원', sess : req.session.user_id, productinfo: req.main_product_list});
   });
 
+
+router.get('/serch/:serchValue',main.getSerchProductList, (req, res, next)=>{
+  res.render('serch_result',{sess : req.session.user_id,serchList:req.serchList, serchValue:req.params.serchValue});
+})
+
+  // 정렬하는거 post
 router.post('/sortSelect', main.selectSortMethod, (req, res, next)=>{
   console.log(req.body.sortValue);
 
@@ -28,7 +35,7 @@ router.get('/direct',main.getDirectAbleList, (req, res, next)=>{
     res.render('viewProduct/directView',{title: '아이즈원',sess : req.session.user_id, productinfo:req.directList})
   }
   else{
-    res.send('<script type="text/javascript">alert("로그인이 필요한 기능입니다...");location.href="/";</script>');
+    res.send('<script type="text/javascript">alert("로그인이 필요한 기능입니다...");location.href="/user/login";</script>');
   }
 })
 

@@ -147,6 +147,24 @@ class mainController {
         })
     }
 
+    async getSerchProductList(req, res, next){
+        pool.getConnection((err, conn)=>{
+            if(err) throw err;
+
+            conn.query(`SELECT p.product_num, p.product_name, p.product_price, i.image_content FROM product as p, image as i
+            where i.image_seq = 1 and p.product_state = '판매중' and p.product_num = i.fk_product_num and p.product_name like ?`,[
+                '%'+req.params.serchValue + '%'
+            ], (err, serch_list)=>{
+                if(err) throw err;
+
+                req.serchList = serch_list;
+
+                conn.release();
+                next();
+            })
+        })
+    }
+
     // 직거래 가능한 상품 가져오기  나중에 세션넣기
     async getDirectAbleList(req, res, next) {
         pool.getConnection((err, conn) => {

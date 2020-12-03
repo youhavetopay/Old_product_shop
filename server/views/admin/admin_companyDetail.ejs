@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <style>
+        #title_name {
+            margin-top: 100px;
+            text-align: center;
+
+        }
+
+        #title_name h1 {
+            color: #ABE0A8;
+            font-weight: bold;
+        }
+
+        #box {
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0px 0px 20px #D9D9D9;
+            width: 1100px;
+            height: auto;
+            position: absolute;
+            left: 14%;
+        }
+
+        #main_body {
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+            width: 1050px;
+        }
+
+        #side_nav {
+            cursor: pointer;
+            flex-basis: 300px;
+            padding: 30px;
+            padding-top: 0px;
+        }
+
+        #side_nav_body {
+            width: 100%;
+            height: auto;
+            border: #ABE0A8 solid 5px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 40px;
+        }
+
+
+        #color {
+            color: #064601;
+        }
+
+        #text {
+            margin-left: 5px;
+            margin-top: 30px;
+            width: 745px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px #D9D9D9;
+            padding-left: 30px;
+            padding-top: 30px;
+            font-size: 18px;
+        }
+
+        p {
+            padding: 10px;
+            
+        }
+
+        button {
+            border-radius: 20px;
+            color: #FFFFFF;
+            background-color: #ABE0A8;
+            border: 0;
+            width: 200px;
+            height: 40px;
+            margin-left: 100px;
+            font-weight: bold;
+        }
+
+        strong {
+            padding-right: 15px;
+        }
+
+        input {
+            width: 550px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <%- include('../head/nav', {sess:sess})%>
+
+    <div id="title_name">
+        <h1>관리 팜</h1>
+    </div>
+    <br>
+    <br>
+
+    <div id="box">
+        <div id="main_body">
+            <div id="side_nav">
+                <div id="side_nav_body">
+                    <div style="padding: 5px;">
+                        <p id="color" onclick="location.href='/admin'">신규 판매자 관리</p>
+                        <br>
+                        <br>
+                        <p onclick="location.href='/admin/coupon'">쿠폰 관리</p>
+                        <br>
+                        <br>
+                        <p onclick="location.href='/admin/selectCompany'">정산 관리</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="text">
+                <p><strong>판매자 이름 </strong><%= companyDetail.user_name %></p>
+                <p><strong>공급업체 명 </strong><%= companyDetail.company_name %></p>
+        
+                <form method="post" action="/admin/companyState/<%=companyDetail.company_num%>">
+                    <p><strong>거절 사유</strong><input type="text" name="company_reason"></p>
+                    <br>
+                    <button type="submit" name="ok">승인</button>
+                    <button type="submit" name="no">거절</button>
+                </form>
+                
+        
+            </div>
+        </div>
+    </div>
+
+    
+
+
+</body>
+
+</html>
