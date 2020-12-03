@@ -118,18 +118,17 @@
     <br>
 
     <div id="box">
-
         <div id="main_body">
             <div id="side_nav">
                 <div id="side_nav_body">
                     <div style="padding: 5px;">
-                        <p id="color" onclick="location.href='/admin'">신규 판매자 관리</p>
+                        <p  onclick="location.href='/admin'">신규 판매자 관리</p>
                         <br>
                         <br>
-                        <p onclick="location.href='/admin/coupon'">쿠폰 관리</p>
+                        <p  onclick="location.href='/admin/coupon'">쿠폰 관리</p>
                         <br>
                         <br>
-                        <p onclick="location.href='/admin/selectCompany'">정산 관리</p>
+                        <p id="color" onclick="location.href='/admin/selectCompany'">정산 관리</p>
 
                     </div>
                 </div>
@@ -137,38 +136,33 @@
 
             <div id ="table">
                 <table class=table2>
-                    <p id="text">신규 판매자 목록</p>
+                    <p id="text">공급업체 목록</a>
                     <thead id="thead">
                         <tr>
+                            <td>공급업체 번호</td>
                             <td>판매자 이름</td>
                             <td>공급업체 명</td>
-                            <td>승인 여부</td>
                         </tr>
-    
+        
                     </thead>
                     <tbody id="tbody">
                         <% for(var i=0; i < companyinfo.length; i++ ) { %>
-                        <tr scope = row>
-    
-                            <td><a
-                                    href="/admin/companyState/<%=companyinfo[i].company_num%>"><%=companyinfo[i].user_name%></a>
-                            </td>
+                        <tr>
+                            <td><a href="/admin/total/<%=companyinfo[i].company_num%>"><%=companyinfo[i].company_num%></a></td>
+                            <td><%=companyinfo[i].user_name%></td>
                             <td><%=companyinfo[i].company_name%></td>
-                            <td><%=companyinfo[i].company_whether%></td>
-    
+                            
+        
                         </tr>
                         <% } %>
                     </tbody>
                 </table>
-    
+        
             </div>
-
         </div>
 
-
-        
     </div>
-
+    
 
 
 </body>
