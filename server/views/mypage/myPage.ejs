@@ -8,6 +8,7 @@
         <link rel="stylesheet" href='/bootstrap/css/bootstrap.css' />
         <link rel="stylesheet" href='/stylesheets/signup.css' />
         <link rel='stylesheet' href="/stylesheets/mypage.css" />
+        
     </head>
     <style>
         .nav-link {
@@ -18,9 +19,12 @@
 
             font-size: 10px;
         }
- 
+
+   
     </style>
     <body>
+        
+        <%- include('../head/nav', {sess:sess})%>
 
 <div class="area">
     
@@ -46,8 +50,25 @@
     <div class="mypage_info">
           <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                <form >
-                    dd
+                <form>
+                    <h1 align="center" style="font-weight: bold;">주문 목록</h1>
+                 
+                   
+                       <div class="painting_order_product">
+                        <div id="img" >
+                         
+                            <img src="" alt=""  height="150">
+
+                        </div>
+                        <div style="flex-basis: 600px; display: flex; flex-direction: column; margin: auto 10px auto 0px">
+                            <span class="order_info">상품이름 주문날짜 주문상태</span>
+                        </div>
+                        <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
+                            <a href="#"><button class="painting_order_btn" >환불신청</button></a>
+                            <a href="#"><button class="painting_order_btn" >리뷰쓰기</button></a>
+                        </div>
+                       </div>
+                   
                 </form>
             </div>
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -61,16 +82,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                            <th scope="row">쿠폰명</th>
-                            <td>할인 금액</td>
-                            <td>사용기한</td>
+                            <% for(var i = 0; i < coupon; i++) { %>
+                            <td><%= coupon[i].coupon_name %></td>
+                            <td><%= coupon[i].coupon_sale_price %></td>
+                            <td><%= coupon[i].coupon_date %></td>
                             </tr>
-                            <tr>
-                                <th scope="row">쿠폰명</th>
-                                <td>할인 금액</td>
-                                <td>사용기한</td>
-                            </tr>
-                                
+                            <% } %>
                         </tbody>
                   
                     </table>
@@ -107,20 +124,28 @@
                     <a href="javascript:popupOpen2();" class="border border-secondary"> + 배송지 등록 </a>
                     <table class="table">
                         <thead>
-                            <th scope="col">배송지명</th>
+                            <th scope="col">배송지명<br>수령인</th>
                             <th scope="col">주소</th>
                             <th scope="col">연락처</th>
                             <th scope="col">수정</th>
                             <th scope="col">삭제</th>
                         </thead>
                         <tbody>
+                            <% if(placeinfo == null || placeinfo.length == 0){%>
+                                <tr>
+                                  <td colspan="6" align="center">배송지 정보가 존재하지 않아요</td>
+                                </tr>
+                            <% } %>
+
                             <tr>
-                            <td>우리집</td>
-                            <td>부산광역시 사하구 하신중앙로2 106동 501호(장림동, 동원로얄듀크아파트)</td>
-                            <td>010-6403-3994</td>
-                            <td><a>수정</a></td>
-                            <td><a>삭제</a></td>
-                            </tr>                   
+                            <% for(var i = 0; i < placeinfo.length; i++) { %>
+                                <td><%= placeinfo[i].place_name %><br><%= placeinfo[i].place_userNM %></td>
+                                <td><%= placeinfo[i].place_addr %><br><%= placeinfo[i].place_addrinfo %></td>
+                                <td><%= placeinfo[i].place_tel %></td>
+                                <td><a>수정</a></td>
+                                <td><a>삭제</a></td>
+                            </tr> 
+                            <% } %>                  
                         </tbody>
                     </table>
                 </form>
@@ -137,19 +162,26 @@
                         </thead>
                        
                         <tbody>
+                            <% if(cardinfo == null || cardinfo.length == 0){%>
                             <tr>
                                 <td colspan="5" align="center">카드가 존재하지 않아요</td>
                             </tr>
-                                             
+                            <% } %>                
                             <tr>
-                            <td>d</td>
-                            <td></td>
+                                <% for(var i = 0; i < cardinfo.length; i++) { %>
+                            <td>
+                                <%= cardinfo[i].card_num %>
+                            </td>
+                            <td>
+                                <%= cardinfo[i].card_validity %>
+                            </td>
                             <td><a>삭제</a></td>
                             </tr>     
-                                  
+                            <% } %>
                         </tbody>
                     </table>
-                </form>                
+                </form>     
+
             </div>
           </div>
     </div> 
@@ -182,6 +214,8 @@
     
             window.open(popUrl2,"",popOption2);
     }       
+        </script>
+ 
         </script>
         
     

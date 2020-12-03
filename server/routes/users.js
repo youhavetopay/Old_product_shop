@@ -52,7 +52,8 @@ router.get('/logout',(req, res, next) => {
 
 //mypage
 router.get('/mypage', user.getMyPage, (req, res, next) => {
-  res.render('mypage/myPage.ejs', {sess: req.session.user_id, coupon : req.coupon, orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
+  res.render('mypage/myPage.ejs', 
+  {sess: req.session.user_id, coupon : req.coupon, cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
 })
 
 
@@ -86,7 +87,7 @@ router.get('/mypage/selectPlace', user.selectPlace, (req, res, next) => {
 
 //배송지 insert
 router.get('/mypage/insertPlace', (req, res, next) => {
-  res.render('insertPlace.ejs')
+  res.render('mypage/insertPlace.ejs')
 })
 
 router.post('/mypage/insertPlace', user.insertPlace, (req, res, next) => {
