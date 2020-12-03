@@ -29,6 +29,7 @@
         }
 
         .userbtn {
+            border-Bottom : 3px solid #ABE0A8;
             cursor: pointer;
         }
 
@@ -64,7 +65,11 @@
             </div>
             <div class="signup_css"> 
                 <label for="user_tel">전화번호</label>
-                <input id="user_tel" class="login_css" name="user_phone" type="text" size="40px"/>
+                <input id="user_tel" class="login_css" name="user_tel" type="text" size="40px"/>
+            </div>
+            <div class="signup_css"> 
+                <label for="user_tel">추천인</label>
+                <input id="user_tel" class="login_css" name="recom_name" type="text" size="40px"/>
             </div>
             <div class="signup_css">
                 <label for="area_num">거주지역</label>
@@ -78,27 +83,27 @@
                 </select>
             </div>
             
-            <button type="submit" class="btn btn-outline-sign_up">회원가입</button>
+            <button type="submit" name="user_signup" class="btn btn-outline-sign_up">회원가입</button>
         </form>
     </div>
 
     <div id="company_sign_up" class="signup_div">
-        <form class="signup_form" method="POST" action="/">
+        <form class="signup_form" method="POST" action="/users/comSignUp">
             <div class="company_signup_css">
                 <label for="user_id">기존 아이디</label>
-                <input id="user_id" class="login_css" name="" type="text" size="40px"/>
+                <input id="user_id" class="login_css" name="user_id" type="text" size="40px"/>
             </div>
             <div class="company_signup_css">
                 <label for="user_pw">기존 비밀번호</label>
-                <input id="user_pw" class="login_css" name=""  type="password" size="40px"/>
+                <input id="user_pw" class="login_css" name="user_pw"  type="password" size="40px"/>
             </div>
             <div class="company_signup_css">
-                <label for="user_name">업체명</label>
-                <input id="user_name" class="login_css" name="" type="text" size="40px"/>
+                <label for="company_name">업체명</label>
+                <input id="company_name" class="login_css" name="company_name" type="text" size="40px"/>
             </div>
             <div class="company_signup_css"> 
-                <label for="user_tel">사업자번호</label>
-                <input id="user_tel" class="login_css" name="" type="text" size="40px"/>
+                <label for="company_id">사업자번호</label>
+                <input id="company_id" class="login_css" name="company_id" type="text" size="40px"/>
             </div>
             <div class="company_signup_css">
                 <label for="area_num">지역선택</label>
@@ -112,7 +117,7 @@
                 </select>
             </div>
             
-            <button type="submit" class="btn btn-outline-sign_up">판매자 등록</button>
+            <button type="submit" name="company_signup" class="btn btn-outline-sign_up">판매자 등록</button>
         </form>
     </div>
 

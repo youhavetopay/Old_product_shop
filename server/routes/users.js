@@ -9,9 +9,14 @@ router.get('/', user.selectArea, function (req, res, next) {
   res.render('signup.ejs', {area: req.area});
 });
 
-
+// 일반회원 회원가입
 router.post('/', user.signupInput, (req, res)=>{
   res.send('<script type="text/javascript">alert("가입 되었습니다.");location.href="/";</script>');
+})
+
+// 공급업체 회원가입 post
+router.post('/comSignUp', user.companySignUp ,(req, res, next)=>{
+  res.send('<script type="text/javascript">alert("신청 완료 되었습니다.");location.href="/";</script>');
 })
 
 
@@ -21,7 +26,12 @@ router.get('/login', function (req, res, next) {
 })
 
 router.post('/login', user.userLogin, (req, res)=>{
-  res.send('<script type="text/javascript">alert("로그인 되었습니다.");location.href="/";</script>');
+  if(req.couponCheck){
+    res.send('<script type="text/javascript">alert("쿠폰을 발급했습니다. 마이페이지에서 확인해주세요..");location.href="/";</script>');
+  }
+  else{
+    res.send('<script type="text/javascript">alert("로그인 되었습니다.");location.href="/";</script>');
+  }
 })
 
 
