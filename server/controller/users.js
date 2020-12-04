@@ -156,8 +156,10 @@ class userController {
                             res.send('<script type="text/javascript">alert("아이디나 비밀번호가 틀렸습니다.");history.back();</script>');
                         } else {
                             req.session.user_id = row[0].user_id;
+                            req.session.area_num = row[0].area_num;
                             console.log(row[0].user_id, row[0].user_pw, row[0].user_pw);
-
+                            console.log(row);
+                            console.log(req.session.area_num);
 
                             var last_login_time = moment(row[0].user_date, 'YYYY-MM-DD');
                             var nowTime = moment();
