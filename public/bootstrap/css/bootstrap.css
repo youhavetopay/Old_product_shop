@@ -1683,7 +1683,6 @@ pre code {
 .table th,
 .table td {
   padding: 2rem;
-  vertical-align: top;
   border-top: 1px solid #dee2e6;
 }
 

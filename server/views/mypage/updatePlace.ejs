@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+
+    <link rel="stylesheet" href='/bootstrap/css/bootstrap.css' />
+    <link rel="stylesheet" href='/stylesheets/signup.css' />
+    <link rel='stylesheet' href="/stylesheets/mypage.css" />
+    <style>
+        .body {
+
+            position: relative;
+        }
+        .row {
+
+            margin-top: 30px;
+            margin-bottom: 10px;
+            height: 50px;
+            padding-left: 50px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="border placeinfo">
+
+          <h1>배송지 수정</h1>
+          <hr>
+          <h5>배송지 정보를 입력해주세요.</h5>
+          <hr>
+        <form method="post">
+            <div class="place_css">
+                <label>배송지명</label>
+                <input class="placecss" name="place_name" type="text" size="30px" placeholder="배송지명" value="<%= data.place_name %>"/>
+            </div>
+            <div class="place_css">
+                <label>수령인</label>
+                <input  class="placecss" name="place_userNM"  type="text" size="30px" placeholder="수령인" value="<%= data.place_userNM %>"/>
+            </div>
+            <div class="place_css">
+                <label>주소</label>
+                <input class="placecss_addr" name="place_num" type="text" size="20px" placeholder="우편번호" id="com_post_num" value="<%= data.place_num %>"/>
+                <input type="button" id="find_post_num_btn" value="우편번호 찾기" onclick="findAdress()" class="btn btn-outline-secondary">
+                <br><br>
+                <input class="placecss_addr" name="place_addr" type="text" size="50px" placeholder="기본주소" id="com_main_address" value="<%= data.place_addr %>"/>
+                <br><br>
+                <input class="placecss_addr" name="place_addrinfo" type="text" size="50px" placeholder="상세주소" id="com_detail_address" value="<%= data.place_addrinfo %>"/>
+            </div>            
+            <div class="place_css_tel">
+                <label>연락처</label>
+                <input  class="placecss" name="place_tel"  type="text" size="30px" placeholder="000-0000-0000" maxlength="13" id="com_input_phone" value="<%= data.place_tel %>"/>
+            </div>
+            <input type="submit" value="수정하기" class="btn btn-light"/>
+            
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+    <script type="text/javascript">
+        var autoHypenPhone = function (str) {
+            str = str.replace(/[^0-9]/g, '');
+            var tmp = '';
+            if (str.length < 4) {
+                return str;
+            } else if (str.length < 7) {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3);
+                return tmp;
+            } else if (str.length < 11) {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3, 3);
+                tmp += '-';
+                tmp += str.substr(6);
+                return tmp;
+            } else {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3, 4);
+                tmp += '-';
+                tmp += str.substr(7);
+                return tmp;
+            }
+
+            return str;
+        }
+
+
+        var phoneNum = document.getElementById('user_input_phone');
+        var comPhoneNum = document.getElementById('com_input_phone');
+
+        comPhoneNum.onkeyup = function(){
+            console.log(this.value);
+            this.value = autoHypenPhone(this.value);
+        }
+
+        phoneNum.onkeyup = function () {
+            console.log(this.value);
+            this.value = autoHypenPhone(this.value);
+        }
+    </script>
+       <!-- 우편번호 찾기 스크립트 -->
+       <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+       <script>
+           function findAdress() {
+               new daum.Postcode({
+                   oncomplete: function (data) {
+                       // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+   
+                       // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                       // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                       var addr = ''; // 주소 변수
+                       var extraAddr = ''; // 참고항목 변수
+   
+                       //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                       if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                           addr = data.roadAddress;
+                       } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                           addr = data.jibunAddress;
+                       }
+   
+                       // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                       if (data.userSelectedType === 'R') {
+                           // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                           // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                           if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                               extraAddr += data.bname;
+                           }
+                           // 건물명이 있고, 공동주택일 경우 추가한다.
+                           if (data.buildingName !== '' && data.apartment === 'Y') {
+                               extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                           }
+                           // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                           if (extraAddr !== '') {
+                               extraAddr = ' (' + extraAddr + ')';
+                           }
+                           // 조합된 참고항목을 해당 필드에 넣는다.
+   
+                       } else {}
+   
+                       // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                       document.getElementById('com_post_num').value = data.zonecode;
+                       document.getElementById("com_main_address").value = addr;
+                       // 커서를 상세주소 필드로 이동한다.
+                       document.getElementById("com_detail_address").focus();
+                   }
+               }).open();
+           }
+       </script>
+   
+  </body>
+</html>

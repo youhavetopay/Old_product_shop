@@ -53,7 +53,7 @@ router.get('/logout',(req, res, next) => {
 //mypage
 router.get('/mypage', user.getMyPage, (req, res, next) => {
   res.render('mypage/myPage.ejs', 
-  {sess: req.session.user_id, coupon : req.coupon, cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
+  {sess: req.session.user_id, bookmarkinfo : req.bookmarkinfo, coupon : req.session.coupon, couponinfo : req.couponinfo,cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
 })
 
 
@@ -69,13 +69,13 @@ router.get('/mypage/insertCard', (req, res, next) => {
 })
 
 router.post('/mypage/insertCard', user.insertCard, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("카드 등록이 완료되었습니다."); window.close();</script>')
+  res.send('<script type="text/javascript">alert("카드 등록이 완료되었습니다."); window.close();opener.parent.location="/users/mypage";</script>')
 })
 
 
 //카드 delete
 router.get('/mypage/deleteCard/:card_num', user.deleteCard, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("카드가 삭제 되었습니다.");location.href="/users/mypage/selectCard";</script>');
+  res.send('<script type="text/javascript">alert("카드가 삭제 되었습니다.");location.href="/users/mypage";</script>');
 })
 
 
@@ -91,23 +91,23 @@ router.get('/mypage/insertPlace', (req, res, next) => {
 })
 
 router.post('/mypage/insertPlace', user.insertPlace, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("배송지 등록이 완료되었습니다."); window.close();</script>')
+  res.send('<script type="text/javascript">alert("배송지 등록이 완료되었습니다."); window.close();opener.parent.location="/users/mypage";</script>')
 })
 
 
 //배송지 delete
 router.get('/mypage/deletePlace/:place_id', user.deletePlace, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("배송지가 삭제 되었습니다.");location.href="/users/mypage/selectPlace";</script>');
+  res.send('<script type="text/javascript">alert("배송지가 삭제 되었습니다.");location.href="/users/mypage";</script>');
 })
 
 
 //배송지 update
-router.get('/mypage/updatePlace/:place_id', (req, res, next) => {
-  res.render('mypage/updatePlace.ejs')
+router.get('/mypage/updatePlace/:place_id', user.selectPlace, (req, res, next) => {
+  res.render('mypage/updatePlace.ejs', { data : req.placeinfo })
 })
 
 router.post('/mypage/updatePlace/:place_id', user.updatePlace, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("배송지가 수정 되었습니다.");location.href="/users/mypage/selectPlace";</script>');
+  res.send('<script type="text/javascript">alert("배송지가 수정 되었습니다.");location.href="/users/mypage";</script>');
 })
 
 
@@ -118,8 +118,8 @@ router.get('/mypage/selectBookmark', user.selectBookmark, (req, res, next) => {
 
 
 //즐겨찾기 delete
-router.get('/mypage/selectBookmark/:bookmark_num', user.deleteBookmark, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("즐겨찾기가 삭제 되었습니다.");location.href="/users/mypage/selectBookmark";</script>');
+router.get('/mypage/deleteBookmark/:bm_num', user.deleteBookmark, (req, res, next) => {
+  res.send('<script type="text/javascript">alert("즐겨찾기가 삭제 되었습니다.");location.href="/users/mypage";</script>');
 })
 
 
