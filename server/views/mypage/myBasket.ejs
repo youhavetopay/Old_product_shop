@@ -102,7 +102,7 @@
 
   <div class="flex_column basket_list_body">
 
-    <% if(!basketList){%>
+    <% if(!empty_check){%>
 
         <h3 style="text-align: center;">장바구니가 비었습니다...</h3>
     <%} else{%>
@@ -115,7 +115,7 @@
                 <div class="flex_column product_content">
                   <span class="product_text" style="margin-right: auto; margin-bottom: 50px;"><%= data.product_name%></span>
                   <span class="product_text" style="margin-right: auto;"><%= data.bakset_sum%> BOX</span>
-                  <span style="margin-left: auto;" id="delete_product_btn">삭제</span>
+                  <span style="margin-left: auto;" id="delete_product_btn" onclick="deleteProduct(`<%= data.product_num%>`)">삭제</span>
                   <span class="product_text" style="margin-left: auto; margin-top: auto;"><%= data.new_price * data.bakset_sum%>원</span>
                 </div>
             </div>
@@ -123,9 +123,56 @@
     <%}%>
      
   </div>
-  <div id="basket_order_btn">
-      주문하기
-  </div>
+  <% if(empty_check){%>
+    <div id="basket_order_btn" onclick="goto_order_page()">
+        주문하기
+    </div>
+  <%}%>
 </body>
+
+<script>
+    function deleteProduct(product_num){
+
+        var form2 = document.createElement('form');
+        form2.setAttribute('method','post');
+        form2.setAttribute('action', '/order/delete/basket/product');
+        document.charset = "utf-8";
+
+        var product_num_in = document.createElement('input');
+        product_num_in.setAttribute('type', 'hidden');
+        product_num_in.setAttribute('name', 'product_num');
+        product_num_in.setAttribute('value', product_num);
+
+        form2.appendChild(product_num_in);
+
+        document.body.appendChild(form2);
+
+        form2.submit();
+    }
+
+    function goto_order_page(){
+        var form2 = document.createElement('form');
+        form2.setAttribute('method','post');
+        form2.setAttribute('action', '/order');
+        document.charset = "utf-8";
+
+        var product_num_in = document.createElement('input');
+        product_num_in.setAttribute('type', 'hidden');
+        product_num_in.setAttribute('name', 'product_num');
+        product_num_in.setAttribute('value', 1);
+
+        var product_num_2 = document.createElement('input');
+        product_num_2.setAttribute('type', 'hidden');
+        product_num_2.setAttribute('name', 'product_num');
+        product_num_2.setAttribute('value', 1);
+
+        form2.appendChild(product_num_in);
+        form2.appendChild(product_num_2);
+
+        document.body.appendChild(form2);
+
+        form2.submit();
+    }
+</script>
 
 </html>

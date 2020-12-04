@@ -188,7 +188,7 @@
 
       <div class="order_product_list">
 
-        <% if(productList.length == 1){%>
+        <% if(!check_basket){%>
         <div class="product flex_row">
           <div style="flex-basis: 210px;">
             <img src="/images/야채.png" alt="" width="200" height="200">
@@ -213,8 +213,8 @@
 
                 <div class="flex_column product_info" style="flex-basis: 400px;">
                   <div><%= productList[i].product_name%></div>
-                  <div><%= roductList[i].bakest_sum%></div>
-                  <div id="product_price<%= i%>"><%= productList[i].new_price * roductList[i].bakest_sum%>원</div>
+                  <div><%= productList[i].bakset_sum%> BOX</div>
+                  <div id="product_price<%= i%>"><%= productList[i].new_price * productList[i].bakset_sum%>원</div>
                 </div>
 
             </div>
@@ -416,16 +416,18 @@
     product_count.setAttribute('type', 'hidden');
     product_count.setAttribute('name', 'product_count');
 
+    console.log(parseInt(`<%= productList.length%>`))
 
-    //장바구니 주문인지 아닌지 판별하기
-    if (`<%= productList.length%>` > 1) {
-
+    // //장바구니 주문인지 아닌지 판별하기
+    if (Boolean(`<%= check_basket%>`)) {
+      console.log('aaaaaaaaaaaaaaaaaaaaaa')
       product_num.setAttribute('value', `basket`);
-      product_count.setAttribute('value', null);
+      product_count.setAttribute('value', 0);
 
     } else {
-      product_num.setAttribute('value', `<%= productList[0].product_num%>`);
-      product_count.setAttribute('value', `<%= count%>`);
+      console.log('2222222222222222')
+      product_num.setAttribute('value', parseInt(`<%= productList[0].product_num%>`));
+      product_count.setAttribute('value', parseInt(`<%= count%>`));
     }
 
     var card_num = document.createElement('input');
@@ -459,7 +461,7 @@
     if (y == 1) {
       // 배송일때
       address_num.setAttribute('value', $('#select_address option:selected').val());
-      post_num.setAttribute('value', null);
+      post_num.setAttribute('value', -1);
       main_adr.setAttribute('value', null);
       detail_adr.setAttribute('value', null);
 
