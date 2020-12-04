@@ -240,17 +240,16 @@ class userController {
             }
         })
     }
-
-
-
     //마이페이지
     async getMyPage(req, res, next) {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
 
-                // 사용자가 가지고 있는 쿠폰가져오기
-                const couponSql = `SELECT COUNT(*) FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"`
+                // 사용자가 가지고 있는 쿠폰가져오기(갯수)
+                const couponSql = `SELECT COUNT(*) AS coupon_count FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"`
+                // 사용자가 가지고 있는 쿠폰의 종류
+                const couponinfo = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"` 
 
                 // 배송중인 주문 수 가져오기
                 const orderStateSql = `SELECT COUNT(order_state) FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
@@ -267,17 +266,22 @@ class userController {
                 // 배송지 가져오기
                 const placesql = `SELECT * FROM place WHERE user_id = "${req.session.user_id}"`
 
+                // 즐겨찾기한 업체 가져오기
+                const bookmarksql = `SELECT * FROM bookmark, company WHERE bookmark.user_id = "${req.session.user_id}" AND company.company_num = bookmark.company_num`
+
+
                 // 사용자가 가지고 있는 쿠폰가져오기
                 conn.query(couponSql, (err, coupon) => {
                     console.log("에러1");
                     if (err) throw err;
                     else {
 
+                        console.log(coupon);
+
                         conn.query(orderStateSql, (err, orderstate) => {
                             console.log("에러2");
                             if (err) throw err;
                             else {
-
 
                                 // 직거래 예정인 주문 수 가져오기
                                 conn.query(directSql, (err, direct) => {
@@ -299,23 +303,41 @@ class userController {
                                                         conn.query(placesql, (err, placeinfo) => {
                                                             if (err) throw err;
                                                             else{
+                                                                
+                                                                conn.query(couponinfo, (err, couponinfo) => {
+                                                                    if (err) throw err;
+                                                                    else{
+
+                                                                        conn.query(bookmarksql, (err, bookmarkinfo) => {
+                                                                            if (err) throw err;
+                                                                            else{
+
+                                                                                req.cardinfo = cardinfo;
+                                                                                req.placeinfo = placeinfo;
+                                                                                req.couponinfo = couponinfo;
+                                                                                req.bookmarkinfo = bookmarkinfo;
+                                                                                req.session.coupon = coupon[0];
+                                                                                req.session.orderstate = orderstate[0];
+                                                                                req.session.direct = direct[0];
+                                                                                req.myorderlist = myorderlist;
+                                                                          
+                                
+                                                                                console.log(coupon);
+                                                                                console.log(orderstate);
+                                                                                console.log(direct);
+                                                                                console.log(myorderlist);
+                                
+                                                                                conn.release();
+                                                                                next();
+
+                                                                            }
+                                                                        })
 
 
 
-                                                                req.cardinfo = cardinfo;
-                                                                req.placeinfo = placeinfo;
-                                                                req.session.coupon = coupon[0];
-                                                                req.session.orderstate = orderstate[0];
-                                                                req.session.direct = direct[0];
-                                                                req.myorderlist = myorderlist;
-                
-                                                                console.log(coupon);
-                                                                console.log(orderstate);
-                                                                console.log(direct);
-                                                                console.log(myorderlist);
-                
-                                                                conn.release();
-                                                                next();
+                                                                    }
+                                                                })
+
 
 
                                                             }
@@ -351,7 +373,7 @@ class userController {
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
                     else {
-                        req.cardinfo = row;
+                        req.cardinfo = row[0];
                         conn.release();
                         next();
                     }
@@ -394,7 +416,7 @@ class userController {
             // 카드 삭제하기
             const sql = `DELETE FROM card WHERE card_num = "${req.params.card_num}"`
             conn.query(sql, (err, row) => {
-                conn.release();
+               
                 if (err) throw err;
                 else {
                     conn.release();
@@ -407,19 +429,19 @@ class userController {
 
 
 
-    //배송지 select
+    //배송지 select(업데이트용)
     async selectPlace(req, res, next) {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
 
                 // 배송지 가져오기
-                const sql = `SELECT * FROM place WHERE user_id = "${req.session.user_id}"`
+                const sql = `SELECT * FROM place WHERE place_id = "${req.params.place_id}"`
 
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
                     else {
-                        req.cardinfo = row;
+                        req.placeinfo = row[0];
                         conn.release();
                         next();
                     }
@@ -463,7 +485,7 @@ class userController {
             // 배송지 삭제하기
             const sql = `DELETE FROM place WHERE place_id = "${req.params.place_id}"`
             conn.query(sql, (err, row) => {
-                conn.release();
+             
                 if (err) throw err;
                 else {
                     conn.release();
@@ -493,6 +515,8 @@ class userController {
                 res.send('<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>');
             }
             conn.query(sql, val, (err, row) => {
+
+                
                 if (err) {
                     res.send('<script type="text/javascript">alert("이미 있는 배송지 입니다.");history.back();</script>');
                 } else {
@@ -536,11 +560,13 @@ class userController {
             else {
 
                 // 즐겨찾기 삭제하기
-                const sql = `DELETE FROM bookmark WHERE user_id = "${req.session.user_id}"`
+                // const sql = `DELETE FROM bookmark WHERE user_id = "${req.session.user_id}"`
+                const sql = `DELETE FROM bookmark WHERE bm_num = "${req.params.bm_num}"`
 
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
                     else {
+                        
                         conn.release();
                         next();
                     }

@@ -19,6 +19,15 @@
 
             font-size: 10px;
         }
+        .place_head th {
+
+            top: 10px;
+        }
+
+        .bm td{
+            font-size: 25px;
+           
+        }
 
    
     </style>
@@ -31,7 +40,7 @@
    <div class="state_info">
        <span class="border border-success">MY팜</span>
 
-       <span class="border border-success2">할인쿠폰 0장</span>
+       <span class="border border-success2">할인쿠폰 <%= coupon.coupon_count %>장</span>
        <span class="border border-success2">배송중 0건</span>
        <span class="border border-success2">직거래 0건</span>
     
@@ -54,7 +63,7 @@
                     <h1 align="center" style="font-weight: bold;">주문 목록</h1>
                  
                    
-                       <div class="painting_order_product">
+                       <div class="order_image_box">
                         <div id="img" >
                          
                             <img src="" alt=""  height="150">
@@ -64,8 +73,8 @@
                             <span class="order_info">상품이름 주문날짜 주문상태</span>
                         </div>
                         <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
-                            <a href="#"><button class="painting_order_btn" >환불신청</button></a>
-                            <a href="#"><button class="painting_order_btn" >리뷰쓰기</button></a>
+                            <a href="#"><button class="order_btn" >환불신청</button></a>
+                            <a href="#"><button class="order_btn" >리뷰쓰기</button></a>
                         </div>
                        </div>
                    
@@ -81,11 +90,16 @@
                             <th scope="col">사용기한</th>
                         </thead>
                         <tbody>
+                            <% if(couponinfo == null || couponinfo.length == 0){%>
+                                <tr>
+                                  <td colspan="6" align="center">쿠폰이 존재하지 않아요</td>
+                                </tr>
+                            <% } %>
                             <tr>
-                            <% for(var i = 0; i < coupon; i++) { %>
-                            <td><%= coupon[i].coupon_name %></td>
-                            <td><%= coupon[i].coupon_sale_price %></td>
-                            <td><%= coupon[i].coupon_date %></td>
+                            <% for(var i = 0; i < couponinfo.length; i++) { %>
+                            <td><%= couponinfo[i].coupon_name %></td>
+                            <td><%= couponinfo[i].coupon_sale_price %></td>
+                            <td><%= couponinfo[i].coupon_date %></td>
                             </tr>
                             <% } %>
                         </tbody>
@@ -98,22 +112,25 @@
                 <form>
                     <h1 class="coupon_title">즐겨찾기한 업체</h1>
                     <table class="table">
-                        <tr>
-                            <th scope="col">업체명<br>주요 판매 상품</th>
-                            <th scope="col"></th>
-                            <th><button>즐겨찾기 취소</button></th>
-                        </tr>
-                        <tr>
-                            <th scope="col">업체명<br>주요 판매 상품</th>
-                            <th scope="col"></th>
-                            <th>즐겨찾기 취소</th>
-                        </tr>
-                        <tr>
-                            <th scope="col">업체명<br>주요 판매 상품</th>
-                            <th scope="col"></th>
-                            <th>즐겨찾기 취소</th>
-                        </tr>
-                  
+                        <thead>
+                            <th>업체명</th>
+                            <th>주요 판매 상품</th>
+                            <th>관리</th>
+                        </thead>
+                        <% if(bookmarkinfo == null || bookmarkinfo.length == 0){%>
+                            <tr>
+                              <td colspan="6" align="center">즐겨찾기한 업체가 없습니다.</td>
+                            </tr>
+                        <% } %>
+                        <tbody class="bm">
+                            <tr>
+                            <% for(var i = 0; i < bookmarkinfo.length; i++) { %>
+                                <td><%= bookmarkinfo[i].company_name %></td>
+                                <td><%= bookmarkinfo[i].company_id%></td>
+                                <th><button class="red_btn"><a href="/users/mypage/deleteBookmark/<%= bookmarkinfo[i].bm_num %>">즐겨찾기 취소</a></button></th>
+                            </tr>
+                            <% } %> 
+                        </tbody>
                     </table>
             
                 </form>
@@ -142,8 +159,8 @@
                                 <td><%= placeinfo[i].place_name %><br><%= placeinfo[i].place_userNM %></td>
                                 <td><%= placeinfo[i].place_addr %><br><%= placeinfo[i].place_addrinfo %></td>
                                 <td><%= placeinfo[i].place_tel %></td>
-                                <td><a>수정</a></td>
-                                <td><a>삭제</a></td>
+                                <td><button class="control_btn"><a href="/users/mypage/updatePlace/<%= placeinfo[i].place_id %>">수정</a></button></td>
+                                <td><button class="control_btn"><a href="/users/mypage/deletePlace/<%= placeinfo[i].place_id %>">삭제</a></button></td>
                             </tr> 
                             <% } %>                  
                         </tbody>
@@ -175,7 +192,7 @@
                             <td>
                                 <%= cardinfo[i].card_validity %>
                             </td>
-                            <td><a>삭제</a></td>
+                            <td><button class="control_btn"><a href="/users/mypage/deleteCard/<%= cardinfo[i].card_num %>">삭제</a></button></td>
                             </tr>     
                             <% } %>
                         </tbody>
@@ -217,7 +234,17 @@
         </script>
  
         </script>
-        
+        <script type="text/javascript">    
+            function popupOpen3(){
+                  
+                for(var i=0; 1 < placeinfo.length; i++){}
+                var popUrl = "/users/mypage/updatePlace/<%= placeinfo[0].place_id %>";	//팝업창에 출력될 페이지 URL
+            
+                var popOption3 = "width=800, height=850, resizable=0, scrollbars=no, toolbars=no, menubar=no status=no;";    //팝업창 옵션(optoin)
+            
+                    window.open(popUrl3,"",popOption3);
+            }   
+            </script>
     
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
