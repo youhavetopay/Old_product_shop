@@ -1,5 +1,6 @@
 const cookieParser = require("cookie-parser");
 const e = require("express");
+const nodemon = require("nodemon");
 const pool = require("../dbconfig/dbconfig")
 
 class companyController {
@@ -179,7 +180,188 @@ class companyController {
 
 
     //공급업체 주문 관리 페이지 - 배송 주문, 직거래 주문 가져오기
+    async selectOrder (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`
+                // 직거래
+                const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "N"`
+                // 배송
+                const sql2 = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "Y"`
 
+                conn.query(ynSql, (err, yn) => {
+                    console.log("에러1");
+                    if (err) {
+                        res.send('<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>');
+                    } else {
+                        
+                        conn.query(sql, (err, row1) => {
+                            console.log("에러2");
+                            if (err) throw err;
+                            else {
+
+                                conn.query(sql2, (err, row2) => {
+                                    console.log("에러3");
+                                    if (err) throw err;
+                                    else {
+
+                                        req.directY = row1;
+                                        req.directN = row2;
+                                        console.log(row1);
+                                        console.log(row2);
+
+                                        conn.release();
+                                        next();
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+
+    
+    // 배송 주문, 직거래 주문 항목 가져오기
+    async selectOrderDetail (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_num = "${req.params.order_num}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.detail = row;
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //주문 상태 변경
+    async updateOrderState (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `UPDATE orders SET order_state = "${req.body.state}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //환불 목록 
+    async selectRefund (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`
+                const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_state LIKE "환불%%"`
+
+                conn.query(ynSql, (err, yn) => {
+                    console.log("에러1");
+                    if (err) {
+                        res.send('<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>');
+                    } else {
+                        
+                        conn.query(sql, (err, row) => {
+                            if (err) throw err;
+                            else {
+                                req.refund = row;
+                                conn.release();
+                                next();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //환불 상세
+    async refundDetail (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM order WHERE order_num = "${req.params.order_num}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.refund = row;
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+    //환불 처리
+    async updateRefund (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `UPDATE orders SET order_state = "환불완료" WHERE order_num = "${req.params.order_num}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+    
+    //통계 리스트
+    async selectTotal (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`
+                const sql = `SELECT * FROM total WHERE company_num = "${yn[0].company_num}"`
+
+                conn.query(ynSql, (err, yn) => {
+                    console.log("에러1");
+                    if (err) {
+                        res.send('<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>');
+                    } else {
+                        
+                        conn.query(sql, (err, row) => {
+                            if (err) throw err;
+                            else {
+                                req.total = row;
+                                conn.release();
+                                next();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
 }
 
 module.exports = companyController;

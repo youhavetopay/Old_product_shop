@@ -225,7 +225,7 @@
                         <div id="product_addOrder_btn">
 
                             <% if(sess){%>
-                                <div class="top_btn my_btn" id="basket_add_btn">
+                                <div class="top_btn my_btn" id="basket_add_btn" onclick="addBasketProduct('<%= productInfo[0].product_num%>')">
                                     장바구니
                                 </div>
                                 <div>
@@ -328,6 +328,39 @@
 </body>
 
 <script>
+
+    // 장바구니 추가하는거
+    function addBasketProduct(product_num){
+
+        var form = document.createElement('form');
+        form.setAttribute('method','post');
+        form.setAttribute('action', '/order/basketAdd');
+        document.charset = "utf-8";
+        
+
+        var input_product_num = document.createElement('input');
+        input_product_num.setAttribute('type', 'hidden');
+        input_product_num.setAttribute('name', 'product_num');
+        input_product_num.setAttribute('value', product_num);
+
+        var product_count = document.createElement('input')
+        product_count.setAttribute('type', 'hidden');
+        product_count.setAttribute('name', 'product_count');
+        product_count.setAttribute('value', $('#order_count option:selected').val());
+
+        
+        form.appendChild(input_product_num);
+        form.appendChild(product_count);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+
+    }
+
+
+    // 바로주문 하는거
     function gotoDirectOrder(product_Num){
         
         var form = document.createElement('form');
