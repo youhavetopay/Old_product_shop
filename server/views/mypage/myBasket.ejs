@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/main_page.css">
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <style>
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:link,
+        a:hover,
+        a:active {
+            text-decoration: none;
+        }
+
+        body {
+            width: 1500px;
+            height: 100%;
+            display: flex;
+            padding-top: 10px;
+            flex-direction: column;
+            margin: 0 auto;
+            color: #5A5A5A;
+        }
+        .flex_row{
+            display: flex;
+            flex-direction: row;
+        }
+        .flex_column{
+            display: flex;
+            flex-direction: column;
+        }
+        .basket_list_body{
+            width: 1200px;
+            margin: auto;
+            margin-top: 25px;
+            box-shadow: 1px 1px 10px gray;
+            border-radius: 25px;
+            padding: 50px;
+        }
+        .basket_product{
+            padding: 50px;
+            border-bottom: 3px solid gray;
+        }
+        #basket_product_img_div{
+            flex-basis: 500px;
+            padding-left: 100px;
+        }
+        .product_content{
+            flex-basis: 500px;
+        }
+        .product_text{
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        #basket_order_btn{
+            width: 1200px;
+            margin: auto;
+            margin-top: 25px;
+            border-radius: 25px;
+            background-color: #ABE0A8;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+            padding: 7.5px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        #delete_product_btn{
+            background-color: #ABE0A8;
+            width: 50px;
+            padding: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <%- include('../head/nav', {sess:sess})%>
+
+  <div id="title_name">
+    <h1>파지 팜</h1>
+    <h3 style="margin-top: 15px;"><%= sess%>의 장바구니</h3>
+  </div>
+
+  <div class="flex_column basket_list_body">
+
+    <% if(!empty_check){%>
+
+        <h3 style="text-align: center;">장바구니가 비었습니다...</h3>
+    <%} else{%>
+
+        <% for(var data of basketList){%>
+            <div class="flex_row basket_product">
+                <div id="basket_product_img_div">
+                    <img src="/images/야채.png" alt="" width="200" height="200" >
+                </div>
+                <div class="flex_column product_content">
+                  <span class="product_text" style="margin-right: auto; margin-bottom: 50px;"><%= data.product_name%></span>
+                  <span class="product_text" style="margin-right: auto;"><%= data.bakset_sum%> BOX</span>
+                  <span style="margin-left: auto;" id="delete_product_btn" onclick="deleteProduct(`<%= data.product_num%>`)">삭제</span>
+                  <span class="product_text" style="margin-left: auto; margin-top: auto;"><%= data.new_price * data.bakset_sum%>원</span>
+                </div>
+            </div>
+        <%}%>
+    <%}%>
+     
+  </div>
+  <% if(empty_check){%>
+    <div id="basket_order_btn" onclick="goto_order_page()">
+        주문하기
+    </div>
+  <%}%>
+</body>
+
+<script>
+    function deleteProduct(product_num){
+
+        var form2 = document.createElement('form');
+        form2.setAttribute('method','post');
+        form2.setAttribute('action', '/order/delete/basket/product');
+        document.charset = "utf-8";
+
+        var product_num_in = document.createElement('input');
+        product_num_in.setAttribute('type', 'hidden');
+        product_num_in.setAttribute('name', 'product_num');
+        product_num_in.setAttribute('value', product_num);
+
+        form2.appendChild(product_num_in);
+
+        document.body.appendChild(form2);
+
+        form2.submit();
+    }
+
+    function goto_order_page(){
+        var form2 = document.createElement('form');
+        form2.setAttribute('method','post');
+        form2.setAttribute('action', '/order');
+        document.charset = "utf-8";
+
+        var product_num_in = document.createElement('input');
+        product_num_in.setAttribute('type', 'hidden');
+        product_num_in.setAttribute('name', 'product_num');
+        product_num_in.setAttribute('value', 1);
+
+        var product_num_2 = document.createElement('input');
+        product_num_2.setAttribute('type', 'hidden');
+        product_num_2.setAttribute('name', 'product_num');
+        product_num_2.setAttribute('value', 1);
+
+        form2.appendChild(product_num_in);
+        form2.appendChild(product_num_2);
+
+        document.body.appendChild(form2);
+
+        form2.submit();
+    }
+</script>
+
+</html>
