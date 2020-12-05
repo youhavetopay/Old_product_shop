@@ -62,22 +62,22 @@
                 <form>
                     <h1 align="center" style="font-weight: bold;">주문 목록</h1>
                  
-                   
+                    <% for(var data of myorderlist){ %>
                        <div class="order_image_box">
-                        <div id="img" >
-                         
+                        <div id="img" >              
                             <img src="" alt=""  height="150">
-
                         </div>
                         <div style="flex-basis: 600px; display: flex; flex-direction: column; margin: auto 10px auto 0px">
-                            <span class="order_info">상품이름 주문날짜 주문상태</span>
+                            <span class="order_info">상품이름 : <%= data.product_name %></span>
+                            <span class="order_info">주문날짜 : <%= data.order_date %></span>
+                            <span class="order_info">주문상태 : <%= data.order_state %></span>
                         </div>
                         <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
                             <a href="#"><button class="order_btn" >환불신청</button></a>
-                            <a href="#"><button class="order_btn" >리뷰쓰기</button></a>
+                            <button class="order_btn"><a href="/users/mypage/review/<%= data.product_num %>">리뷰쓰기</a></button>
                         </div>
                        </div>
-                   
+                    <%}%>
                 </form>
             </div>
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -234,17 +234,7 @@
         </script>
  
         </script>
-        <script type="text/javascript">    
-            function popupOpen3(){
-                  
-                for(var i=0; 1 < placeinfo.length; i++){}
-                var popUrl = "/users/mypage/updatePlace/<%= placeinfo[0].place_id %>";	//팝업창에 출력될 페이지 URL
-            
-                var popOption3 = "width=800, height=850, resizable=0, scrollbars=no, toolbars=no, menubar=no status=no;";    //팝업창 옵션(optoin)
-            
-                    window.open(popUrl3,"",popOption3);
-            }   
-            </script>
+ 
     
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -37,7 +37,7 @@ router.post('/updateProduct/:product_num', company.updateProduct, (req, res, nex
 
 //공급업체 배송 주문, 직거래 주문 목록
 router.get('/selectOrder', company.selectOrder, (req, res, next) => {
-    res.render('company_orderList.ejs', {sess:req.session.user_id, directY: req.directY, directN: req.directN})
+    res.render('company/company_orderList.ejs', {sess:req.session.user_id, directY: req.directY, directN: req.directN})
 })
 
 
@@ -54,8 +54,8 @@ router.post('/updateOrderState/:order_num', company.updateOrderState, (req, res,
 
 
 // //환불 목록
-// router.get('/selectRefund', company.selectRefund, (req, res, next) => {
-//     res.render('company_refundList', {refund : req.refund})
+//router.get('/selectRefund', company.selectRefund, (req, res, next) => {
+ //   res.render('company_refundList.ejs', {refund : req.refund})
 // })
 
 

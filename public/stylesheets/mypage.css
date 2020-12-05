@@ -192,7 +192,12 @@
     margin-bottom: 20px;
     margin-top: 20px;
     border-radius: 10px;
-  
+   
+}
+
+.order_btn a {
+    text-decoration: none;
+    color: black;
 }
 
 .order_btn:active {
@@ -213,9 +218,9 @@
 }      
 
 .order_info {
-    text-align: center;
+    text-align: left;
     font-size: 30px;
-    word-spacing: 60px;
+    
 }
 
 .red_btn {

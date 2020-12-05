@@ -277,7 +277,7 @@ class userController {
                 const directSql = `SELECT COUNT(order_direct_whether) FROM orders WHERE user_id = "${req.session.user_id}" AND order_direct_whether = "Y"`
 
                 // 내가 주문한 주문 목록 가져오기
-                const MyOrderListSql = `SELECT * FROM orders WHERE user_id = "${req.session.user_id}"`
+                const MyOrderListSql = `SELECT * FROM orders, orderinfo, product WHERE orders.user_id = "${req.session.user_id}" AND orderinfo.product_num = product.product_num AND orders.order_num = orderinfo.order_num`
 
                 // 카드정보
                 const cardsql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
@@ -640,5 +640,6 @@ class userController {
         })
     }
 }
+
 
 module.exports = userController;

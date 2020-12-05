@@ -1,3 +1,5 @@
+<!--
+
 <!DOCTYPE html>
 <html>
 
@@ -42,16 +44,6 @@
        
         color: #565756;
     }
-
-    #order_title {
-
-        margin-left: 30px;
-        margin-bottom: 20px;
-        font-weight: bold;
-        font-size: 30px;
-       
-        color: #565756;
-    }
 </style>
 
 <body>
@@ -71,7 +63,7 @@
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                     aria-controls="v-pills-home" aria-selected="true"> 상품관리 </a>
-                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" onclick="location.href='/company/selectOrder'" role="tab"
                     aria-controls="v-pills-profile" aria-selected="false">주문관리</a>
                 <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
                     aria-controls="v-pills-messages" aria-selected="false">환불관리</a>
@@ -89,17 +81,15 @@
                         <a id = "title">상품 관리</a>
                         <button onclick="location.href='/company/insertProduct'"class="btn btn-light2"> + 상품 등록</button>
                     </div>
-                        <% for(var data of product){ %>
+                        <div>
                             <div class="product_image_box">
                                 <div id="img" >
                                  
-                                    <img src="<%= data.image_num %>" alt=""  height="150">
+                                    <img src="" alt=""  height="150">
         
                                 </div>
                                 <div style="flex-basis: 600px; display: flex; flex-direction: column; margin: auto 10px auto 0px">
-                                    <span class="order_info">상품 : <%= data.product_name %></span>
-                                    <span class="order_info"> 재고 : <%= data.product_value %></span>
-                                    <span class="order_info">판매마감기간 : <%= data.product_date %></span>
+                                    <span class="order_info">상품이름 재고량 판매마감기간</span>
                                 </div>
                                 <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
                                     <a href="#"><button class="order_btn" >판매종료</button></a>
@@ -107,7 +97,7 @@
                                 </div>
                             </div>
                            
-                        <%}%>
+                        </div> 
                         <!--
                         <div class="table">
                             <table>
@@ -128,44 +118,40 @@
                                 </tbody>
                             </table>
                         </div>
-                        -->
+                        
 
                     </div>
              
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                    <form class="coupang_order">
-                        <h1 id="order_title">배송 주문</h1>
+                    <form>
+                        <h1 class="coupon_title">내가 보유한 쿠폰</h1>
                         <table class="table">
                             <thead>
-                                <th>주문번호</th>
-                                <th>주문자</th>
-                                <th>주문일자</th>
-                                <th>주문상태</th>
+                                <th scope="col">쿠폰명</th>
+                                <th scope="col">할인 금액</th>
+                                <th scope="col">사용기한</th>
                             </thead>
                             <tbody>
-                            </tbody>
-                        </table>
-                    </form>
-                    <form class="joonggo_order">
-                        <h1 id="order_title">직거래 주문</h1>
-                        <table class="table">
-                            <thead>
-                                <th>주문번호</th>
-                                <th>주문자</th>
-                                <th>주문일자</th>
-                                <th>주문상태</th>
-                            </thead>
-                            <tbody>
+                                <tr>
+                                    <th scope="row">쿠폰명</th>
+                                    <td>할인 금액</td>
+                                    <td>사용기한</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">쿠폰명</th>
+                                    <td>할인 금액</td>
+                                    <td>사용기한</td>
+                                </tr>
 
                             </tbody>
+
                         </table>
+
                     </form>
                 </div>
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                     <form>
-                        <div class="product_top">
                         <a id="title">환불 목록</a>
-                        </div>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -192,19 +178,23 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                     <form>
-                        <h1 id="order_title">정산 내역</h1>
+                        <h1 class="coupon_title">정산 내역</h1>
+                        <a href="javascript:popupOpen();"> 열려라 팝업창! </a>
                         <table class="table">
                             <thead>
-                                <th scope="col">월별 수익</th>
-                                <th scope="col">수익 관게</th>
-                                <th scope="col">정산 년월</th>
+                                <th scope="col">배송지명</th>
+                                <th scope="col">주소</th>
+                                <th scope="col">연락처</th>
+                                <th scope="col">수정</th>
+                                <th scope="col">삭제</th>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>250억</td>
-                                    <td>9.9:0.1 (니가 0.1)</td>
-                                    <td>2020/11</td>
-         
+                                    <td>우리집</td>
+                                    <td>부산광역시 사하구 하신중앙로2 106동 501호(장림동, 동원로얄듀크아파트)</td>
+                                    <td>010-6403-3994</td>
+                                    <td><a>수정</a></td>
+                                    <td><a>삭제</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -217,6 +207,22 @@
 
 
 
+    <script>
+        $('#myTab a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+    <script type="text/javascript">
+        function popupOpen() {
+
+            var popUrl = "/users/mypage/insertCard";	//팝업창에 출력될 페이지 URL
+
+            var popOption = "width=500, height=500, resizable=0, scrollbars=no, toolbars=no, menubar=no status=no;";    //팝업창 옵션(optoin)
+
+            window.open(popUrl, "", popOption);
+        }        
+    </script>
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
