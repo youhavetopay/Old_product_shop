@@ -1,0 +1,68 @@
+.com_sidenav {
+
+    position: relative;
+    width: 350px;
+    top: 10px;
+
+}
+
+.com_mypage_info {
+
+    position: absolute;
+    width: 1150px;
+    right: 0;
+    top: 230px;
+    height: 75%;
+    
+}
+
+.product_image_box {
+
+    margin-left: 20px;
+    width: 1100px;
+    padding: 30px;
+    height: 250px;
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 25px;
+    margin-bottom: 15px;
+    box-shadow: 2.5px 2.5px 0.2em rgb(216, 216, 216);
+    display: flex;
+}
+
+.product_image_box #img {
+    margin: 20px;
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+}
+
+.product_top {
+
+    height: 70px;
+
+}
+
+.product_top button {
+    
+    border: 1px solid rgb(216, 216, 216);
+    position: absolute;
+    margin-right: 50px;
+    right: 0;
+    border-color: rgb(143, 141, 141) !important;
+    background-color: white;
+    padding: 10px;
+    color: black;
+    text-decoration: none;
+
+}
+
+.coupang_order {
+    position: relative;
+    height: 300px;
+
+}
+
+.joonggo_order {
+    position: relative;
+    height: 300px;
+}

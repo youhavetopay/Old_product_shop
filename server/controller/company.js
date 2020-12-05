@@ -255,18 +255,22 @@ class companyController {
             if (err) throw err;
             else {
                 const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`;
-                // 직거래
-                const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "N"`;
-                // 배송
-                const sql2 = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "Y"`;
-
+                
+            
+             
                 conn.query(ynSql, (err, yn) => {
                     console.log("에러1");
                     if (err) {
+
+
                         res.send(
                             '<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>'
                         );
                     } else {
+                        // 직거래
+                        const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "N"`;
+                        // 배송
+                        const sql2 = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "Y"`;
                         conn.query(sql, (err, row1) => {
                             console.log("에러2");
                             if (err) throw err;
