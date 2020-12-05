@@ -155,7 +155,20 @@ class userController {
                         if (row.length === 0) {
                             res.send('<script type="text/javascript">alert("아이디나 비밀번호가 틀렸습니다.");history.back();</script>');
                         } else {
-                            req.session.user_id = row[0].user_id;
+
+                            const sql2 = `SELECT * FROM company WHERE user_id = "${req.body.user_id}"`
+
+                                conn.query(sql2, (err, row2) => {
+                                    if (err) throw err;
+                                    else {
+                                        req.session.company_num = row2[0];
+                                        console.log("333",row2[0]);
+                                        if (req.session.company_num == undefined) {
+                                            req.session.company_num = 0
+                                            console.log("5555",req.session.company_num);
+                                        }
+
+                                        req.session.user_id = row[0].user_id;
                             req.session.area_num = row[0].area_num;
                             console.log(row[0].user_id, row[0].user_pw, row[0].user_pw);
                             console.log(row);
@@ -218,7 +231,7 @@ class userController {
 
                                     
                                 }
-
+                                
                                 // 로그인 시간 업데이트
                                 conn.query('update users set user_date = ? where user_id = ?', [
                                     moment().format("YYYY-MM-DD"), req.body.user_id
@@ -236,6 +249,10 @@ class userController {
                                     next();
                                 })
                             })
+                                    }
+                                })
+
+                            
                         }
                     }
                 })
