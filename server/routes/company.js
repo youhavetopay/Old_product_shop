@@ -5,7 +5,7 @@ const company = new companyController();
 
 //공급업체 마이페이지
 router.get('/', company.selectCount, company.selectProduct, (req, res, next) => {
-    res.render('company/companyMypage.ejs', {companyinfo: req.companyinfo})
+    res.render('company/companyMypage.ejs', {companyinfo: req.companyinfo, productCount:req.productCount, orderCount:req.orderCount, directCount:req.directCount, product:req.product, refund: req.refund})
 })
 
 
@@ -15,13 +15,13 @@ router.get('/insertProduct', (req, res, next) => {
 })
 
 router.post('/insertProduct', company.insertProduct, (req, res, next) => {
-    res.send('<script type="text/javascript">alert("상품이 등록 되었습니다.);location.href"/company";</script>')
+    res.send('<script type="text/javascript">alert("상품이 등록 되었습니다.");location.href="/company";</script>');
 })
 
 
 //공급업체 판매 종료
 router.post('/updateProductState/:product_num', company.updateProductState, (req, res, next) => {
-    res.send('<script type="text/javascript">alert("상품 판매상태가 변경 되었습니다.);location.href"/company";</script>')
+    res.send('<script type="text/javascript">alert("판매 종료 처리 되었습니다.");location.href="/company";</script>');
 })
 
 
@@ -53,10 +53,10 @@ router.post('/updateOrderState/:order_num', company.updateOrderState, (req, res,
 })
 
 
-//환불 목록
-router.get('/selectRefund', company.selectRefund, (req, res, next) => {
-    res.render('company_refundList', {refund : req.refund})
-})
+// //환불 목록
+// router.get('/selectRefund', company.selectRefund, (req, res, next) => {
+//     res.render('company_refundList', {refund : req.refund})
+// })
 
 
 //환불 상세
