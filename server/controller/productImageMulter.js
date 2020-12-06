@@ -15,11 +15,15 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({
-    storage: storage
-  })
+  storage: storage
+})
 
-module.exports.send = (req, res, next) =>{
-    upload.single('file')(req, res, ()=>{
-        next();
-    })
+module.exports.send = (req, res, next) => {
+  upload.single('product_img')(req, res, () => {
+
+    console.log('사진 들어왔나???');
+    console.log(req.file);
+    console.log(req.file.filename);
+    next();
+  })
 }
