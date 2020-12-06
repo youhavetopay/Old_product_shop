@@ -143,6 +143,14 @@
                                 <th>주문상태</th>
                             </thead>
                             <tbody>
+                                <% for (var i = 0; i < directN.length; i++) { %>
+                                    <tr>
+                                        <td><%=directN[i].order_num%></td>
+                                        <td><%=directN[i].user_id%></td>
+                                        <td><%=directN[i].order_date%></td>
+                                        <td><%=directN[i].order_state%></td>
+                                    </tr>
+                                <% } %>
                             </tbody>
                         </table>
                     </form>
@@ -156,7 +164,14 @@
                                 <th>주문상태</th>
                             </thead>
                             <tbody>
-
+                                <% for (var i = 0; i < directY.length; i++) { %>
+                                    <tr>
+                                        <td><%=directY[i].order_num%></td>
+                                        <td><%=directY[i].user_id%></td>
+                                        <td><%=directY[i].order_date%></td>
+                                        <td><%=directY[i].order_state%></td>
+                                    </tr>
+                                <% } %>
                             </tbody>
                         </table>
                     </form>
@@ -179,8 +194,8 @@
                             <% for (var i = 0; i < refund.length; i++) { %>
                                 <tr>
                                     <td><a href="/company/selectRefund/<%=refund[i].order_num%>"><%=refund[i].order_num%></a></td>
-                                    <td><%=refund[i].order_date%></td>
                                     <td><%=refund[i].user_id%></td>
+                                    <td><%=refund[i].order_date%></td>
                                     <td><%=refund[i].order_state%></td>
                                 </tr> 
                             </tbody>   
@@ -201,10 +216,13 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>250억</td>
-                                    <td>9.9:0.1 (니가 0.1)</td>
-                                    <td>2020/11</td>
-         
+                                    <% for (var i=0; i < total.length; i++) { %>
+                                        <tr>
+                                            <td><%=total[i].total_company_profit%></td>
+                                            <td><%=total[i].company_relation%></td>
+                                            <td><%=total[i].total_ym%></td>
+                                        </tr>
+                                    <% } %>
                                 </tr>
                             </tbody>
                         </table>
