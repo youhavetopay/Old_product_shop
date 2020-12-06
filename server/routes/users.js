@@ -136,11 +136,20 @@ router.get('/mypage/selectBasket', user.selectCoupon, (req, res, next) => {
 
 
 //리뷰 insert
-router.get('/mypage/review/:product_num', (req, res, next) => {
-  res.render('mypage/review.ejs')
+router.get('/mypage/review/:product_num',  (req, res, next) => {
+  res.render('mypage/review.ejs' )
 })
 
-router.post('/mypage/review/:product_num',  (req, res, next) => {
+router.post('/mypage/review/:product_num' , (req, res, next) => {
   res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/mypage";')
+})
+
+//환불신청 insert
+router.get('/mypage/refund/:product_num', (req, res, next) => {
+  res.render('mypage/request_refund.ejs')
+})
+
+router.post('/mypage/refund/:product_num',  (req, res, next) => {
+  res.send('<script type="text/javascript">alert("환불 신청이 완료되었습니다."); location.href="/mypage";')
 })
 module.exports = router;
