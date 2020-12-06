@@ -212,7 +212,12 @@
                     <h3><%= productInfo[0].product_name%></h3>
                     <div class="product_top">
                         <div id="product_img">
+                            <% if(imageList[0].image_content == 'none'){%>
                             <img src="/images/야채.png" width="200" height="200" alt="">
+                            <%} else{%>
+                                <img src="/images/productImage/고구마.png" width="200" height="200" alt="">
+                                <!-- <img src="/images/야채.png" width="200" height="200" alt=""> -->
+                            <%}%>
                         </div>
                         <div id="product_detail">
                             <span>금액: <%= productInfo[0].product_price%></span>
