@@ -46,4 +46,21 @@
  
 }
 
+.company_signup_css {
+
+  padding: 15px;
+
+
+
+}
+
+.company_signup_css label{
+
+  position: absolute;
+  font-size: 27px;
+  left: -170px;
+  color: #5A854B;
+  font-weight: bold;
+
+}
 

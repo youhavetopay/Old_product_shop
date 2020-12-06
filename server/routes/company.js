@@ -43,7 +43,7 @@ router.post('/updateProduct/:product_num', company.updateProduct, (req, res, nex
 
 //배송 주문, 직거래 주문 항목
 router.get('/selectOrder/:order_num', company.selectOrderDetail, (req, res, next) => {
-    res.render('company_orderListDetail.ejs', {detail: req.detail})
+    res.render('company/company_orderListDetail.ejs', {detail: req.detail})
 })
 
 
@@ -61,7 +61,7 @@ router.post('/updateOrderState/:order_num', company.updateOrderState, (req, res,
 
 //환불 상세
 router.get('/selectRefund/:order_num', company.refundDetail, (req, res, next) => {
-    res.render('company_refundDetail.ejs', {refund: req.refund})
+    res.render('company/company_refundDetail.ejs', {refund: req.refund})
 })
 
 

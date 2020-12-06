@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/stylesheets/companymypage.css' />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <style>
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="companyarea">
+
+
+
+    <div id="title_name">
+        <h1>환불 상세정보</h1>
+    </div>
+        <div id="box">
+       
+            <div>
+                <label>주문번호: <%= refund[0].order_num %></label>            
+            </div>
+            
+            <div>
+                <label>주문일자: <%= refund[0].order_date %></label>             
+            </div>
+            <div>
+                <label>주문자: <%= refund[0].user_id %></label>              
+            </div>
+            <div>
+                <label>주문상태: <%= refund[0].order_state %></label>   
+            </div>
+            <div>
+                <label>상품명: <%= refund[0].product_name %></label>
+            </div>
+            <div>
+                <label>구매 수량: <%= refund[0].order_sum %></label>
+            </div>
+            <div class="reason">
+                <label>환불 사유:</label>
+                <label></label>
+            </div>
+            <div>
+            <button class="btn btn-refund"><a href="/company/updateRefund/<%= refund[0].order_num %>">환불 처리</a></button>
+            <button class="btn btn-refund"><a href="/company">뒤로가기</a></button>
+            </div>
+         </div>
+
+    </div>
+
+</body>
+
+</html>

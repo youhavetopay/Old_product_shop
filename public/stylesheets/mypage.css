@@ -3,6 +3,7 @@
     position: relative;
     width: 307px;
     top: 10px;
+    height: auto;
   
 
 
@@ -174,6 +175,8 @@
     border-radius: 25px;
     box-shadow: 2.5px 2.5px 0.2em rgb(216, 216, 216);
     display: flex;
+   
+ 
 }
 
 .order_image_box #img {
