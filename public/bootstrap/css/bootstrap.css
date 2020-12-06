@@ -1676,14 +1676,13 @@ pre code {
   width: 1100px;
   margin-bottom: 1rem;
   color: #212529;
-
+  text-align: center;
   
 }
 
 .table th,
 .table td {
   padding: 2rem;
-  vertical-align: top;
   border-top: 1px solid #dee2e6;
 }
 
@@ -1691,6 +1690,7 @@ pre code {
   vertical-align: bottom;
   border-bottom: 2px solid #dee2e6;
   text-align: center;
+
 }
 
 
@@ -2795,6 +2795,17 @@ fieldset:disabled a.btn {
  
 }
 
+.btn-light2 {
+  
+  position: absolute;
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: black;
+  font-size: 20px;
+  font-weight: bold;
+ 
+}
+
 .btn-light:hover {
   color: #212529;
   background-color: #e2e6ea;
@@ -3158,9 +3169,10 @@ fieldset:disabled a.btn {
 }
 
 .btn-link {
-  font-weight: 400;
-  color: #007bff;
+
+  font-weight: bold;
   text-decoration: none;
+  border: 1px solid rgb(216, 216, 216);
 }
 
 .btn-link:hover {
@@ -5070,7 +5082,7 @@ input[type="button"].btn-block {
 }
 
 .pagination {
-  display: -ms-flexbox;
+
   display: flex;
   padding-left: 0;
   list-style: none;
@@ -6940,7 +6952,7 @@ button.bg-dark:focus {
 .border-success2 {
 
   position: relative;
-  border-color: #28a745 !important;
+  border-color: #ABE0A8 !important;
   padding:72px;
   font-size: 40px;
   padding-top: 79px;
