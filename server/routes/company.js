@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const companyController = require("../controller/company.js")
 const company = new companyController();
+const productImage = require("../controller/productImageMulter");
 
 //공급업체 마이페이지
 router.get('/', company.selectCount, company.selectProduct, company.selectOrder, company.selectTotal, (req, res, next) => {
@@ -13,8 +14,8 @@ router.get('/', company.selectCount, company.selectProduct, company.selectOrder,
 router.get('/insertProduct', (req, res, next) => {
     res.render('company/insertProduct.ejs')
 })
-
-router.post('/insertProduct', company.insertProduct, (req, res, next) => {
+//company.insertProduct,
+router.post('/insertProduct',productImage.send,  (req, res, next) => {
     res.send('<script type="text/javascript">alert("상품이 등록 되었습니다.");location.href="/company";</script>');
 })
 

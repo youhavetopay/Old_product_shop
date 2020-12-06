@@ -323,7 +323,7 @@ class orderController {
                                     if (err) throw err;
 
                                     var real_discount_money = 0
-                                    if (((product_info[0].product_price -  product_info[0].new_price) + req.couponcheck) < 0) {
+                                    if (((product_info[0].product_price - product_info[0].new_price) + req.couponcheck) < 0) {
                                         real_discount_money = product_info[0].product_price
                                     } else {
                                         real_discount_money = (product_info[0].product_price - product_info[0].new_price) + req.couponcheck
@@ -387,7 +387,7 @@ class orderController {
                                         var bookmark_discount = 0;
 
                                         var real_discount_money = 0
-                                        if (((product_info[0].product_price -  product_info[0].new_price) + req.couponcheck) < 0) {
+                                        if (((product_info[0].product_price - product_info[0].new_price) + req.couponcheck) < 0) {
                                             real_discount_money = product_info[0].product_price
                                         } else {
                                             real_discount_money = (product_info[0].product_price - product_info[0].new_price) + req.couponcheck
@@ -433,8 +433,8 @@ class orderController {
                 case when (p.product_num in(select product_num from product where product.company_num in (select bookmark.company_num from bookmark where user_id = ?))) 
                                 then round(product_price * 0.95)
                                 else product_price end as new_price
-                                from product p, baksetinfo bi, bakset b
-                                WHERE p.product_num = bi.product_num AND b.user_id = ?`, [
+                                from product p, baksetinfo bi
+                                WHERE p.product_num = bi.product_num AND bi.basket_num = (select basket_num from bakset where user_id = ?)`, [
                     req.session.user_id, req.session.user_id
                 ], (err, basket_info) => {
                     if (err) throw err;
@@ -487,17 +487,24 @@ class orderController {
                                         var sales_money = req.couponcheck;
                                         var temp_coupon_money = req.couponcheck;
 
+                                        var temp_basket_info = basket_info;
+
+                                        console.log(' 1');
+
                                         for (var i = 0; i < basket_info.length; i++) {
-                                            
+                                            console.log(basket_info[i].bakset_sum, basket_info[i].product_num, i, "  i")
                                             if(i == 0){
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
                                                     basket_info[i].product_price * basket_info[i].bakset_sum,
                                                     basket_info[i].bakset_sum,
-                                                    req.couponcheck
+                                                    sales_money
                                                 ], (err) => {
                                                     if (err) throw err;
+                                                    sales_money = 0;
+                                                    console.log(basket_info,' 3');
+                                                
                                                 })
                                             }
                                             else{
@@ -509,12 +516,17 @@ class orderController {
                                                     0
                                                 ], (err) => {
                                                     if (err) throw err;
+                                                    sales_money = 0;
+                                                    console.log(basket_info,' 3');
+                                                
                                                 })
                                             }
 
-
+                                        }
+                                        for(var j= 0; j<basket_info.length; j++){
+                                            console.log(basket_info[j].bakset_sum, basket_info[j].product_num, j, "  j")
                                             conn.query('update product set product_value = product_value - ? where product_num = ?', [
-                                                basket_info[i].bakset_sum, basket_info[i].product_num
+                                                basket_info[j].bakset_sum, basket_info[j].product_num
                                             ], (err) => {
                                                 if (err) throw err;
                                             })
@@ -572,35 +584,30 @@ class orderController {
                                             var sales_money = req.couponcheck;
                                             var temp_coupon_money = req.couponcheck;
 
+                                            var temp_basket_info = basket_info;
 
-
+                                            console.log(' 1');
 
                                             for (var i = 0; i < basket_info.length; i++) {
-                                                if (i == 0) {
-                                                    
-                                                    conn.query('insert into orderinfo values(?,?,?,?,?)', [
-                                                        basket_info[i].product_num,
-                                                        order_num[0].order_num,
-                                                        basket_info[i].product_price * basket_info[i].bakset_sum,
-                                                        basket_info[i].bakset_sum,
-                                                        sales_money
-                                                    ], (err) => {
-                                                        if (err) throw err;
-                                                    })
-                                                } else {
-                                                    conn.query('insert into orderinfo values(?,?,?,?,?)', [
-                                                        basket_info[i].product_num,
-                                                        order_num[0].order_num,
-                                                        basket_info[i].product_price * basket_info[i].bakset_sum,
-                                                        basket_info[i].bakset_sum,
-                                                        0
-                                                    ], (err) => {
-                                                        if (err) throw err;
-                                                    })
-                                                }
+                                                console.log(basket_info[i].bakset_sum, basket_info[i].product_num, i, "  i")
+                                                conn.query('insert into orderinfo values(?,?,?,?,?)', [
+                                                    basket_info[i].product_num,
+                                                    order_num[0].order_num,
+                                                    basket_info[i].product_price * basket_info[i].bakset_sum,
+                                                    basket_info[i].bakset_sum,
+                                                    sales_money
+                                                ], (err) => {
+                                                    if (err) throw err;
+                                                    sales_money = 0;
+                                                    console.log(basket_info,' 3');
+                                                
+                                                })
 
+                                            }
+                                            for(var j= 0; j<basket_info.length; j++){
+                                                console.log(basket_info[j].bakset_sum, basket_info[j].product_num, j, "  j")
                                                 conn.query('update product set product_value = product_value - ? where product_num = ?', [
-                                                    basket_info[i].bakset_sum, basket_info[i].product_num
+                                                    basket_info[j].bakset_sum, basket_info[j].product_num
                                                 ], (err) => {
                                                     if (err) throw err;
                                                 })

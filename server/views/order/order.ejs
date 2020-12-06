@@ -191,7 +191,13 @@
         <% if(!check_basket){%>
         <div class="product flex_row">
           <div style="flex-basis: 210px;">
-            <img src="/images/야채.png" alt="" width="200" height="200">
+            <% if(productList[0].image_content == 'none'){%>
+              <img src="/images/야채.png" width="200" height="200" alt="">
+              <%} else{%>
+                  <img src="/images/productImage/<%= productList[0].image_content%>" width="200" height="200" alt="">
+                  <!-- <img src="/images/야채.png" width="200" height="200" alt=""> -->
+              <%}%>
+            <!-- <img src="/images/야채.png" alt="" width="200" height="200"> -->
           </div>
 
           <div class="flex_column product_info" style="flex-basis: 400px;">
