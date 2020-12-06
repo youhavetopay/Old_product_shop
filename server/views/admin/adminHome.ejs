@@ -5,109 +5,19 @@
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/stylesheets/adminpage.css' />
     <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
     <style>
-        #title_name {
-            margin-top: 100px;
-            text-align: center;
 
-        }
-
-        #title_name h1 {
-            color: #ABE0A8;
-            font-weight: bold;
-        }
-
-        #box {
-            border-radius: 15px;
-            padding: 10px;
-            box-shadow: 0px 0px 20px #D9D9D9;
-            width: 1100px;
-            height: auto;
-            position: absolute;
-            left: 14%;
-        }
-
-        #main_body {
-            display: flex;
-            flex-direction: row;
-            margin-top: 30px;
-            width: 1050px;
-        }
-
-        #side_nav {
-            cursor: pointer;
-            flex-basis: 300px;
-            padding: 30px;
-            padding-top: 0px;
-        }
-
-        #side_nav_body {
-            width: 100%;
-            height: auto;
-            border: #ABE0A8 solid 5px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 50px;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            padding-bottom: 40px;
-        }
-
-
-        #color {
-            color: #064601;
-        }
-
-        #table {
-            margin-left: 10px;
-            margin-top: 30px;
-            width: 745px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 10px #D9D9D9;
-        }
-
-        .table2 {
-            margin-left: 50px;
-            border-spacing: 5px;
-            width: 600px;
-        }
-        
-
-        #thead{
-            font-weight: bold;
-            color: #064601;
-            text-align: center;
-            font-size: 18px;
-            
-        }
-
-        #text{
-            font-weight: bold;
-            font-size: 18px;
-            color: #565756;
-            margin-top: 15px;
-            padding-left: 15px;
-        }
-
-        #tbody{
-            text-align: center;
-            padding: 20px;
-        }
-
-        td {
-            padding: 10px;
-            border-bottom: 0.5px solid#D9D9D9;
-        }
     </style>
 </head>
 
 
 <body>
+
+    <div class="adminarea">
 
     <%- include('../head/nav', {sess:sess})%>
 
@@ -170,7 +80,7 @@
     </div>
 
 
-
+</div>
 </body>
 
 </html>

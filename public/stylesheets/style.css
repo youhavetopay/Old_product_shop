@@ -8,11 +8,15 @@ body {
 
   position: relative;
   width: 1500px;
-  height: 900px;
+  height: 100%;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  box-shadow: 1px 3px 10px #ABE0A8;
+  
+ 
+  border: 1px solid #ABE0A8;
+  border-bottom: none;
+
 }
 
 

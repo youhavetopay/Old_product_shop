@@ -4,8 +4,8 @@ const companyController = require("../controller/company.js")
 const company = new companyController();
 
 //공급업체 마이페이지
-router.get('/', company.selectCount, company.selectProduct, (req, res, next) => {
-    res.render('company/companyMypage.ejs', {companyinfo: req.companyinfo, productCount:req.productCount, orderCount:req.orderCount, directCount:req.directCount, product:req.product, refund: req.refund})
+router.get('/', company.selectCount, company.selectProduct, company.selectOrder, company.selectTotal, (req, res, next) => {
+    res.render('company/companyMypage.ejs', {companyinfo: req.companyinfo, productCount:req.productCount, orderCount:req.orderCount, directCount:req.directCount, product:req.product, refund: req.refund, directY: req.directY, directN: req.directN, total : req.total})
 })
 
 
@@ -35,15 +35,15 @@ router.post('/updateProduct/:product_num', company.updateProduct, (req, res, nex
 })
 
 
-//공급업체 배송 주문, 직거래 주문 목록
-router.get('/selectOrder', company.selectOrder, (req, res, next) => {
-    res.render('company/company_orderList.ejs', {sess:req.session.user_id, directY: req.directY, directN: req.directN})
-})
+// //공급업체 배송 주문, 직거래 주문 목록
+// router.get('/selectOrder', company.selectOrder, (req, res, next) => {
+//     res.render('company/company_orderList.ejs', {sess:req.session.user_id, directY: req.directY, directN: req.directN})
+// })
 
 
 //배송 주문, 직거래 주문 항목
 router.get('/selectOrder/:order_num', company.selectOrderDetail, (req, res, next) => {
-    res.render('company_orderListDetail.ejs', {detail: req.detail})
+    res.render('company/company_orderListDetail.ejs', {detail: req.detail})
 })
 
 
@@ -61,7 +61,7 @@ router.post('/updateOrderState/:order_num', company.updateOrderState, (req, res,
 
 //환불 상세
 router.get('/selectRefund/:order_num', company.refundDetail, (req, res, next) => {
-    res.render('company_refundDetail.ejs', {refund: req.refund})
+    res.render('company/company_refundDetail.ejs', {refund: req.refund})
 })
 
 
@@ -70,10 +70,10 @@ router.post('/updateRefund/:order_num', company.updateRefund, (rea, res, next) =
 })
 
 
-// 정산 목록
-router.get('/selectTotal', company.selectTotal, (req, res, next) => {
-    res.render('company_refundList', {total : req.total})
-})
+// // 정산 목록
+// router.get('/selectTotal', company.selectTotal, (req, res, next) => {
+//     res.render('company_refundList', {total : req.total})
+// })
 
 module.exports = router;
  

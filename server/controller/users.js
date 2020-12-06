@@ -271,10 +271,10 @@ class userController {
                 const couponinfo = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"` 
 
                 // 배송중인 주문 수 가져오기
-                const orderStateSql = `SELECT COUNT(order_state) FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
+                const orderStateSql = `SELECT COUNT(order_state) AS order_count FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
 
                 // 직거래 예정인 주문 수 가져오기
-                const directSql = `SELECT COUNT(order_direct_whether) FROM orders WHERE user_id = "${req.session.user_id}" AND order_direct_whether = "Y"`
+                const directSql = `SELECT COUNT(order_direct_whether) AS direct_count FROM orders WHERE user_id = "${req.session.user_id}" AND order_direct_whether = "Y"`
 
                 // 내가 주문한 주문 목록 가져오기
                 const MyOrderListSql = `SELECT * FROM orders, orderinfo, product WHERE orders.user_id = "${req.session.user_id}" AND orderinfo.product_num = product.product_num AND orders.order_num = orderinfo.order_num`
@@ -639,7 +639,14 @@ class userController {
             }
         })
     }
-}
+
+
+    
+    }
+
+
+
+   
 
 
 module.exports = userController;

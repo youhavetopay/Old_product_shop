@@ -267,9 +267,9 @@ class companyController {
                             '<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>'
                         );
                     } else {
-                        // 직거래
+                        // 배송 
                         const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "N"`;
-                        // 배송
+                        // 직거래
                         const sql2 = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "Y"`;
                         conn.query(sql, (err, row1) => {
                             console.log("에러2");
@@ -279,8 +279,8 @@ class companyController {
                                     console.log("에러3");
                                     if (err) throw err;
                                     else {
-                                        req.directY = row1;
-                                        req.directN = row2;
+                                        req.directY = row2;
+                                        req.directN = row1;
                                         console.log(row1);
                                         console.log(row2);
 
@@ -301,9 +301,11 @@ class companyController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                const sql = `SELECT * FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_num = "${req.params.order_num}"`;
 
-                conn.query(sql, (err, row) => {
+                const sql = `SELECT * FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_num = "${req.params.order_num}"`;
+                const sql4 = `SELECT * FROM orders, orderinfo, users, area, product WHERE orders.order_num = orderinfo.order_num AND orders.order_num = "${req.params.order_num}" AND users.user_id = orders.user_id AND users.area_num = area.area_num AND orderinfo.product_num = product.product_num;`
+
+                conn.query(sql4, (err, row) => {
                     if (err) throw err;
                     else {
                         req.detail = row;
@@ -367,7 +369,9 @@ class companyController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                const sql = `SELECT * FROM order WHERE order_num = "${req.params.order_num}"`;
+                //const sql = `SELECT * FROM orders WHERE order_num = "${req.params.order_num}"`;
+                const sql = `SELECT * FROM orders, orderinfo, product WHERE orders.order_num = "${req.params.order_num}" AND orders.order_num = orderinfo.order_num AND orderinfo.product_num = product.product_num`
+             
 
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
@@ -405,7 +409,7 @@ class companyController {
             if (err) throw err;
             else {
                 const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`;
-                const sql = `SELECT * FROM total WHERE company_num = "${yn[0].company_num}"`;
+                
 
                 conn.query(ynSql, (err, yn) => {
                     console.log("에러1");
@@ -414,6 +418,8 @@ class companyController {
                             '<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>'
                         );
                     } else {
+
+                        const sql = `SELECT * FROM total as t, company as c WHERE t.company_num = "${yn[0].company_num}" AND t.company_num = c.company_num`;
                         conn.query(sql, (err, row) => {
                             if (err) throw err;
                             else {

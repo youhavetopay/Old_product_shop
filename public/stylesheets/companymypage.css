@@ -58,11 +58,172 @@
 
 .coupang_order {
     position: relative;
-    height: 300px;
+    height: auto;
 
 }
 
 .joonggo_order {
     position: relative;
-    height: 300px;
+    height: auto;
+}
+
+/*여기부터 환불, 주문 상세**************************************/
+
+.companyarea {
+
+    position: relative;
+    width: 1500px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    
+   
+  }
+
+#title_name {
+    
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+ 
+
+}
+
+#title_name h1 {
+    color: #ABE0A8;
+    font-weight: bold;
+    
+}
+
+#box {
+    border-radius: 15px;
+    padding: 20px;
+    padding-bottom: 50px;
+    box-shadow: 0px 0px 20px #D9D9D9;
+    width: 1100px;
+    height: auto;
+    position: absolute;
+    left: 210px;
+}
+
+#box label{
+
+    font-size: 30px;
+    padding: 15px;
+    padding-top: 20px;
+    
+}
+
+.reason {
+    height: 200px;
+}
+
+#main_body {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    width: 1200px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #D9D9D9;
+    margin-left: 130px;
+}
+
+
+#color {
+    color: #064601;
+}
+
+#table {
+ 
+    width: 1500px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #D9D9D9;
+    margin-left: 130px;
+}
+
+.table2 {
+    margin-left: 40px;
+    border-spacing: 20px;
+    width: 1200px;
+}
+
+
+#thead{
+    font-weight: bold;
+    color: #064601;
+    text-align: center;
+    font-size: 25px;
+    word-spacing: 10px;
+    
+}
+
+#text{
+    font-weight: bold;
+    font-size: 18px;
+    color: #565756;
+    margin-top: 15px;
+    padding-left: 15px;
+}
+
+#tbody{
+    text-align: center;
+    padding: 20px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 0.5px solid#D9D9D9;
+}
+
+.state select {
+
+
+    width: 250px; /* 원하는 너비설정 */
+    padding: .8em .5em; /* 여백으로 높이 설정 */
+    font-family: inherit;  /* 폰트 상속 */
+    background: url(../images/drop-down-arrow.png) no-repeat right 12px center; /* 네이티브 화살표를 커스텀 화살표로 대체 */
+    background-size: 14px;
+    
+    border: 1px solid #999;
+    border-radius: 15px; /* iOS 둥근모서리 제거 */
+    -webkit-appearance: none; /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+    
+    
+}
+
+#order_title_name {
+    
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+ 
+
+}
+
+#order_title_name h1 {
+    color: #ABE0A8;
+    font-weight: bold;
+    
+}
+
+#order_box {
+    border-radius: 15px;
+    padding: 20px;
+    padding-bottom: 50px;
+    box-shadow: 0px 0px 20px #D9D9D9;
+    width: 1100px;
+    height: auto;
+    position: absolute;
+    left: 210px;
+}
+
+#order_box label{
+
+    font-size: 30px;
+    padding: 15px;
+    padding-top: 20px;
+    
 }

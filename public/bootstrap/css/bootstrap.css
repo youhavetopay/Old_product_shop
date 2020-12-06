@@ -2955,6 +2955,20 @@ fieldset:disabled a.btn {
   
 }
 
+.btn-outline-success {
+
+  color: #28a745;
+  border-color: #28a745;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 380px;
+  height: 50px;
+  border-radius: 30px;
+  margin-left: -3px;
+  margin-right: 5px;
+  
+}
+
 .btn-outline-sign_up {
 
   color: #28a745;
@@ -2968,6 +2982,40 @@ fieldset:disabled a.btn {
   
   
   
+}
+
+.btn-refund {
+
+  color: #28a745;
+  border-color: #28a745;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  margin-left: 150px;
+  width: 300px;
+  height: 60px;
+  border-radius: 30px;
+  
+}
+
+.btn-refund a{
+  color: #28a745;
+}
+
+.btn-orderdetail {
+
+  color: #28a745;
+  border-color: #28a745;
+ 
+  width: 250px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  height: 60px;
+  border-radius: 30px;
+  
+}
+
+.btn-orderdetail a{
+  color: #28a745;
 }
 
 .btn-outline-success a {
@@ -6954,7 +7002,7 @@ button.bg-dark:focus {
   position: relative;
   border-color: #ABE0A8 !important;
   padding:72px;
-  font-size: 40px;
+  font-size: 35px;
   padding-top: 79px;
   padding-left: 94px;
   padding-right: 91px;
