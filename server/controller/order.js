@@ -266,7 +266,10 @@ class orderController {
             }
 
             // 바로주문
+            console.log(req.body.product_count, '바로주문인지 아닌지 확인하기');
             if (req.body.product_count != 0) {
+
+                console.log('바로주문');
 
                 // 개별 상품 정보 들고오기
                 conn.query(`select product.*, case when (product_num in(select product_num from product where company_num in (select company_num from bookmark where user_id = ?))) 
@@ -295,6 +298,9 @@ class orderController {
 
                         // 직거래 거래
                         if (req.body.post_num != -1) {
+
+                            console.log('직거래');
+
                             conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
                                 null,
                                 real_total_money,
@@ -317,10 +323,10 @@ class orderController {
                                     if (err) throw err;
 
                                     var real_discount_money = 0
-                                    if (product_info[0].product_price < product_info[0].new_price + req.couponcheck) {
+                                    if (((product_info[0].product_price -  product_info[0].new_price) + req.couponcheck) < 0) {
                                         real_discount_money = product_info[0].product_price
                                     } else {
-                                        real_discount_money = product_info[0].product_price - product_info[0].new_price + req.couponcheck
+                                        real_discount_money = (product_info[0].product_price - product_info[0].new_price) + req.couponcheck
                                     }
 
                                     console.log(real_discount_money, '할인 금액');
@@ -348,6 +354,7 @@ class orderController {
                                 })
                             })
                         } else {
+                            console.log('배송주문');
                             console.log(req.body.post_num, 'else post_num');
                             //배송주문
                             conn.query('select * from place where place_id = ?', [
@@ -377,11 +384,13 @@ class orderController {
                                     ], (err, order_num) => {
                                         if (err) throw err;
 
+                                        var bookmark_discount = 0;
+
                                         var real_discount_money = 0
-                                        if (product_info[0].product_price < product_info[0].new_price + req.couponcheck) {
+                                        if (((product_info[0].product_price -  product_info[0].new_price) + req.couponcheck) < 0) {
                                             real_discount_money = product_info[0].product_price
                                         } else {
-                                            real_discount_money = product_info[0].product_price - product_info[0].new_price + req.couponcheck
+                                            real_discount_money = (product_info[0].product_price - product_info[0].new_price) + req.couponcheck
                                         }
 
                                         console.log(real_discount_money, '할인 금액');
@@ -418,7 +427,7 @@ class orderController {
             }
             // 장바구니 주문
             else {
-
+                console.log('장바구니주문');
                 // 장바구니에 담긴 상품 정보 가져오기
                 conn.query(`SELECT p.*, bi.bakset_sum, 
                 case when (p.product_num in(select product_num from product where product.company_num in (select bookmark.company_num from bookmark where user_id = ?))) 
@@ -455,7 +464,7 @@ class orderController {
 
                         // 직거래
                         if (req.body.post_num != -1) {
-
+                            console.log('직거래');
                             conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
                                 null,
                                 real_total_money,
@@ -475,18 +484,23 @@ class orderController {
                                     (err, order_num) => {
                                         if (err) throw err;
 
+                                        var sales_money = req.couponcheck;
+                                        var temp_coupon_money = req.couponcheck;
+
                                         for (var i = 0; i < basket_info.length; i++) {
-                                            if (i == 0) {
+                                            
+                                            if(i == 0){
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
                                                     basket_info[i].product_price * basket_info[i].bakset_sum,
                                                     basket_info[i].bakset_sum,
-                                                    real_total_money
+                                                    req.couponcheck
                                                 ], (err) => {
                                                     if (err) throw err;
                                                 })
-                                            } else {
+                                            }
+                                            else{
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
@@ -497,6 +511,7 @@ class orderController {
                                                     if (err) throw err;
                                                 })
                                             }
+
 
                                             conn.query('update product set product_value = product_value - ? where product_num = ?', [
                                                 basket_info[i].bakset_sum, basket_info[i].product_num
@@ -526,6 +541,7 @@ class orderController {
 
                         //배송주문
                         else {
+                            console.log('배송주문');
                             // 배송지 정보가져오기
                             conn.query('select * from place where place_id = ?', [
                                 req.body.address_num
@@ -553,14 +569,21 @@ class orderController {
                                         (err, order_num) => {
                                             if (err) throw err;
 
+                                            var sales_money = req.couponcheck;
+                                            var temp_coupon_money = req.couponcheck;
+
+
+
+
                                             for (var i = 0; i < basket_info.length; i++) {
                                                 if (i == 0) {
+                                                    
                                                     conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                         basket_info[i].product_num,
                                                         order_num[0].order_num,
                                                         basket_info[i].product_price * basket_info[i].bakset_sum,
                                                         basket_info[i].bakset_sum,
-                                                        real_total_money
+                                                        sales_money
                                                     ], (err) => {
                                                         if (err) throw err;
                                                     })
@@ -597,6 +620,8 @@ class orderController {
                                                     next();
                                                 })
                                             })
+
+
 
                                         })
                                 })
