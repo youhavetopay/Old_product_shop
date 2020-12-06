@@ -53,7 +53,7 @@ router.get('/logout',(req, res, next) => {
 //mypage
 router.get('/mypage', user.getMyPage, (req, res, next) => {
   res.render('mypage/myPage.ejs', 
-  {sess: req.session.user_id, bookmarkinfo : req.bookmarkinfo, coupon : req.session.coupon, couponinfo : req.couponinfo,cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.orderstate, direct : req.direct, myorderlist: req.myorderlist })
+  {sess: req.session.user_id, bookmarkinfo : req.bookmarkinfo, coupon : req.session.coupon, couponinfo : req.couponinfo,cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.session.orderstate, direct : req.session.direct, myorderlist: req.myorderlist })
 })
 
 

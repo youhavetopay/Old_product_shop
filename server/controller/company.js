@@ -301,9 +301,11 @@ class companyController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                const sql = `SELECT * FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_num = "${req.params.order_num}"`;
 
-                conn.query(sql, (err, row) => {
+                const sql = `SELECT * FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_num = "${req.params.order_num}"`;
+                const sql4 = `SELECT * FROM orders, orderinfo, users, area, product WHERE orders.order_num = orderinfo.order_num AND orders.order_num = "${req.params.order_num}" AND users.user_id = orders.user_id AND users.area_num = area.area_num AND orderinfo.product_num = product.product_num;`
+
+                conn.query(sql4, (err, row) => {
                     if (err) throw err;
                     else {
                         req.detail = row;
@@ -367,7 +369,9 @@ class companyController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                const sql = `SELECT * FROM order WHERE order_num = "${req.params.order_num}"`;
+                //const sql = `SELECT * FROM orders WHERE order_num = "${req.params.order_num}"`;
+                const sql = `SELECT * FROM orders, orderinfo, product WHERE orders.order_num = "${req.params.order_num}" AND orders.order_num = orderinfo.order_num AND orderinfo.product_num = product.product_num`
+             
 
                 conn.query(sql, (err, row) => {
                     if (err) throw err;

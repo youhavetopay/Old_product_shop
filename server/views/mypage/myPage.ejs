@@ -29,6 +29,8 @@
            
         }
 
+    
+       
    
     </style>
     <body>
@@ -41,8 +43,8 @@
        <span class="border border-success">MY팜</span>
 
        <span class="border border-success2">할인쿠폰 <%= coupon.coupon_count %>장</span>
-       <span class="border border-success2">배송중 0건</span>
-       <span class="border border-success2">직거래 0건</span>
+       <span class="border border-success2">배송중 <%= orderstate.order_count %>건</span>
+       <span class="border border-success2">직거래 <%= direct.direct_count %>건</span>
     
    </div>
 
@@ -59,7 +61,7 @@
     <div class="mypage_info">
           <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                <form>
+                
                     <h1 align="center" style="font-weight: bold;">주문 목록</h1>
                  
                     <% for(var data of myorderlist){ %>
@@ -78,7 +80,7 @@
                         </div>
                        </div>
                     <%}%>
-                </form>
+                
             </div>
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                 <form>
