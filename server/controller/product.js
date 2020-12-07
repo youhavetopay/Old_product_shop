@@ -33,6 +33,22 @@ class ProductController{
             })
         })
     }
+
+
+    async addBookMark(req, res, next){
+        pool.getConnection((err, conn)=>{
+            if(err) throw err;
+
+            conn.query('insert into bookmark values(?,?,(select company_num from product where product_num = ?))',[
+                null, req.session.user_id, req.body.product_num
+            ], (err)=>{
+                if(err) throw err;
+
+                conn.release();
+                next();
+            })
+        })
+    }
 }
 
 module.exports = ProductController
