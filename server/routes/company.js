@@ -15,7 +15,7 @@ router.get('/insertProduct', (req, res, next) => {
     res.render('company/insertProduct.ejs')
 })
 //company.insertProduct,
-router.post('/insertProduct', productImage.send,  (req, res, next) => {
+router.post('/insertProduct', productImage.send, company.insertProduct, (req, res, next) => {
     res.send('<script type="text/javascript">alert("상품이 등록 되었습니다.");location.href="/company";</script>');
 })
 
