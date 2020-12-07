@@ -155,12 +155,16 @@ class companyController {
                     req.body.product_sort == "" ||
                     req.body.product_date == "" ||
                     req.body.product_weight == "" ||
-                    req.body.product_method == ""
+                    req.body.product_method == "" ||
+                    req.body.product_before_price == ""
                 ) {
                     res.send(
                         '<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>'
                     );
                 }
+
+                console.log(req.body.product_value);
+                console.log();
 
                 const sql = `INSERT INTO product(?,?,?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?,?,?)`;
                 const val = [
@@ -175,11 +179,39 @@ class companyController {
                     req.session.company_num,
                 ];
 
-                conn.query(sql, val, (err, row) => {
+                conn.query(`INSERT INTO product values(?,?,?,?,?,?,?,?,?,?,?,?)`,[
+                        null, 
+                        req.body.product_name, 
+                        req.body.product_price,
+                        req.body.product_value,
+                        req.body.product_detail,
+                        req.body.product_sort,
+                        req.body.product_date,
+                        req.body.product_weight,
+                        req.body.product_method,
+                        req.session.company_num,
+                        '판매중',
+                        req.body.product_before_price
+                ], (err, row) => {
                     if (err) throw err;
                     else {
-                        conn.release();
-                        next();
+
+                        conn.query('select max(product_num) as product_num from product',
+                        (err, max_product_num)=>{
+                            if(err) throw err;
+
+                            for(var i = 0; i<req.files.length; i++){
+                                conn.query('insert into image values(?,?,?,?)',[
+                                    null, req.files[i].filename, i+1, max_product_num[0].product_num 
+                                ], (err)=>{
+                                    if(err) throw err;
+                                })
+                            }
+
+                            conn.release();
+                            next();
+                        })
+                        
                     }
                 });
             }
