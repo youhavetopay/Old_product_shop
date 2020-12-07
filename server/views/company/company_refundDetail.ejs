@@ -46,11 +46,13 @@
                 <label>구매 수량: <%= refund[0].order_sum %></label>
             </div>
             <div class="reason">
-                <label>환불 사유:</label>
+                <label>환불 사유: <%= refund[0].refund_content%></label>
                 <label></label>
             </div>
             <div>
-            <button class="btn btn-refund"><a href="/company/updateRefund/<%= refund[0].order_num %>">환불 처리</a></button>
+                <form method="POST" action="/company/updateRefund/<%=refund[0].order_num%>">
+                    <button class="btn btn-refund">환불 처리</button>
+                </form>
             <button class="btn btn-refund"><a href="/company">뒤로가기</a></button>
             </div>
          </div>

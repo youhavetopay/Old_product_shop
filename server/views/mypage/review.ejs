@@ -132,16 +132,17 @@
         <h1>리뷰 등록</h1>
         <div id="main_title">
             <div class="insert_product_body box_gradation">
+                <form method="post" action="/users/mypage/review/<%=product.product_num%>">
 
                 <div class="product_top">
-                    <form method="POST" action="/users/mypage/review/<%=product.product_num%>">
-                        <div id="product_detail">
-                            <div>
-                                <label>구입상품 : <%=product.product_name%></label>
 
-                            </div>
+                    <div id="product_detail">
+                        <div>
+                            <label>구입상품 : <%=product.product_name%></label>
 
                         </div>
+
+                    </div>
                 </div>
                 <div class="product_mid">
                     <textarea name="review_content" id="" cols="20" rows="20"

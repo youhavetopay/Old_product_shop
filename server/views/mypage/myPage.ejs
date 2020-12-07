@@ -75,8 +75,8 @@
                             <span class="order_info">주문상태 : <%= data.order_state %></span>
                         </div>
                         <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
-                            <button class="order_btn" ><a href="/users/mypage/refund/<%= data.product_num %>">환불신청</a></button>
-                            <button class="order_btn"><a href="/users/mypage/review/<%= data.product_num %>">리뷰쓰기</a></button>
+                            <button class="order_btn" ><a href="/users/mypage/refund/<%= data.order_num %>">환불신청</a></button>
+                            <button class="order_btn"><a href="/users/mypage/review/<%=data.product_num%>">리뷰쓰기</a></button>
                         </div>
                        </div>
                     <%}%>
