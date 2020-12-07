@@ -69,7 +69,7 @@
                     <% for(var data of myorderlist){ %>
                        <div class="order_image_box">
                         <div id="img" >              
-                            <img src="" alt=""  height="150">
+                            <img src="/images/productImage/<%=data.image_content%>" onerror="this.src='/images/야채.png'" alt="" width="150" height="150">
                         </div>
                         <div style="flex-basis: 600px; display: flex; flex-direction: column; margin: auto 10px auto 0px">
                             <span class="order_info">상품이름 : <%= data.product_name %></span>

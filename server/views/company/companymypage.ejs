@@ -56,6 +56,8 @@
 
 <body>
 
+    <%- include('../head/nav', {sess:sess})%>
+
     <div class="area">
 
         <div class="state_info">
@@ -93,7 +95,7 @@
                             <div class="product_image_box">
                                 <div id="img" >
                                  
-                                    <img src="<%= data.image_num %>" alt=""  height="150">
+                                    <img src="/images/productImage/<%=data.image_content%>" onerror="this.src='/images/야채.png'" alt="" width="150" height="150">
         
                                 </div>
                                 <div style="flex-basis: 600px; display: flex; flex-direction: column; margin: auto 10px auto 0px">

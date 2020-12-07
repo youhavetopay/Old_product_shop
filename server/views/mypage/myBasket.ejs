@@ -110,12 +110,10 @@
         <% for(var data of basketList){%>
             <div class="flex_row basket_product">
                 <div id="basket_product_img_div">
-                    <% if(data.image_content == 'none'){%>
-                        <img src="/images/야채.png" width="200" height="200" alt="">
-                        <%} else{%>
-                            <img src="/images/productImage/<%= data.image_content %>" width="200" height="200" alt="">
+                    
+                            <img src="/images/productImage/<%= data.image_content %>" onerror="this.src='/images/야채.png'" width="200" height="200" alt="">
                             <!-- <img src="/images/야채.png" width="200" height="200" alt=""> -->
-                        <%}%>
+                        
                 </div>
                 <div class="flex_column product_content">
                   <span class="product_text" style="margin-right: auto; margin-bottom: 50px;"><%= data.product_name%></span>

@@ -6,7 +6,7 @@ const productImage = require("../controller/productImageMulter");
 
 //공급업체 마이페이지
 router.get('/', company.selectCount, company.selectProduct, company.selectOrder, company.selectTotal, (req, res, next) => {
-    res.render('company/companyMypage.ejs', {companyinfo: req.companyinfo, productCount:req.productCount, orderCount:req.orderCount, directCount:req.directCount, product:req.product, refund: req.refund, directY: req.directY, directN: req.directN, total : req.total})
+    res.render('company/companyMypage.ejs', {sess:req.session.user_id, companyinfo: req.companyinfo, productCount:req.productCount, orderCount:req.orderCount, directCount:req.directCount, product:req.product, refund: req.refund, directY: req.directY, directN: req.directN, total : req.total})
 })
 
 
