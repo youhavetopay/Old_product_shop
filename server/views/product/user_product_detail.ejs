@@ -388,17 +388,21 @@
         form.setAttribute('action', '/order');
         document.charset = "utf-8";
 
-        var order_count = document.getElementById('order_count');
+        var product_count = document.createElement('input')
+        product_count.setAttribute('type', 'hidden');
+        product_count.setAttribute('name', 'product_count');
+        product_count.setAttribute('value', $('#order_count option:selected').val());
 
         var productNum = document.createElement('input');
         productNum.setAttribute('type', 'hidden');
         productNum.setAttribute('name', 'product_num');
         productNum.setAttribute('value', product_Num);
 
-        
+        console.log(product_Num)
+        console.log($('#order_count option:selected').val())
 
         form.appendChild(productNum);
-        form.appendChild(order_count);
+        form.appendChild(product_count);
 
         document.body.appendChild(form);
 

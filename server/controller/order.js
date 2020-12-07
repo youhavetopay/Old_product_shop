@@ -148,7 +148,10 @@ class orderController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
 
-            if (req.body.product_num.length == 1) {
+            console.log(req.body.product_num);
+            console.log(req.body.product_num.length);
+
+            if (req.body.product_num.length != -5) {
                 console.log('바로주문 목록 하고있음에서 가져오고 있음');
                 conn.query(`select p.product_num, p.product_name, p.product_price, i.image_content, case when (product_num in(select product_num from product where company_num in (select company_num from bookmark where user_id = ?))) 
                 then round(product_price * 0.95)
@@ -172,7 +175,7 @@ class orderController {
                             req.user_address = user_address;
                             req.user_card = user_card;
                             req.basket_check = false;
-                            req.total_money = order_product_list[0].new_price * req.body.order_count
+                            req.total_money = order_product_list[0].new_price * req.body.product_count
 
                             conn.release();
                             next();
