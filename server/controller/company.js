@@ -105,7 +105,7 @@ class companyController {
                         );
                     } else {
                         // 등록 상품 출력
-                        const productSql = `SELECT * FROM product as p, image as i WHERE p.company_num = "${yn[0].company_num}" AND p.product_num = i.fk_product_num`;
+                        const productSql = `SELECT * FROM product as p, image as i WHERE p.company_num = "${yn[0].company_num}" AND p.product_num = i.fk_product_num AND i.image_seq = 1`;
 
                         conn.query(productSql, (err, product) => {
                             console.log("에러5");

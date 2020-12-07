@@ -381,7 +381,12 @@ class userController {
                 const directSql = `SELECT COUNT(order_direct_whether) AS direct_count FROM orders WHERE user_id = "${req.session.user_id}" AND order_direct_whether = "Y"`;
 
                 // 내가 주문한 주문 목록 가져오기
-                const MyOrderListSql = `SELECT * FROM orders, orderinfo, product WHERE orders.user_id = "${req.session.user_id}" AND orderinfo.product_num = product.product_num AND orders.order_num = orderinfo.order_num`;
+                const MyOrderListSql = `SELECT * FROM orders as o, orderinfo as i, product as p, image as m 
+                WHERE o.user_id = "${req.session.user_id}" 
+                AND i.product_num = p.product_num 
+                AND o.order_num = i.order_num 
+                AND m.fk_product_num = p.product_num
+                and m.image_seq = 1`;
 
                 // // 카드정보
                 // const cardsql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
@@ -821,7 +826,7 @@ class userController {
                         console.log(row1);
                         console.log(req.params.order_num);
                          
-                            const sql2 = `INSERT INTO review(review_score, review_content, review_date, review_image, user_id, product_num, order_num) VALUES(?,?,?,?,?,?)`;
+                            const sql2 = `INSERT INTO review(review_score, review_content, review_date, review_image, user_id, product_num, order_num) VALUES(?,?,?,?,?,?,?)`;
                             const val = [
                                 req.body.review_score,
                                 req.body.review_content,
