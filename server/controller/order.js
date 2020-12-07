@@ -266,7 +266,10 @@ class orderController {
             }
 
             // 바로주문
+            console.log(req.body.product_count, '바로주문인지 아닌지 확인하기');
             if (req.body.product_count != 0) {
+
+                console.log('바로주문');
 
                 // 개별 상품 정보 들고오기
                 conn.query(`select product.*, case when (product_num in(select product_num from product where company_num in (select company_num from bookmark where user_id = ?))) 
@@ -295,6 +298,9 @@ class orderController {
 
                         // 직거래 거래
                         if (req.body.post_num != -1) {
+
+                            console.log('직거래');
+
                             conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
                                 null,
                                 real_total_money,
@@ -317,10 +323,10 @@ class orderController {
                                     if (err) throw err;
 
                                     var real_discount_money = 0
-                                    if (product_info[0].product_price < product_info[0].new_price + req.couponcheck) {
+                                    if (((product_info[0].product_price - product_info[0].new_price) + req.couponcheck) < 0) {
                                         real_discount_money = product_info[0].product_price
                                     } else {
-                                        real_discount_money = product_info[0].product_price - product_info[0].new_price + req.couponcheck
+                                        real_discount_money = (product_info[0].product_price - product_info[0].new_price) + req.couponcheck
                                     }
 
                                     console.log(real_discount_money, '할인 금액');
@@ -348,6 +354,7 @@ class orderController {
                                 })
                             })
                         } else {
+                            console.log('배송주문');
                             console.log(req.body.post_num, 'else post_num');
                             //배송주문
                             conn.query('select * from place where place_id = ?', [
@@ -377,11 +384,13 @@ class orderController {
                                     ], (err, order_num) => {
                                         if (err) throw err;
 
+                                        var bookmark_discount = 0;
+
                                         var real_discount_money = 0
-                                        if (product_info[0].product_price < product_info[0].new_price + req.couponcheck) {
+                                        if (((product_info[0].product_price - product_info[0].new_price) + req.couponcheck) < 0) {
                                             real_discount_money = product_info[0].product_price
                                         } else {
-                                            real_discount_money = product_info[0].product_price - product_info[0].new_price + req.couponcheck
+                                            real_discount_money = (product_info[0].product_price - product_info[0].new_price) + req.couponcheck
                                         }
 
                                         console.log(real_discount_money, '할인 금액');
@@ -418,14 +427,14 @@ class orderController {
             }
             // 장바구니 주문
             else {
-
+                console.log('장바구니주문');
                 // 장바구니에 담긴 상품 정보 가져오기
                 conn.query(`SELECT p.*, bi.bakset_sum, 
                 case when (p.product_num in(select product_num from product where product.company_num in (select bookmark.company_num from bookmark where user_id = ?))) 
                                 then round(product_price * 0.95)
                                 else product_price end as new_price
-                                from product p, baksetinfo bi, bakset b
-                                WHERE p.product_num = bi.product_num AND b.user_id = ?`, [
+                                from product p, baksetinfo bi
+                                WHERE p.product_num = bi.product_num AND bi.basket_num = (select basket_num from bakset where user_id = ?)`, [
                     req.session.user_id, req.session.user_id
                 ], (err, basket_info) => {
                     if (err) throw err;
@@ -455,7 +464,7 @@ class orderController {
 
                         // 직거래
                         if (req.body.post_num != -1) {
-
+                            console.log('직거래');
                             conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
                                 null,
                                 real_total_money,
@@ -475,18 +484,30 @@ class orderController {
                                     (err, order_num) => {
                                         if (err) throw err;
 
+                                        var sales_money = req.couponcheck;
+                                        var temp_coupon_money = req.couponcheck;
+
+                                        var temp_basket_info = basket_info;
+
+                                        console.log(' 1');
+
                                         for (var i = 0; i < basket_info.length; i++) {
-                                            if (i == 0) {
+                                            console.log(basket_info[i].bakset_sum, basket_info[i].product_num, i, "  i")
+                                            if(i == 0){
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
                                                     basket_info[i].product_price * basket_info[i].bakset_sum,
                                                     basket_info[i].bakset_sum,
-                                                    real_total_money
+                                                    sales_money
                                                 ], (err) => {
                                                     if (err) throw err;
+                                                    sales_money = 0;
+                                                    console.log(basket_info,' 3');
+                                                
                                                 })
-                                            } else {
+                                            }
+                                            else{
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
@@ -495,11 +516,17 @@ class orderController {
                                                     0
                                                 ], (err) => {
                                                     if (err) throw err;
+                                                    sales_money = 0;
+                                                    console.log(basket_info,' 3');
+                                                
                                                 })
                                             }
 
+                                        }
+                                        for(var j= 0; j<basket_info.length; j++){
+                                            console.log(basket_info[j].bakset_sum, basket_info[j].product_num, j, "  j")
                                             conn.query('update product set product_value = product_value - ? where product_num = ?', [
-                                                basket_info[i].bakset_sum, basket_info[i].product_num
+                                                basket_info[j].bakset_sum, basket_info[j].product_num
                                             ], (err) => {
                                                 if (err) throw err;
                                             })
@@ -526,6 +553,7 @@ class orderController {
 
                         //배송주문
                         else {
+                            console.log('배송주문');
                             // 배송지 정보가져오기
                             conn.query('select * from place where place_id = ?', [
                                 req.body.address_num
@@ -553,31 +581,33 @@ class orderController {
                                         (err, order_num) => {
                                             if (err) throw err;
 
-                                            for (var i = 0; i < basket_info.length; i++) {
-                                                if (i == 0) {
-                                                    conn.query('insert into orderinfo values(?,?,?,?,?)', [
-                                                        basket_info[i].product_num,
-                                                        order_num[0].order_num,
-                                                        basket_info[i].product_price * basket_info[i].bakset_sum,
-                                                        basket_info[i].bakset_sum,
-                                                        real_total_money
-                                                    ], (err) => {
-                                                        if (err) throw err;
-                                                    })
-                                                } else {
-                                                    conn.query('insert into orderinfo values(?,?,?,?,?)', [
-                                                        basket_info[i].product_num,
-                                                        order_num[0].order_num,
-                                                        basket_info[i].product_price * basket_info[i].bakset_sum,
-                                                        basket_info[i].bakset_sum,
-                                                        0
-                                                    ], (err) => {
-                                                        if (err) throw err;
-                                                    })
-                                                }
+                                            var sales_money = req.couponcheck;
+                                            var temp_coupon_money = req.couponcheck;
 
+                                            var temp_basket_info = basket_info;
+
+                                            console.log(' 1');
+
+                                            for (var i = 0; i < basket_info.length; i++) {
+                                                console.log(basket_info[i].bakset_sum, basket_info[i].product_num, i, "  i")
+                                                conn.query('insert into orderinfo values(?,?,?,?,?)', [
+                                                    basket_info[i].product_num,
+                                                    order_num[0].order_num,
+                                                    basket_info[i].product_price * basket_info[i].bakset_sum,
+                                                    basket_info[i].bakset_sum,
+                                                    sales_money
+                                                ], (err) => {
+                                                    if (err) throw err;
+                                                    sales_money = 0;
+                                                    console.log(basket_info,' 3');
+                                                
+                                                })
+
+                                            }
+                                            for(var j= 0; j<basket_info.length; j++){
+                                                console.log(basket_info[j].bakset_sum, basket_info[j].product_num, j, "  j")
                                                 conn.query('update product set product_value = product_value - ? where product_num = ?', [
-                                                    basket_info[i].bakset_sum, basket_info[i].product_num
+                                                    basket_info[j].bakset_sum, basket_info[j].product_num
                                                 ], (err) => {
                                                     if (err) throw err;
                                                 })
@@ -597,6 +627,8 @@ class orderController {
                                                     next();
                                                 })
                                             })
+
+
 
                                         })
                                 })

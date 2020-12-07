@@ -191,7 +191,13 @@
         <% if(!check_basket){%>
         <div class="product flex_row">
           <div style="flex-basis: 210px;">
-            <img src="/images/야채.png" alt="" width="200" height="200">
+            <% if(productList[0].image_content == 'none'){%>
+              <img src="/images/야채.png" width="200" height="200" alt="">
+              <%} else{%>
+                  <img src="/images/productImage/<%= productList[0].image_content%>" width="200" height="200" alt="">
+                  <!-- <img src="/images/야채.png" width="200" height="200" alt=""> -->
+              <%}%>
+            <!-- <img src="/images/야채.png" alt="" width="200" height="200"> -->
           </div>
 
           <div class="flex_column product_info" style="flex-basis: 400px;">
@@ -418,16 +424,24 @@
 
     console.log(parseInt(`<%= productList.length%>`))
 
+    console.log(`<%= check_basket%>`)
+
+    console.log(parseInt(`<%= productList[0].product_num%>`))
+    console.log(parseInt(`<%= count%>`))
+
     // //장바구니 주문인지 아닌지 판별하기
-    if (Boolean(`<%= check_basket%>`)) {
+    if (`<%= check_basket%>` == 'true') {
       console.log('aaaaaaaaaaaaaaaaaaaaaa')
-      product_num.setAttribute('value', `basket`);
+      product_num.setAttribute('value', 0);
       product_count.setAttribute('value', 0);
 
     } else {
       console.log('2222222222222222')
+      console.log(parseInt(`<%= productList[0].product_num%>`) + "  상품번호")
+      console.log(parseInt(`<%= count%>`)+"  상품갯수")
       product_num.setAttribute('value', parseInt(`<%= productList[0].product_num%>`));
       product_count.setAttribute('value', parseInt(`<%= count%>`));
+      
     }
 
     var card_num = document.createElement('input');
