@@ -267,8 +267,8 @@ class userController {
 
                 // 사용자가 가지고 있는 쿠폰가져오기(갯수)
                 const couponSql = `SELECT COUNT(*) AS coupon_count FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"`
-                // 사용자가 가지고 있는 쿠폰의 종류
-                const couponinfo = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"` 
+                // // 사용자가 가지고 있는 쿠폰의 종류
+                // const couponinfo = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"` 
 
                 // 배송중인 주문 수 가져오기
                 const orderStateSql = `SELECT COUNT(order_state) AS order_count FROM orders WHERE user_id = "${req.session.user_id}" AND order_state = "배송중"`
@@ -279,14 +279,14 @@ class userController {
                 // 내가 주문한 주문 목록 가져오기
                 const MyOrderListSql = `SELECT * FROM orders, orderinfo, product WHERE orders.user_id = "${req.session.user_id}" AND orderinfo.product_num = product.product_num AND orders.order_num = orderinfo.order_num`
 
-                // 카드정보
-                const cardsql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
+                // // 카드정보
+                // const cardsql = `SELECT * FROM card WHERE user_id = "${req.session.user_id}"`
 
                 // 배송지 가져오기
                 const placesql = `SELECT * FROM place WHERE user_id = "${req.session.user_id}"`
 
-                // 즐겨찾기한 업체 가져오기
-                const bookmarksql = `SELECT * FROM bookmark, company WHERE bookmark.user_id = "${req.session.user_id}" AND company.company_num = bookmark.company_num`
+                // // 즐겨찾기한 업체 가져오기
+                // const bookmarksql = `SELECT * FROM bookmark, company WHERE bookmark.user_id = "${req.session.user_id}" AND company.company_num = bookmark.company_num`
 
 
                 // 사용자가 가지고 있는 쿠폰가져오기
@@ -315,26 +315,26 @@ class userController {
                                             else {
 
 
-                                                conn.query(cardsql, (err, cardinfo) => {
-                                                    if (err) throw err;
-                                                    else{
+                                                // conn.query(cardsql, (err, cardinfo) => {
+                                                //     if (err) throw err;
+                                                //     else{
 
                                                         conn.query(placesql, (err, placeinfo) => {
                                                             if (err) throw err;
                                                             else{
                                                                 
-                                                                conn.query(couponinfo, (err, couponinfo) => {
-                                                                    if (err) throw err;
-                                                                    else{
+                                                                // conn.query(couponinfo, (err, couponinfo) => {
+                                                                //     if (err) throw err;
+                                                                //     else{
 
-                                                                        conn.query(bookmarksql, (err, bookmarkinfo) => {
-                                                                            if (err) throw err;
-                                                                            else{
+                                                                        // conn.query(bookmarksql, (err, bookmarkinfo) => {
+                                                                        //     if (err) throw err;
+                                                                        //     else{
 
-                                                                                req.cardinfo = cardinfo;
+                                                                                //req.cardinfo = cardinfo;
                                                                                 req.placeinfo = placeinfo;
-                                                                                req.couponinfo = couponinfo;
-                                                                                req.bookmarkinfo = bookmarkinfo;
+                                                                                //req.couponinfo = couponinfo;
+                                                                                //req.bookmarkinfo = bookmarkinfo;
                                                                                 req.session.coupon = coupon[0];
                                                                                 req.session.orderstate = orderstate[0];
                                                                                 req.session.direct = direct[0];
@@ -349,13 +349,13 @@ class userController {
                                                                                 conn.release();
                                                                                 next();
 
-                                                                            }
-                                                                        })
+                                                                        //     }
+                                                                        // })
 
 
 
-                                                                    }
-                                                                })
+                                                                //     }
+                                                                // })
 
 
 
@@ -364,8 +364,8 @@ class userController {
                                                         })
 
 
-                                                    }
-                                                })
+                                                    // }
+                                                // })
                                             }
                                         })
                                     }
@@ -392,7 +392,7 @@ class userController {
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
                     else {
-                        req.cardinfo = row[0];
+                        req.cardinfo = row;
                         conn.release();
                         next();
                     }
@@ -555,10 +555,11 @@ class userController {
             if (err) throw err;
             else {
 
-                // 즐겨찾기 목록 가져오기
-                const sql = `SELECT * FROM bookmark WHERE user_id = "${req.session.user_id}"`
+                // 즐겨찾기한 업체 가져오기
+                const bookmarksql = `SELECT * FROM bookmark, company WHERE bookmark.user_id = "${req.session.user_id}" AND company.company_num = bookmark.company_num`
 
-                conn.query(sql, (err, row) => {
+
+                conn.query(bookmarksql, (err, row) => {
                     if (err) throw err;
                     else {
                         req.bookmarkinfo = row;
@@ -625,10 +626,10 @@ class userController {
             if (err) throw err;
             else {
 
-                // 사용자가 가지고 있는 쿠폰 가져오기
-                const sql = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}"`
+                // 사용자가 가지고 있는 쿠폰의 종류
+                const couponinfo = `SELECT * FROM coupon WHERE user_id = "${req.session.user_id}" AND coupon_whether = "N"`
 
-                conn.query(sql, (err, row) => {
+                conn.query(couponinfo, (err, row) => {
                     if (err) throw err;
                     else {
                         req.couponinfo = row;
@@ -651,6 +652,7 @@ class userController {
                 conn.query(sql, (err, row) => {
                     if(err) throw err;
                     else {
+                        console.log("hbkjbkj");
                         req.product = row[0];
                         console.log(row);
                         console.log(row[0]);
@@ -673,13 +675,14 @@ class userController {
                 conn.query(sql, (err, row1) => {
                     if (err) throw err;
                     else {
-
-                        if (row1 != null || row1 != 0 || row1 != '' || row1 != undefined) {
-                            res.send('<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>');
+                        console.log("로그");
+                        console.log(row1);
+                        if (row1 != '') {
+                            res.send('<script type="text/javascript">alert("등록된 리뷰가 있습니다.");history.back();</script>');
                         }
                         else {
 
-                            const sql2 = `INSERT INTO review(reveiw_score, review_content, review_date, user_id, product_num) VALUES(?,?,?,?,?,?)`
+                            const sql2 = `INSERT INTO review(review_score, review_content, review_date, user_id, product_num) VALUES(?,?,?,?,?)`
                             const val = [req.body.review_score, req.body.review_content, moment().format('YYYY-MM-DD'), req.session.user_id, req.params.product_num]
                         
                             conn.query(sql2, val, (err, row2) => {
@@ -696,6 +699,71 @@ class userController {
         })
     }
 
+
+
+    // 주문정보 가져오기 - 환불
+    async selectRefund (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND o.order_num = "${req.params.order_num}"`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        console.log(row[0]);
+                        req.refund = row[0]
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+    //환불하기
+    async updateRefund (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql2 = `SELECT * FROM orders WHERE order_num = "${req.params.order_num}"`
+                const sql = `UPDATE orders SET order_state = "환불신청", refund_content = ? WHERE order_num = "${req.params.order_num}"`
+                const val = [req.body.refund_content]
+
+                if (req.body.refund_content == '') {
+                    res.send('<script type="text/javascript">alert("환불 사유를 작성해주세요.");history.back();</script>');
+                }
+                else {
+                    conn.query(sql2, (err, row2) => {
+                        console.log("에러1");
+                        if (err) throw err;
+                        else {
+                            console.log(row2);
+                            if (row2[0].order_state == '환불신청') {
+                                console.log("에러2");
+                                res.send('<script type="text/javascript">alert("이미 환불신청한 상품입니다.");history.back();</script>');
+                            } else if (row2[0].order_state == '환불완료') {
+                                console.log("에러3");
+                                res.send('<script type="text/javascript">alert("이미 환불완료된 상품입니다.");history.back();</script>');
+                            } else {
+
+                                console.log("에러4");
+                                conn.query(sql, val, (err, row) => {
+                                    if (err) throw err;
+                                    else {
+                                        conn.release()
+                                        next();
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+                
+            }
+        })
+    }
 
     
 }

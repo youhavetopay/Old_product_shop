@@ -51,7 +51,7 @@ router.get('/logout',(req, res, next) => {
 
 
 //mypage
-router.get('/mypage', user.getMyPage, (req, res, next) => {
+router.get('/mypage', user.getMyPage, user.selectCard, user.selectCoupon, user.selectBookmark, (req, res, next) => {
   res.render('mypage/myPage.ejs', 
   {sess: req.session.user_id, bookmarkinfo : req.bookmarkinfo, coupon : req.session.coupon, couponinfo : req.couponinfo,cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.session.orderstate, direct : req.session.direct, myorderlist: req.myorderlist })
 })
@@ -135,32 +135,26 @@ router.get('/mypage/deleteBookmark/:bm_num', user.deleteBookmark, (req, res, nex
 // })
 
 
-//리뷰 insert
-router.get('/mypage/review/:product_num',  (req, res, next) => {
-  res.render('mypage/review.ejs' )
-})
-
-router.post('/mypage/review/:product_num' , (req, res, next) => {
-  res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/mypage";</script>')
-})
 
 //환불신청 insert
-router.get('/mypage/refund/:product_num', (req, res, next) => {
-  res.render('mypage/request_refund.ejs')
+router.get('/mypage/refund/:order_num', user.selectRefund, (req, res, next) => {
+  console.log(req.refund);
+  res.render('mypage/request_refund.ejs', {refund: req.refund})
 })
 
-router.post('/mypage/refund/:product_num',  (req, res, next) => {
-  res.send('<script type="text/javascript">alert("환불 신청이 완료되었습니다."); location.href="/mypage";</script>')
+router.post('/mypage/refund/:order_num', user.updateRefund,(req, res, next) => {
+  res.send('<script type="text/javascript">alert("환불 신청이 완료되었습니다."); location.href="/users/mypage";</script>')
 })
 
 
 //리뷰 쓰기
 router.get('/mypage/review/:product_num', user.selectProduct, (req, res, next) => {
-  res.render('myapge/review.ejs', {product: req.product})
+  console.log("들어와~~~~~~~~");
+  res.render('mypage/review.ejs', {product: req.product})
 })
 
 router.post('/mypage/review/:product_num', user.insertReview, (req, res, next) => {
-  res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/mypage";</script>')
+  res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/users/mypage";</script>')
 })
 
 
