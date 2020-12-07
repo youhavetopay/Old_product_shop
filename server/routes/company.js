@@ -15,7 +15,7 @@ router.get('/insertProduct', (req, res, next) => {
     res.render('company/insertProduct.ejs')
 })
 //company.insertProduct,
-router.post('/insertProduct',productImage.send,  (req, res, next) => {
+router.post('/insertProduct', productImage.send,  (req, res, next) => {
     res.send('<script type="text/javascript">alert("상품이 등록 되었습니다.");location.href="/company";</script>');
 })
 
@@ -32,7 +32,7 @@ router.get('/updateProduct/:product_num', (req, res, next) => {
 })
 
 router.post('/updateProduct/:product_num', company.updateProduct, (req, res, next) => {
-    res.send('<script type="text/javascript">alert("상품이 수정 되었습니다.);location.href"/company";</script>')
+    res.send('<script type="text/javascript">alert("상품이 수정 되었습니다.);location.href="/company";</script>')
 })
 
 
@@ -50,7 +50,7 @@ router.get('/selectOrder/:order_num', company.selectOrderDetail, (req, res, next
 
 //주문 상태 변경
 router.post('/updateOrderState/:order_num', company.updateOrderState, (req, res, next) => {
-    res.send('<script type="text/javascript">alert(주문 상태가 변경 되었습니다.);location.href"/selectOrder";</script>')
+    res.send('<script type="text/javascript">alert("완료 되었습니다.");location.href="/company";</script>')
 })
 
 
@@ -67,7 +67,7 @@ router.get('/selectRefund/:order_num', company.refundDetail, (req, res, next) =>
 
 
 router.post('/updateRefund/:order_num', company.updateRefund, (rea, res, next) => {
-    res.send('<script type="text/javascript">alert(환불처리 되었습니다.);location.href"/selectRefund";</script>')
+    res.send('<script type="text/javascript">alert(환불처리 되었습니다.);location.href="/company";</script>')
 })
 
 

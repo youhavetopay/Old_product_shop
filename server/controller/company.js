@@ -55,13 +55,22 @@ class companyController {
                                                         console.log("에러4");
                                                         if (err) throw err;
                                                         else {
-                                                            req.productCount = productCount[0];
-                                                            req.orderCount = orderCount[0];
-                                                            req.directCount = directCount[0];
+                                                            req.productCount =
+                                                                productCount[0];
+                                                            req.orderCount =
+                                                                orderCount[0];
+                                                            req.directCount =
+                                                                directCount[0];
 
-                                                            console.log(productCount);
-                                                            console.log(orderCount);
-                                                            console.log(directCount);
+                                                            console.log(
+                                                                productCount
+                                                            );
+                                                            console.log(
+                                                                orderCount
+                                                            );
+                                                            console.log(
+                                                                directCount
+                                                            );
 
                                                             conn.release();
                                                             next();
@@ -79,8 +88,6 @@ class companyController {
             }
         });
     }
-
-
 
     //공급업체 등록 상품 가져오기
     async selectProduct(req, res, next) {
@@ -135,8 +142,6 @@ class companyController {
         });
     }
 
-
-    
     //공급업체 상품 등록
     async insertProduct(req, res, next) {
         pool.getConnection((err, conn) => {
@@ -255,19 +260,15 @@ class companyController {
             if (err) throw err;
             else {
                 const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`;
-                
-            
-             
+
                 conn.query(ynSql, (err, yn) => {
                     console.log("에러1");
                     if (err) {
-
-
                         res.send(
                             '<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>'
                         );
                     } else {
-                        // 배송 
+                        // 배송
                         const sql = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "N"`;
                         // 직거래
                         const sql2 = `SELECT * FROM orders as o, orderinfo as i, product as p WHERE o.order_num = i.order_num AND i.product_num = p.product_num AND p.company_num = "${yn[0].company_num}" AND o.order_direct_whether = "Y"`;
@@ -301,9 +302,8 @@ class companyController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-
                 const sql = `SELECT * FROM orders as o, orderinfo as i WHERE o.order_num = i.order_num AND o.order_num = "${req.params.order_num}"`;
-                const sql4 = `SELECT * FROM orders, orderinfo, users, area, product WHERE orders.order_num = orderinfo.order_num AND orders.order_num = "${req.params.order_num}" AND users.user_id = orders.user_id AND users.area_num = area.area_num AND orderinfo.product_num = product.product_num;`
+                const sql4 = `SELECT * FROM orders, orderinfo, users, area, product WHERE orders.order_num = orderinfo.order_num AND orders.order_num = "${req.params.order_num}" AND users.user_id = orders.user_id AND users.area_num = area.area_num AND orderinfo.product_num = product.product_num;`;
 
                 conn.query(sql4, (err, row) => {
                     if (err) throw err;
@@ -322,15 +322,59 @@ class companyController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
-                const sql = `UPDATE orders SET order_state = "${req.body.state}"`;
+                console.log(req.body.state);
 
-                conn.query(sql, (err, row) => {
-                    if (err) throw err;
-                    else {
-                        conn.release();
-                        next();
-                    }
-                });
+                if (req.body.state == 1) {
+                    const sql = `UPDATE orders SET order_state = "배송중" WHERE order_num = "${req.params.order_num}"`;
+
+                    conn.query(sql, (err, row) => {
+                        if (err) throw err;
+                        else {
+                            conn.release();
+                            next();
+                        }
+                    });
+                } else if (req.body.state == 2) {
+                    const sql2 = `UPDATE orders SET order_state = "배송완료" WHERE order_num = "${req.params.order_num}"`;
+
+                    conn.query(sql2, (err, row) => {
+                        if (err) throw err;
+                        else {
+                            conn.release();
+                            next();
+                        }
+                    });
+                } else if (req.body.state == 3) {
+                    const sql3 = `UPDATE orders SET order_state = "상품준비" WHERE order_num = "${req.params.order_num}"`;
+
+                    conn.query(sql3, (err, row) => {
+                        if (err) throw err;
+                        else {
+                            conn.release();
+                            next();
+                        }
+                    });
+                } else if (req.body.state == 4) {
+                    const sql4 = `UPDATE orders SET order_state = "상품수령대기" WHERE order_num = "${req.params.order_num}"`;
+
+                    conn.query(sql4, (err, row) => {
+                        if (err) throw err;
+                        else {
+                            conn.release();
+                            next();
+                        }
+                    });
+                } else if (req.body.state == 5) {
+                    const sql5 = `UPDATE orders SET order_state = "상품수령완료" WHERE order_num = "${req.params.order_num}"`;
+
+                    conn.query(sql5, (err, row) => {
+                        if (err) throw err;
+                        else {
+                            conn.release();
+                            next();
+                        }
+                    });
+                }
             }
         });
     }
@@ -370,8 +414,7 @@ class companyController {
             if (err) throw err;
             else {
                 //const sql = `SELECT * FROM orders WHERE order_num = "${req.params.order_num}"`;
-                const sql = `SELECT * FROM orders, orderinfo, product WHERE orders.order_num = "${req.params.order_num}" AND orders.order_num = orderinfo.order_num AND orderinfo.product_num = product.product_num`
-             
+                const sql = `SELECT * FROM orders, orderinfo, product WHERE orders.order_num = "${req.params.order_num}" AND orders.order_num = orderinfo.order_num AND orderinfo.product_num = product.product_num`;
 
                 conn.query(sql, (err, row) => {
                     if (err) throw err;
@@ -409,7 +452,6 @@ class companyController {
             if (err) throw err;
             else {
                 const ynSql = `SELECT * FROM company WHERE user_id = "${req.session.user_id}"`;
-                
 
                 conn.query(ynSql, (err, yn) => {
                     console.log("에러1");
@@ -418,7 +460,6 @@ class companyController {
                             '<script type="text/javascript">alert("공급업체 회원이 아닙니다.");history.back();</script>'
                         );
                     } else {
-
                         const sql = `SELECT * FROM total as t, company as c WHERE t.company_num = "${yn[0].company_num}" AND t.company_num = c.company_num`;
                         conn.query(sql, (err, row) => {
                             if (err) throw err;
