@@ -257,7 +257,7 @@
 
                                 <div class="product_bottom">
                                     <% if(sess){%>
-                                        <div class="bottom_btn my_btn" id="company_add_btn">
+                                        <div class="bottom_btn my_btn" id="company_add_btn" onclick="add_book_mark(`<%= productInfo[0].product_num%>`)">
                                             업체즐겨찾기
                                         </div>
                                         
@@ -330,6 +330,24 @@
 </body>
 
 <script>
+    function add_book_mark(product_num){
+        var form = document.createElement('form');
+        form.setAttribute('method','post');
+        form.setAttribute('action', '/product/addBookMark');
+        document.charset = "utf-8";
+        form.style.display = "none";
+
+        var hidden1 = document.createElement('input');
+        hidden1.setAttribute('type', 'hidden');
+        hidden1.setAttribute('name', 'product_num');
+        hidden1.setAttribute('value', parseInt(product_num));
+
+        form.appendChild(hidden1);
+
+        document.body.appendChild(form);
+
+        form.submit();
+    }
 
     // 장바구니 추가하는거
     function addBasketProduct(product_num){
