@@ -76,14 +76,25 @@
             <div class="selectbox">
                 <div id="side_nav_body_order">
                     <h4>주문상태 변경하기</h4>
+                    <form method="POST" action="/company/updateOrderstate/<%= detail[0].order_num %>">
                     <div style="padding: 5px;" class="state">
-                        <select>
-                            <option>배송중</option>
-                            <option>배송완료</option>
-                            <option>환불완료</option>
+                        <select name="state">
+                            
+                            
+                            <% if(detail[0].order_direct_whether == "Y" ) {%>
+                                <option value="3">상품준비</option>
+                            <option value="4">상품수령대기</option>
+                            <option value="5">상품수령완료</option>
+                                <%} else {%>
+                                    <option value="1">배송중</option>
+                                    <option value="2">배송완료</option>  
+                                <%}%>
                         </select>
                     </div>
-                    <button class="btn btn-orderdetail"><a href="/company/updateOrderstate/<%= detail[0].order_num %>">주문상태변경</a></button>
+                    
+                        <button class="btn btn-orderdetail" type="submit">주문상태변경</button>
+                    </form>
+                    
                     <button class="btn btn-orderdetail"><a href="/company">뒤로가기</a></button>
                 </div>
             </div>          

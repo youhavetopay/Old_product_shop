@@ -146,37 +146,48 @@
                         <div id="product_detail">
                             <div>
                                 <label>상품명:</label>
-                                <input class="insert_css" name="" type="text" size="30px" />
+                                <input class="insert_css" name="product_name" type="text" size="30px" />
                             </div>
                             <div>
-                                <label>상품금액:</label>
-                                <input class="insert_css" name="" type="text" size="30px" />
+                                <label>상품판매금액:</label>
+                                <input class="insert_css" name="product_price" type="number" size="30px" />
+                            </div>
+                            <div>
+                                <label>상품시중금액:</label>
+                                <input class="insert_css" name="product_before_price" type="number" size="30px" />
+                            </div>
+                            <div>
+                                <label>판매재고량:</label>
+                                <input class="insert_css" name="product_value" type="number" size="30px" />
                             </div>
                             <div>
                                 <label>카테고리:</label>
-                                <input class="insert_css" name="" type="text" size="30px" />
+                                <input class="insert_css" name="product_sort" type="text" size="30px" />
                             </div>
                             <div>
                                 <label>판매 단위:</label>
-                                <input class="insert_css" name="" type="text" size="30px" />
+                                <input class="insert_css" name="product_weight" type="text" size="30px" />
                             </div>
                             <div>
                                 <label>보관방법:</label>
-                                <input class="insert_css" name="" type="text" size="30px" />
+                                <input class="insert_css" name="product_method" type="text" size="30px" />
                             </div>
                             <div>
                                 <label>판매마감기간:</label>
-                                <input name="" type="date" size="30px" />
+                                <input name="product_date" type="date" size="30px" />
                             </div>
-                            <span>상품 이미지:
-                                <input type="file" name="product_img" id="profile_pt" onchange="previewImage(this,'View_area')">
+                            
+                            <span id="product_image_body">상품 이미지: 
+                                <input type="file" multiple required name="product_img" id="profile_pt" onchange="add_image_btn(event)">
                                 <div id='View_area' style=' width: 100px; height: 100px; color: black; border: 0px solid black; display: inline; '></div>
+                               
                             </span>
+                            <span>(대표이미지는 이름순 으로 설정됩니다.)</span>
                             <span>상세 내용</span>
                         </div>
                 </div>
                 <div class="product_mid">
-                    <textarea name="" id="" cols="30" rows="10" style="resize: none; padding: 20px;  width: 100%; border-radius: 20px;" >
+                    <textarea name="product_detail" id="" cols="30" rows="10" style="resize: none; padding: 20px;  width: 100%; border-radius: 20px;" >
                     </textarea>        
                 </div>
                 <input type="submit" value="등록하기" class="insert_product_btn" />                                        
@@ -188,6 +199,32 @@
             
 
 </body>
+
+<script>
+    function add_image_btn(event){
+
+        $('#View_area').empty();
+
+        for (var image of event.target.files){
+            var reader = new FileReader();
+
+            reader.onload = function(event){
+                var img = document.createElement('img');
+
+                img.setAttribute('src', event.target.result);
+                img.style.width = "200px";
+                img.style.height = "200px";
+                document.getElementById('View_area').appendChild(img);
+            }
+            console.log(image);
+
+            reader.readAsDataURL(image);
+        }
+
+
+
+    }
+</script>
 <script> 
 
 function previewImage(targetObj, View_area) {

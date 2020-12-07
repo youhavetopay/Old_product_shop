@@ -127,7 +127,7 @@
         }
 
         #goto_list {
-
+            margin-left: auto;
             background-color: rgb(172, 225, 169);
         }
 
@@ -212,12 +212,10 @@
                     <h3><%= productInfo[0].product_name%></h3>
                     <div class="product_top">
                         <div id="product_img">
-                            <% if(imageList[0].image_content == 'none'){%>
-                            <img src="/images/야채.png" width="200" height="200" alt="">
-                            <%} else{%>
-                                <img src="/images/productImage/<%= imageList[0].image_content%>" width="200" height="200" alt="">
+                            
+                                <img src="/images/productImage/<%= imageList[0].image_content%>" onerror="this.src='/images/야채.png'" width="200" height="200" alt="">
                                 <!-- <img src="/images/야채.png" width="200" height="200" alt=""> -->
-                            <%}%>
+                            
                         </div>
                         <div id="product_detail">
                             <span>금액: <%= productInfo[0].product_price%></span>
@@ -262,9 +260,7 @@
                                         <div class="bottom_btn my_btn" id="company_add_btn">
                                             업체즐겨찾기
                                         </div>
-                                        <div class="bottom_btn my_btn" id="review_add_btn">
-                                            리뷰하기
-                                        </div>
+                                        
                                         <div class="bottom_btn my_btn" id="goto_list" onclick="javascript: window.history.back() ">
                                             목록으로
                                         </div>
@@ -312,7 +308,8 @@
 
 
                                         <div id="review_img">
-                                            <img src="/images/야채.png" alt="" width="150" height="150">
+                                            
+                                            <img src="/images/reviewImage/<%=reviewList[i].review_image%>" onerror="this.src='/images/야채.png'" alt="" width="150" height="150">
                                         </div>
                                     </div>
                                     <%}%>

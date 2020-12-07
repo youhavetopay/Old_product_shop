@@ -156,7 +156,9 @@
                 <% for(var data of productinfo){%>
                   <a href="/product/<%= data.product_num%>">
                     <div class="product_item">
-                      <img src="../images/야채.png" alt="상품이미지" width="200" height="200" id="product_img">
+                      
+                          <img src="/images/productImage/<%= data.image_content%>" onerror="this.src='/images/야채.png'" alt="상품이미지" width="200" height="200" id="product_img">
+                        
                       <span><%= data.product_name%></span>
                       <div class="product_content">
                         <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
@@ -264,7 +266,12 @@
             product_item.className = 'product_item';
 
             var product_img = document.createElement('img');
-            product_img.setAttribute("src", '../images/야채.png');
+            if(product[i].image_content == 'none'){
+              product_img.setAttribute("src", '../images/야채.png');
+            }
+            else{
+              product_img.setAttribute("src", '../images/productImage/'+product[i].image_content);
+            }
             product_img.style.width = '200px';
             product_img.style.height = '200px';
             
