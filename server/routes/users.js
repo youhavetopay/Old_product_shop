@@ -53,6 +53,7 @@ router.get('/logout',(req, res, next) => {
 
 //mypage
 router.get('/mypage', user.getMyPage, user.selectCard, user.selectCoupon, user.selectBookmark, (req, res, next) => {
+  console.log("sfdsfsfdf",req.myorderlist);
   res.render('mypage/myPage.ejs', 
   {sess: req.session.user_id, bookmarkinfo : req.bookmarkinfo, coupon : req.session.coupon, couponinfo : req.couponinfo,cardinfo : req.cardinfo, placeinfo : req.placeinfo ,orderstate : req.session.orderstate, direct : req.session.direct, myorderlist: req.myorderlist })
 })
@@ -154,7 +155,7 @@ router.get('/mypage/review/:order_num', user.selectProduct, (req, res, next) => 
   res.render('mypage/review.ejs', {product: req.product})
 })
 
-router.post('/mypage/review/:order_num', reviewImage.send,  (req, res, next) => { 
+router.post('/mypage/review/:order_num', reviewImage.send, user.insertReview, (req, res, next) => { 
   res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/users/mypage";</script>')
 })
 

@@ -155,11 +155,11 @@
           <% for(var data of productinfo){%>
             <a href="/product/<%= data.product_num%>">
               <div class="product_item">
-                <% if(data.image_content == 'none'){%>
-                <img src="../images/야채.png" alt="상품이미지" width="200" height="200" id="product_img">
-                <%} else{%>
-                  <img src="/images/productImage/<%= data.image_content%>" alt="상품이미지" width="200" height="200" id="product_img">
-                <%}%>
+                
+                
+                
+                  <img src="/images/productImage/<%= data.image_content%>" onerror="this.src='/images/야채.png'" alt="상품이미지" width="200" height="200" id="product_img">
+                
                 <span><%= data.product_name%></span>
                 <div class="product_content">
                   <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
