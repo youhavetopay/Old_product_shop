@@ -154,7 +154,7 @@ router.get('/mypage/review/:order_num', user.selectProduct, (req, res, next) => 
   res.render('mypage/review.ejs', {product: req.product})
 })
 
-router.post('/mypage/review/:order_num', reviewImage.send, user.insertReview,  (req, res, next) => { 
+router.post('/mypage/review/:order_num', reviewImage.send,  (req, res, next) => { 
   res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/users/mypage";</script>')
 })
 

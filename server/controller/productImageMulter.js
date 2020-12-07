@@ -19,11 +19,13 @@ const upload = multer({
 })
 
 module.exports.send = (req, res, next) => {
-  upload.single('product_img')(req, res, () => {
+  upload.array('product_img')(req, res, () => {
 
     console.log('사진 들어왔나???');
-    console.log(req.file);
-    console.log(req.file.filename);
+    for(var i =0; i<req.files.length; i++){
+      console.log(req.files[i].filename, '   '+i+'번사진');
+    }
+    
     next();
   })
 }
