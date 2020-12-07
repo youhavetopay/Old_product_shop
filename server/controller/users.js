@@ -596,26 +596,26 @@ class userController {
 
 
 
-    //장바구니 select 
-    async selectBasket(req, res, next) {
-        pool.getConnection((err, conn) => {
-            if (err) throw err;
-            else {
+    // //장바구니 select 
+    // async selectBasket(req, res, next) {
+    //     pool.getConnection((err, conn) => {
+    //         if (err) throw err;
+    //         else {
 
-                // 장바구니 가져오기???
-                const sql = `SELECT * FROM basket WHERE user_id = "${req.session.user_id}"`
+    //             // 장바구니 가져오기???
+    //             const sql = `SELECT * FROM basket WHERE user_id = "${req.session.user_id}"`
 
-                conn.query(sql, (err, row) => {
-                    if (err) throw err;
-                    else {
-                        req.basketinfo = row;
-                        conn.release();
-                        next();
-                    }
-                })
-            }
-        })
-    }
+    //             conn.query(sql, (err, row) => {
+    //                 if (err) throw err;
+    //                 else {
+    //                     req.basketinfo = row;
+    //                     conn.release();
+    //                     next();
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
 
 
 
@@ -641,8 +641,64 @@ class userController {
     }
 
 
-    
+
+    async selectProduct (req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM product WHERE product_num = "${req.params.product_num}"`
+
+                conn.query(sql, (err, row) => {
+                    if(err) throw err;
+                    else {
+                        req.product = row[0];
+                        console.log(row);
+                        console.log(row[0]);
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
     }
+
+
+    
+    async insertReview (req, res, next) {
+        pool.getConnection((err,conn) => {
+            if (err) throw err;
+            else {
+                const sql = `SELECT * FROM review WHERE user_id = "${req.session.user_id}" AND product_num = "${req.params.product_num}"`
+
+                conn.query(sql, (err, row1) => {
+                    if (err) throw err;
+                    else {
+
+                        if (row1 != null || row1 != 0 || row1 != '' || row1 != undefined) {
+                            res.send('<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>');
+                        }
+                        else {
+
+                            const sql2 = `INSERT INTO review(reveiw_score, review_content, review_date, user_id, product_num) VALUES(?,?,?,?,?,?)`
+                            const val = [req.body.review_score, req.body.review_content, moment().format('YYYY-MM-DD'), req.session.user_id, req.params.product_num]
+                        
+                            conn.query(sql2, val, (err, row2) => {
+                                if (err) throw err;
+                                else {
+                                    conn.release();
+                                    next();
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+
+    
+}
 
 
 
