@@ -57,10 +57,10 @@ router.get('/mypage', user.getMyPage, (req, res, next) => {
 })
 
 
-//카드 select
-router.get('/mypage/selectCard', user.selectCard, (req, res, next)=> {
-  res.render('mypage/selectCard.ejs', {cardinfo: req.cardinfo})
-})
+// //카드 select
+// router.get('/mypage/selectCard', user.selectCard, (req, res, next)=> {
+//   res.render('mypage/selectCard.ejs', {cardinfo: req.cardinfo})
+// })
 
 
 //카드 insert
@@ -79,10 +79,10 @@ router.get('/mypage/deleteCard/:card_num', user.deleteCard, (req, res, next) => 
 })
 
 
-//배송지 select 
-router.get('/mypage/selectPlace', user.selectPlace, (req, res, next) => {
-  res.render('mypage/selectPlace.ejs', {placeinfo: req.placeinfo})
-})
+// //배송지 select 
+// router.get('/mypage/selectPlace', user.selectPlace, (req, res, next) => {
+//   res.render('mypage/selectPlace.ejs', {placeinfo: req.placeinfo})
+// })
 
 
 //배송지 insert
@@ -111,10 +111,10 @@ router.post('/mypage/updatePlace/:place_id', user.updatePlace, (req, res, next) 
 })
 
 
-//즐겨찾기 select
-router.get('/mypage/selectBookmark', user.selectBookmark, (req, res, next) => {
-  res.render('mypage/Bookmark.ejs', { bookmarkinfo : req.bookmarkinfo})
-}) 
+// //즐겨찾기 select
+// router.get('/mypage/selectBookmark', user.selectBookmark, (req, res, next) => {
+//   res.render('mypage/Bookmark.ejs', { bookmarkinfo : req.bookmarkinfo})
+// }) 
 
 
 //즐겨찾기 delete
@@ -123,16 +123,16 @@ router.get('/mypage/deleteBookmark/:bm_num', user.deleteBookmark, (req, res, nex
 })
 
 
-//장바구니 select
-router.get('/mypage/selectBasket', user.selectBasket, (req, res, next) => {
-  res.render('mypage/basket.ejs', {basketinfo: req.basketinfo})
-})
+// //장바구니 select
+// router.get('/mypage/selectBasket', user.selectBasket, (req, res, next) => {
+//   res.render('mypage/basket.ejs', {basketinfo: req.basketinfo})
+// })
 
 
-//쿠폰 select
-router.get('/mypage/selectBasket', user.selectCoupon, (req, res, next) => {
-  res.render('mypage/coupon.ejs', {couponinfo: req.couponinfo})
-})
+// //쿠폰 select
+// router.get('/mypage/selectBasket', user.selectCoupon, (req, res, next) => {
+//   res.render('mypage/coupon.ejs', {couponinfo: req.couponinfo})
+// })
 
 
 //리뷰 insert
@@ -141,7 +141,7 @@ router.get('/mypage/review/:product_num',  (req, res, next) => {
 })
 
 router.post('/mypage/review/:product_num' , (req, res, next) => {
-  res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/mypage";')
+  res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/mypage";</script>')
 })
 
 //환불신청 insert
@@ -150,6 +150,18 @@ router.get('/mypage/refund/:product_num', (req, res, next) => {
 })
 
 router.post('/mypage/refund/:product_num',  (req, res, next) => {
-  res.send('<script type="text/javascript">alert("환불 신청이 완료되었습니다."); location.href="/mypage";')
+  res.send('<script type="text/javascript">alert("환불 신청이 완료되었습니다."); location.href="/mypage";</script>')
 })
+
+
+//리뷰 쓰기
+router.get('/mypage/review/:product_num', user.selectProduct, (req, res, next) => {
+  res.render('myapge/review.ejs', {product: req.product})
+})
+
+router.post('/mypage/review/:product_num', user.insertReview, (req, res, next) => {
+  res.send('<script type="text/javascript">alert("리뷰 등록이 완료되었습니다."); location.href="/mypage";</script>')
+})
+
+
 module.exports = router;
