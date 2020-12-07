@@ -132,12 +132,12 @@
         <h1>리뷰 등록</h1>
         <div id="main_title">
             <div class="insert_product_body box_gradation">
-                <form method="post" action="/users/mypage/review/<%=product.product_num%>">
+                <form method="post" action="/users/mypage/review/<%=product.order_num%>" enctype="multipart/form-data">
 
                 <div class="product_top">
 
                     <div id="product_detail">
-                        <div>
+                        <div> 
                             <label>구입상품 : <%=product.product_name%></label>
 
                         </div>
@@ -155,7 +155,7 @@
                 </div>
 
                 <span>상품 이미지:
-                    <input type="file" name="profile_pt" id="profile_pt" onchange="previewImage(this,'View_area')">
+                    <input type="file" multiple required name="profile_pt" id="profile_pt" onchange="previewImage(this,'View_area')">
                     <div id='View_area'
                         style=' width: 100px; height: 100px; color: black; border: 0px solid black; display: inline; '>
                     </div>

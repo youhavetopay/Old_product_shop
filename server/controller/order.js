@@ -301,7 +301,7 @@ class orderController {
 
                             console.log('직거래');
 
-                            conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
+                            conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                                 null,
                                 real_total_money,
                                 moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -313,7 +313,8 @@ class orderController {
                                 req.body.detail_adr,
                                 '주문완료',
                                 'Y',
-                                req.session.user_id
+                                req.session.user_id,
+                                'N'
                             ], (err) => {
                                 if (err) throw err;
                                 //가장 최근 주문 번호 가져오기
@@ -362,7 +363,7 @@ class orderController {
                             ], (err, address_info) => {
                                 if (err) throw err;
 
-                                conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
+                                conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                                     null,
                                     real_total_money,
                                     moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -374,7 +375,8 @@ class orderController {
                                     address_info[0].place_addrinfo,
                                     '주문완료',
                                     'N',
-                                    req.session.user_id
+                                    req.session.user_id,
+                                    'N'
                                 ], (err) => {
                                     if (err) throw err;
 
