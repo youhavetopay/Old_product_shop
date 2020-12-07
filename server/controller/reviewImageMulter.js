@@ -21,7 +21,7 @@ const upload = multer({
 })
 
 module.exports.send = (req, res, next) => {
-  upload.single(profile_pt)(req, res, (err) => {
+  upload.single('profile_pt')(req, res, (err) => {
 
     if (err) throw err;
     else{
