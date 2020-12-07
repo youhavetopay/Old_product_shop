@@ -152,7 +152,6 @@ class companyController {
                     req.body.product_price == "" ||
                     req.body.product_value == "" ||
                     req.body.product_detail == "" ||
-                    req.body.product_sort == "" ||
                     req.body.product_date == "" ||
                     req.body.product_weight == "" ||
                     req.body.product_method == "" ||
@@ -166,18 +165,31 @@ class companyController {
                 console.log(req.body.product_value);
                 console.log();
 
-                const sql = `INSERT INTO product(?,?,?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?,?,?)`;
-                const val = [
-                    req.body.product_name,
-                    req.body.product_price,
-                    req.body.product_value,
-                    req.body.product_detail,
-                    req.body.product_sort,
-                    req.body.product_date,
-                    req.body.product_weight,
-                    req.body.product_method,
-                    req.session.company_num,
-                ];
+                console.log(req.body.kind);
+                if (req.body.kind == 1) {
+                    req.session.product_sort = "감자"
+                } else if (req.body.kind == 2) {
+                    req.session.product_sort = "고구마"
+                } else if (req.body.kind == 3) {
+                    req.session.product_sort = "버섯"
+                } else if (req.body.kind == 4) {
+                    req.session.product_sort = "호박"
+                } else if (req.body.kind == 5) {
+                    req.session.product_sort = "양파"
+                }
+
+                // const sql = `INSERT INTO product(?,?,?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?,?,?)`;
+                // const val = [
+                //     req.body.product_name,
+                //     req.body.product_price,
+                //     req.body.product_value,
+                //     req.body.product_detail,
+                //     product_sort,
+                //     req.body.product_date,
+                //     req.body.product_weight,
+                //     req.body.product_method,
+                //     req.session.company_num,
+                // ];
 
                 conn.query(`INSERT INTO product values(?,?,?,?,?,?,?,?,?,?,?,?)`,[
                         null, 
@@ -185,7 +197,7 @@ class companyController {
                         req.body.product_price,
                         req.body.product_value,
                         req.body.product_detail,
-                        req.body.product_sort,
+                        req.session.product_sort,
                         req.body.product_date,
                         req.body.product_weight,
                         req.body.product_method,
