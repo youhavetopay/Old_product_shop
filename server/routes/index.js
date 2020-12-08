@@ -35,7 +35,7 @@ router.get('/direct',main.getDirectAbleList, (req, res, next)=>{
     res.render('viewProduct/directView',{title: '아이즈원',sess : req.session.user_id, productinfo:req.directList})
   }
   else{
-    res.send('<script type="text/javascript">alert("로그인이 필요한 기능입니다...");location.href="/user/login";</script>');
+    res.send('<script type="text/javascript">alert("로그인이 필요한 기능입니다...");location.href="/users/login";</script>');
   }
 })
 
