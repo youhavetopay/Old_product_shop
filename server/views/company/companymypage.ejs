@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Page</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href='/bootstrap/css/bootstrap.css' />
+    <link rel="stylesheet" href='/stylesheets/signup.css' />
+    <link rel='stylesheet' href="/stylesheets/mypage.css" />
+    <link rel="stylesheet" href="/stylesheets/companymypage.css"/>
+</head>
+<style>
+    .nav-link {
+        cursor: pointer;
+    }
+
+    .span p {
+
+        font-size: 10px;
+    }
+
+    #table {
+            margin-left: 10px;
+            margin-top: 30px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px #D9D9D9;
+    }
+
+    td {
+        padding-left: 20px;
+        padding: 10px;
+    }
+
+    #title {
+
+        margin-left: 30px;
+        margin-top: 30px;
+        font-weight: bold;
+        font-size: 30px;
+       
+        color: #565756;
+    }
+
+    #order_title {
+
+        margin-left: 30px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 30px;
+       
+        color: #565756;
+    }
+</style>
+
+<body>
+
+    <%- include('../head/nav', {sess:sess})%>
+
+    <div class="area">
+
+        <div class="state_info">
+
+            <span class="border border-success">업체 팜</span>
+            <span class="border border-success2">상품 <%=productCount.count%>개</span>
+            <span class="border border-success2">주문 <%=orderCount.count%>건</span>
+            <span class="border border-success2">직거래 <%=directCount.count%>건</span>
+
+        </div>
+
+        <div class="com_sidenav">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                    aria-controls="v-pills-home" aria-selected="true"> 상품관리 </a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                    aria-controls="v-pills-profile" aria-selected="false">주문관리</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
+                    aria-controls="v-pills-messages" aria-selected="false">환불관리</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings"
+                    rclass="nav-link" id="v-pills-settings-tab" data-toggle="pill">통계</a>
+
+                <a class="nav-link" href="/users/mypage">마이페이지</a>
+            </div>
+        </div>
+        <div class="com_mypage_info">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                    aria-labelledby="v-pills-home-tab">
+                    <div class="product_top">
+                        <a id = "title">상품 관리</a>
+                        <button onclick="location.href='/company/insertProduct'"class="btn btn-light2"> + 상품 등록</button>
+                    </div>
+                        <% for(var data of product){ %>
+                            <div class="product_image_box">
+                                <div id="img" >
+                                 
+                                    <img src="/images/productImage/<%=data.image_content%>" onerror="this.src='/images/야채.png'" alt="" width="150" height="150">
+        
+                                </div>
+                                <div style="flex-basis: 600px; display: flex; flex-direction: column; margin: auto 10px auto 0px">
+                                    <span class="order_info">상품 : <%= data.product_name %></span>
+                                    <span class="order_info"> 재고 : <%= data.product_value %></span>
+                                    <span class="order_info">판매마감기간 : <%= data.product_date %></span>
+                                </div>
+                                <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
+                                    <a href="#"><button class="order_btn" >판매종료</button></a>
+                                    <a href="#"><button class="order_btn" >수정</button></a>
+                                </div>
+                            </div>
+                           
+                        <%}%>
+                        <!--
+                        <div class="table">
+                            <table>
+                                    <% for (var i=0; i < product.length; i++) { %>
+                                        <tr>
+                                            <td>상품이미지</td>
+                                            <td><%=product[i].product_name%></td>
+                                            <td><%=product[i].product_value%></td>
+                                            <td><%=product[i].product_date%></td>
+                                            <td><%=product[i].product_state%></td>
+                                            <form method="post" action="/company/updateProductState/<%=product[i].product_num%>">
+                                                <td><button type="submit">판매종료</button></td>
+                                            </form>
+                                            <td><button onclick="location.href='/company/insertProduct'">리뷰</button></td>
+                                            <td><button onclick="location.href='/company/updateProduct/<%=product[i].product_num%>'">상품 수정</button></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        -->
+
+                    </div>
+             
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <form class="coupang_order">
+                        <h1 id="order_title">배송 주문</h1>
+                        <table class="table">
+                            <thead>
+                                <th>주문번호</th>
+                                <th>주문자</th>
+                                <th>주문일자</th>
+                                <th>주문상태</th>
+                            </thead>
+                            <tbody>
+                                <% for (var i = 0; i < directN.length; i++) { %>
+                                    <tr>
+                                        <td><a href="/company/selectOrder/<%=directN[i].order_num%>" style="color: black;"><%=directN[i].order_num%></a></td>
+                                        <td><%=directN[i].user_id%></td>
+                                        <td><%=directN[i].order_date%></td>
+                                        <td><%=directN[i].order_state%></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </form>
+                    <form class="joonggo_order">
+                        <h1 id="order_title">직거래 주문</h1>
+                        <table class="table">
+                            <thead>
+                                <th>주문번호</th>
+                                <th>주문자</th>
+                                <th>주문일자</th>
+                                <th>주문상태</th>
+                            </thead>
+                    
+                            <tbody>
+                                <% for (var i = 0; i < directY.length; i++) { %>
+                                    <tr>
+                                        <td><a href="/company/selectOrder/<%=directY[i].order_num%>" style="color: black;"><%=directY[i].order_num%></a></td>
+                                        <td><%=directY[i].user_id%></td>
+                                        <td><%=directY[i].order_date%></td>
+                                        <td><%=directY[i].order_state%></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <form>
+                        <div class="product_top">
+                        <a id="title">환불 목록</a>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                <th>주문번호</th>
+                                <th>주문자</th>
+                                <th>주문일자</th>
+                                <th>주문상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% for (var i = 0; i < refund.length; i++) { %>
+                                <tr>
+                                    <td><a href="/company/selectRefund/<%=refund[i].order_num%>" style="color: black;"><%=refund[i].order_num%></a></td>
+                                    <td><%=refund[i].user_id%></td>
+                                    <td><%=refund[i].order_date%></td>
+                                    <td><%=refund[i].order_state%></td>
+                                </tr> 
+                            </tbody>   
+                            <% } %>
+                            
+                        </table>
+
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <form>
+                        <h1 id="order_title">정산 내역</h1>
+                        <table class="table">
+                            <thead>
+                                <th scope="col">월별 수익</th>
+                                <th scope="col">수익 관게</th>
+                                <th scope="col">정산 년월</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <% for (var i=0; i < total.length; i++) { %>
+                                        <tr>
+                                            <td><%=total[i].total_company_profit%></td>
+                                            <td><%=total[i].company_relation%></td>
+                                            <td><%=total[i].total_ym%></td>
+                                        </tr>
+                                    <% } %>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

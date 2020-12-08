@@ -33,4 +33,21 @@
 
 </style>
 
-<input id="serch_bar" name="serch_value" autocomplete="off" placeholder="상품을 검색하세요.."></input>
+<input id="serch_bar" name="serch_value" autocomplete="off" placeholder="상품을 검색하세요.." onkeyup="javascript: if(event.keyCode == 13){serchStart()}"></input>
+
+<script>
+    function serchStart(){
+        console.log('엔터누름')
+
+        var serch_bar = document.getElementById('serch_bar').value
+
+        console.log(serch_bar)
+
+        var newfrom = document.createElement('form');
+        newfrom.setAttribute('method', 'get');
+        newfrom.setAttribute('action', '/serch/'+serch_bar);
+
+        document.body.appendChild(newfrom);
+        newfrom.submit();
+    }
+</script>

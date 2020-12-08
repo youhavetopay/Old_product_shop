@@ -8,7 +8,7 @@ class mainController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
 
-            conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
+            conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_before_price,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
             left outer join
             (select count(*) as order_count, orderinfo.product_num from orderinfo group by orderinfo.product_num) as o
             on  p.product_num = o.product_num) as rc, image as img where rc.product_num = img.fk_product_num 
@@ -147,15 +147,35 @@ class mainController {
         })
     }
 
+    async getSerchProductList(req, res, next){
+        pool.getConnection((err, conn)=>{
+            if(err) throw err;
+
+            conn.query(`SELECT p.product_num, p.product_name, p.product_price, p.product_before_price, i.image_content FROM product as p, image as i
+            where i.image_seq = 1 and p.product_state = '판매중' and p.product_num = i.fk_product_num and p.product_name like ?`,[
+                '%'+req.params.serchValue + '%'
+            ], (err, serch_list)=>{
+                if(err) throw err;
+
+                req.serchList = serch_list;
+
+                conn.release();
+                next();
+            })
+        })
+    }
+
     // 직거래 가능한 상품 가져오기  나중에 세션넣기
     async getDirectAbleList(req, res, next) {
         pool.getConnection((err, conn) => {
             if (err) throw err;
 
-            conn.query(`select p.product_num, p.product_name, p.product_price, i.image_content from product p, image i 
-                    where company_num in(select company_num from company where area_num = 2) 
+            conn.query(`select p.product_num, p.product_name, p.product_price, p.product_before_price,i.image_content from product p, image i 
+                    where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중'`,
+                    and image_seq = 1 and p.product_state = '판매중'`,[
+                        req.session.area_num
+                    ],
                 (err, direct_List) => {
                     if (err) throw err;
 
@@ -287,7 +307,7 @@ class mainController {
 
                 // 등록순 정렬
                 if (req.body.sortValue == 1) {
-                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_before_price,p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
                     left outer join
                     (select count(*) as order_count, orderinfo.product_num from orderinfo group by orderinfo.product_num) as o
                     on  p.product_num = o.product_num) as rc, image as img where rc.product_num = img.fk_product_num 
@@ -303,7 +323,7 @@ class mainController {
                 }
                 // 높은 가격순으로 했을 때
                 else if (req.body.sortValue == 2) {
-                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_before_price,p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
                     left outer join
                     (select count(*) as order_count, orderinfo.product_num from orderinfo group by orderinfo.product_num) as o
                     on  p.product_num = o.product_num) as rc, image as img where rc.product_num = img.fk_product_num 
@@ -320,7 +340,7 @@ class mainController {
 
                 // 낮은 가격순으로 했을 때
                 else if (req.body.sortValue == 3) {
-                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_before_price,p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
                     left outer join
                     (select count(*) as order_count, orderinfo.product_num from orderinfo group by orderinfo.product_num) as o
                     on  p.product_num = o.product_num) as rc, image as img where rc.product_num = img.fk_product_num 
@@ -335,7 +355,7 @@ class mainController {
 
                 // 리뷰갯수로 했을 때
                 else {
-                    conn.query(`select rc.*, img.image_content from (select oc.*, ifnull(rc.review_count, 0) as review_count from (select p.product_num, p.product_price, p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select oc.*, ifnull(rc.review_count, 0) as review_count from (select p.product_num, p.product_price,p.product_before_price, p.product_state,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
                     left outer join
                     (select count(*) as order_count, orderinfo.product_num from orderinfo group by orderinfo.product_num) as o
                     on  p.product_num = o.product_num) as oc
@@ -363,10 +383,12 @@ class mainController {
 
                 // 등록순 => 제품번호 순
                 if (req.body.sortValue == 1) {
-                    conn.query(`select p.product_num, p.product_name, p.product_price, i.image_content from product p, image i 
-                    where company_num in(select company_num from company where area_num = 2) 
+                    conn.query(`select p.product_num, p.product_name,p.product_before_price, p.product_price, i.image_content from product p, image i 
+                    where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중'`,
+                    and image_seq = 1 and p.product_state = '판매중'`,[
+                        req.session.area_num
+                    ],
                         (err, create_level) => {
                             if (err) throw err;
 
@@ -378,10 +400,12 @@ class mainController {
 
                 // 높은 가격 순
                 else if (req.body.sortValue == 2) {
-                    conn.query(`select p.product_num, p.product_name, p.product_price, i.image_content from product p, image i 
-                    where company_num in(select company_num from company where area_num = 2) 
+                    conn.query(`select p.product_num, p.product_name, p.product_price,p.product_before_price, i.image_content from product p, image i 
+                    where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중' order by p.product_price desc`,
+                    and image_seq = 1 and p.product_state = '판매중' order by p.product_price desc`,[
+                        req.session.area_num
+                    ],
                         (err, high_cost) => {
                             if (err) throw err;
 
@@ -395,10 +419,12 @@ class mainController {
 
                 // 낮은 가격 순
                 else if (req.body.sortValue == 3) {
-                    conn.query(`select p.product_num, p.product_name, p.product_price, i.image_content from product p, image i 
-                    where company_num in(select company_num from company where area_num = 2) 
+                    conn.query(`select p.product_num, p.product_name, p.product_price,p.product_before_price, i.image_content from product p, image i 
+                    where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중' order by p.product_price`, (err, low_cost) => {
+                    and image_seq = 1 and p.product_state = '판매중' order by p.product_price`, [
+                        req.session.area_num
+                    ],(err, low_cost) => {
                         if (err) throw err;
 
                         req.sortProductList = low_cost
@@ -409,12 +435,14 @@ class mainController {
 
                 // 리뷰 많은 순
                 else {
-                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_sort,p.product_price, p.company_num, p.product_state,p.product_name,ifnull(r.review_count, 0) as review_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_sort,p.product_before_price,p.product_price, p.company_num, p.product_state,p.product_name,ifnull(r.review_count, 0) as review_count from product as p
                     left outer join
                     (select count(*) as review_count, review.product_num from review group by review.product_num) as r
                     on  p.product_num = r.product_num
-                    where p.company_num in (select company_num from company where area_num = 2)) as rc, image as img where rc.product_num = img.fk_product_num 
-                    and img.image_seq = 1 and rc.product_state = '판매중' order by review_count desc`,
+                    where p.company_num in (select company_num from company where area_num = ?)) as rc, image as img where rc.product_num = img.fk_product_num 
+                    and img.image_seq = 1 and rc.product_state = '판매중' order by review_count desc`,[
+                        req.session.area_num
+                    ],
                         (err, review_sort) => {
                             if (err) throw err;
 
@@ -471,7 +499,7 @@ class mainController {
 
                 // 리뷰 많은 순
                 else {
-                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_date,p.product_price, p.product_state,p.product_name,ifnull(r.review_count, 0) as review_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_before_price,p.product_date,p.product_price, p.product_state,p.product_name,ifnull(r.review_count, 0) as review_count from product as p
                     left outer join
                     (select count(*) as review_count, review.product_num from review group by review.product_num) as r
                     on  p.product_num = r.product_num) as rc, image as img where rc.product_num = img.fk_product_num 
@@ -530,7 +558,7 @@ class mainController {
                 } else if (req.body.sortValue == 4) {
 
                     //리뷰 많은 순
-                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_sort,p.product_price, p.product_state,p.product_name,ifnull(r.review_count, 0) as review_count from product as p
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_sort,p.product_price, p.product_before_price,p.product_state,p.product_name,ifnull(r.review_count, 0) as review_count from product as p
                     left outer join
                     (select count(*) as review_count, review.product_num from review group by review.product_num) as r
                     on  p.product_num = r.product_num) as rc, image as img where rc.product_num = img.fk_product_num 

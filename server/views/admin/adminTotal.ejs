@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/stylesheets/adminpage.css' />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <style>
+        input {
+            margin-left: 170px;
+            border-radius: 20px;
+            width: 200px;
+            text-align: center;
+            height: 40px;
+        }
+
+        button {
+            border-radius: 20px;
+            color: #FFFFFF;
+            background-color: #ABE0A8;
+            border: 0;
+            width: 200px;
+            height: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="adminarea">
+    <%- include('../head/nav', {sess:sess})%>
+
+    <div id="title_name">
+        <h1>관리 팜</h1>
+    </div>
+    <br>
+    <br>
+
+    <div id="box">
+
+        <div id="main_body">
+
+            <div id="side_nav">
+                <div id="side_nav_body">
+                    <div style="padding: 5px;">
+                        <p  onclick="location.href='/admin'">신규 판매자 관리</p>
+                        <br>
+                        <br>
+                        <p onclick="location.href='/admin/coupon'">쿠폰 관리</p>
+                        <br>
+                        <br>
+                        <p id="color" onclick="location.href='/admin/selectCompany'">정산 관리</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="table">
+                <table class=table2>
+                    <p id="text">정산 목록</p>
+                    <thead id="thead">
+                        <tr>
+                            <td>정산년월</td>
+                            <td>총 매출</td>
+                            <td>업체 수익</td>
+                            <td>사이트 수익</td>
+                        </tr>
+
+                    </thead>
+                    <tbody id="tbody">
+                        <% if (total != undefined) { %>
+                        <% for(var i=0; i < total.length; i++ ) { %>
+                        <tr>
+
+                            <td>><%=total[i].total_ym%></a></td>
+                            <td><%=total[i].total_sum%></td>
+                            <td><%=total[i].total_company_profit%></td>
+                            <td><%=total[i].total_admin_profit%></td>
+
+                        </tr>
+                        <% } %>
+                        <% } else { %>
+                        <tr>
+                            <td>정산 내역이 없습니다.</td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <br>
+                <div id ="form">
+                    <form method="post" action="/admin/total/<%=num.company_num%>">
+                        <input type="month" name="date">
+                        <button type="submit" name="total">정산</button>
+                    </form> 
+                </div>
+                
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+</html>

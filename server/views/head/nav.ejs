@@ -8,15 +8,16 @@
         <div class="navbar-nav"">
 
             <% if(sess === undefined) { %>
-                <a class="nav-item nav-link" href="/users/login" style="margin-right: 10px;">로그인</a>
+                <a class="nav-item nav-link" href="/users/login" style="margin-right: 10px; font-size: 15px;">로그인</a>
             <% } else if (sess == "host") { %>
-                <a class="nav-item nav-link" href="#" style="margin-right: 10px;"><%= sess%>님</a>
+                <a class="nav-item nav-link" href="#" style="margin-right: 10px; font-size: 15px;"><%= sess%>님</a>
                 
-                <a class="nav-item nav-link" href="/users/logout" style="margin-right: 10px;">로그아웃</a>
+                <a class="nav-item nav-link" href="/users/logout" style="margin-right: 10px; font-size: 15px;">로그아웃</a>
             <% } else { %>
-                <a class="nav-item nav-link" href="#" style="margin-right: 10px;"><%= sess%>님</a>
-                <a class="nav-item nav-link" href="/users/mypage" style="margin-right: 10px;">마이페이지</a>
-                <a class="nav-item nav-link" href="/users/logout" style="margin-right: 10px;">로그아웃</a>
+                <a class="nav-item nav-link" href="#" style="margin-right: 10px; font-size: 15px;"><%= sess%>님</a>
+                <a class="nav-item nav-link" href="/order/basket" style="margin-right: 10px; font-size: 15px;">장바구니</a>
+                <a class="nav-item nav-link" href="/users/mypage" style="margin-right: 10px; font-size: 15px;">마이페이지</a>
+                <a class="nav-item nav-link" href="/users/logout" style="margin-right: 10px; font-size: 15px;">로그아웃</a>
             <% } %>
             <!-- <a class="nav-item nav-link active" href="#">은비님 <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="#">마이페이지</a>

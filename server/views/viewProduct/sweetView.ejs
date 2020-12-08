@@ -5,11 +5,25 @@
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='bootstrap/css/bootstrap.css' />
+
+  <link rel="stylesheet" href="/stylesheets/main_page.css">
+
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
 
 
   <style>
+    a {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:link,
+    a:hover,
+    a:active {
+      text-decoration: none;
+    }
+
     body {
       width: 1500px;
       height: 100%;
@@ -20,13 +34,14 @@
       color: #5A5A5A;
     }
 
-    #main_body {
+    /* #main_body {
       display: flex;
       flex-direction: row;
       margin-top: 25px;
     }
 
     #side_nav {
+      cursor: pointer;
       flex-basis: 200px;
       padding: 30px;
       padding-top: 0px;
@@ -97,7 +112,7 @@
     }
     .price_cancle{
       color: rgb(255, 175, 175); font-size: 15px;
-    }
+    } */
   </style>
 
 
@@ -106,7 +121,7 @@
 
 <body>
 
-    <%- include('../head/nav', {sess:sess})%>
+  <%- include('../head/nav', {sess:sess})%>
 
   <div id="title_name">
     <h1>파지 팜</h1>
@@ -141,21 +156,27 @@
       </div>
 
       <div id="main_title">
-        
-          
-          <div class="product_row">
-          
-            <% for(var data of productinfo){%>
-                <div class="product_item">
-                  <img src="../images/야채.png" alt="상품이미지" width="200" id="product_img">
-                  <span><%= data.product_name%></span>
-                  <div class="product_content">
-                    <del class="price_text price_cancle"><%= data.product_price+ 30000%></del><span
-                      class="price_text"><%= data.product_price%>원</span>
-                  </div>
-                </div>
-    
-              <%}%>
+
+
+        <div class="product_row">
+
+          <% for(var data of productinfo){%>
+          <a href="/product/<%= data.product_num%>">
+            <div class="product_item">
+
+              <img src="/images/productImage/<%= data.image_content%>" onerror="this.src='/images/야채.png'" alt="상품이미지"
+                width="200" height="200" id="product_img">
+
+              <span><%= data.product_name%></span>
+              <div class="product_content">
+                <del class="price_text price_cancle"><%= data.product_before_price%></del><span
+                  class="price_text"><%= data.product_price%>원</span>
+                  <span><%= (100 - ((data.product_price/data.product_before_price) *100)).toFixed(0) %>%</span>
+              </div>
+            </div>
+          </a>
+
+          <%}%>
           </div>
           
         
@@ -243,12 +264,25 @@
               main_title.appendChild(product_row);
             } 
 
+            var linkTagA = document.createElement('a');
+            linkTagA.href = '/product/'+product[i].product_num
+
             var product_item = document.createElement('div');
             product_item.className = 'product_item';
 
             var product_img = document.createElement('img');
-            product_img.setAttribute("src", '../images/야채.png');
-            product_img.setAttribute("width", 200)
+            
+              product_img.setAttribute("src", '../images/productImage/'+product[i].image_content);
+            
+
+            product_img.addEventListener("error", image_err(product_img));
+
+            function image_err(product_img){
+              product_img.setAttribute("src", '../images/야채.png');
+            }
+
+            product_img.style.width = '200px';
+            product_img.style.height = '200px';
             
 
             var product_name = document.createElement('span');
@@ -259,21 +293,26 @@
 
             var del_price = document.createElement('del');
             del_price.className = 'price_text price_cancle';
-            del_price.innerHTML = '80000'
+            del_price.innerHTML = product[i].product_before_price;
 
             var real_price = document.createElement('span');
             real_price.className = 'price_text';
             real_price.innerHTML = product[i].product_price+'원';
 
+            var sale_p = document.createElement('span');
+            sale_p.innerHTML = (100 - ((product[i].product_price/product[i].product_before_price) *100)).toFixed(0) + "%"
+
             product_content.appendChild(del_price);
             product_content.appendChild(real_price);
-
+            product_content.appendChild(sale_p);
+            
             product_item.appendChild(product_img);
             product_item.appendChild(product_name);
             product_item.appendChild(product_content);
 
-            product_row.appendChild(product_item);
+            linkTagA.appendChild(product_item)
 
+            product_row.appendChild(linkTagA);
           }
 
           
