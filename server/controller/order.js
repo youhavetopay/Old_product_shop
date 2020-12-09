@@ -151,7 +151,7 @@ class orderController {
             console.log(req.body.product_num);
             console.log(req.body.product_num.length);
 
-            if (req.body.product_num.length != -5) {
+            if (req.body.product_num != -5) {
                 console.log('바로주문 목록 하고있음에서 가져오고 있음');
                 conn.query(`select p.product_num, p.product_name, p.product_price, i.image_content, case when (product_num in(select product_num from product where company_num in (select company_num from bookmark where user_id = ?))) 
                 then round(product_price * 0.95)
@@ -270,7 +270,7 @@ class orderController {
 
             // 바로주문
             console.log(req.body.product_count, '바로주문인지 아닌지 확인하기');
-            if (req.body.product_count != 0) {
+            if (req.body.product_count != -5) {
 
                 console.log('바로주문');
 
@@ -317,7 +317,7 @@ class orderController {
                                 '주문완료',
                                 'Y',
                                 req.session.user_id,
-                                'N'
+                                'none'
                             ], (err) => {
                                 if (err) throw err;
                                 //가장 최근 주문 번호 가져오기
@@ -379,7 +379,7 @@ class orderController {
                                     '주문완료',
                                     'N',
                                     req.session.user_id,
-                                    'N'
+                                    'none'
                                 ], (err) => {
                                     if (err) throw err;
 
@@ -470,7 +470,7 @@ class orderController {
                         // 직거래
                         if (req.body.post_num != -1) {
                             console.log('직거래');
-                            conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
+                            conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                                 null,
                                 real_total_money,
                                 moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -482,7 +482,8 @@ class orderController {
                                 req.body.detail_adr,
                                 '주문완료',
                                 'Y',
-                                req.session.user_id
+                                req.session.user_id,
+                                'none'
                             ], (err) => {
                                 if (err) throw err;
                                 conn.query('select max(order_num) as order_num from orders',
@@ -566,7 +567,7 @@ class orderController {
                                 if (err) throw err;
 
 
-                                conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?)', [
+                                conn.query('insert into orders values(?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                                     null,
                                     real_total_money,
                                     moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -578,7 +579,8 @@ class orderController {
                                     address_info[0].place_addrinfo,
                                     '주문완료',
                                     'N',
-                                    req.session.user_id
+                                    req.session.user_id,
+                                    'none'
                                 ], (err) => {
                                     if (err) throw err;
 
