@@ -198,7 +198,7 @@ class orderController {
                 })
             } else {
                 console.log('장바구니에서 가져오고 있음');
-                conn.query(`SELECT p.product_num, p.product_name, p.product_price, i.image_content, bi.bakset_sum, 
+                conn.query(`SELECT p.product_num, p.product_name, p.product_price, p.product_value,p.product_state,i.image_content, bi.bakset_sum, 
                 case when (p.product_num in(select product_num from product where product.company_num in (select bookmark.company_num from bookmark where user_id = ?))) 
                                 then round(product_price * 0.95)
                                 else product_price end as new_price
@@ -208,6 +208,21 @@ class orderController {
                     req.session.user_id, req.session.user_id
                 ], (err, order_product_list) => {
                     if (err) throw err;
+
+                    req.value_check = false;
+                    for (var j = 0; j < order_product_list.length; j++) {
+                        if (order_product_list[j].product_value < order_product_list[j].bakset_sum || order_product_list[j].product_state == '판매마감') {
+                            conn.query('delete from baksetinfo where basket_num = (select basket_num from bakset where user_id = ?) and product_num = ?', [
+                                req.session.user_id, order_product_list[j].product_num
+                            ], (err) => {
+                                if (err) throw err;
+
+                                req.value_check = true;
+                                console.log('jj', j);
+                                console.log(req.value_check);
+                            })
+                        }
+                    }
 
                     conn.query('select * from place where user_id = ?', [
                         req.session.user_id
@@ -234,6 +249,7 @@ class orderController {
                                         break;
                                     }
                                 }
+
 
                                 var total_money = 0;
                                 for (var data of order_product_list) {

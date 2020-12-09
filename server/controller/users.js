@@ -89,7 +89,7 @@ class userController {
                                                             .add("1", "M")
                                                             .format("YYYY-MM-DD");
 
-                                                        conn.query('insert into coupon values(?,?,?,?,?,?)', [
+                                                        conn.query('insert into coupon values(?,?,?,?,?,?,?)', [
                                                             null,
                                                             '신규회원1천원할인쿠폰',
                                                             last_use_day,

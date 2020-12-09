@@ -8,17 +8,23 @@ class mainController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
 
-            conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_before_price,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
+            conn.query(`update product set product_state = '판매마감' where product_value <= 0 or date(now()) > date(product_date);`,
+                (err) => {
+                    if (err) throw err;
+
+                    conn.query(`select rc.*, img.image_content from (select p.product_num, p.product_price, p.product_state,p.product_before_price,p.product_name,ifnull(o.order_count, 0) as order_count from product as p
             left outer join
             (select count(*) as order_count, orderinfo.product_num from orderinfo group by orderinfo.product_num) as o
             on  p.product_num = o.product_num) as rc, image as img where rc.product_num = img.fk_product_num 
             and img.image_seq = 1 and rc.product_state = '판매중' order by order_count desc limit 8`,
-                (err, main_product_list) => {
-                    if (err) throw err;
+                        (err, main_product_list) => {
+                            if (err) throw err;
 
-                    req.main_product_list = main_product_list;
-                    conn.release();
-                    next();
+                            req.main_product_list = main_product_list;
+                            conn.release();
+                            next();
+                        })
+
                 })
         })
     }
@@ -147,15 +153,15 @@ class mainController {
         })
     }
 
-    async getSerchProductList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
+    async getSerchProductList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
 
             conn.query(`SELECT p.product_num, p.product_name, p.product_price, p.product_before_price, i.image_content FROM product as p, image as i
-            where i.image_seq = 1 and p.product_state = '판매중' and p.product_num = i.fk_product_num and p.product_name like ?`,[
-                '%'+req.params.serchValue + '%'
-            ], (err, serch_list)=>{
-                if(err) throw err;
+            where i.image_seq = 1 and p.product_state = '판매중' and p.product_num = i.fk_product_num and p.product_name like ?`, [
+                '%' + req.params.serchValue + '%'
+            ], (err, serch_list) => {
+                if (err) throw err;
 
                 req.serchList = serch_list;
 
@@ -173,9 +179,9 @@ class mainController {
             conn.query(`select p.product_num, p.product_name, p.product_price, p.product_before_price,i.image_content from product p, image i 
                     where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중'`,[
-                        req.session.area_num
-                    ],
+                    and image_seq = 1 and p.product_state = '판매중'`, [
+                    req.session.area_num
+                ],
                 (err, direct_List) => {
                     if (err) throw err;
 
@@ -187,27 +193,27 @@ class mainController {
     }
 
     // 판매기간이 오늘까지 인거 가져오기
-    async getLastList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
+    async getLastList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
 
             conn.query(`SELECT * FROM product, image WHERE date(product_date) = date(now()) and product_state = '판매중' and image_seq = 1 and product_num = fk_product_num ORDER BY product_num`,
-                        (err, last_list) => {
-                            if (err) throw err;
+                (err, last_list) => {
+                    if (err) throw err;
 
-                            req.lastList = last_list;
-                            conn.release();
-                            next();
-                        })
+                    req.lastList = last_list;
+                    conn.release();
+                    next();
+                })
         })
     }
 
 
     // 버섯 상품 가져오기
-    async getmushList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
-            
+    async getmushList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+
             conn.query('select * from product, image where image.image_seq = 1 and product.product_num = image.fk_product_num and product_state = ? and product_sort = ?', [
                 '판매중', '버섯'
             ], (err, mush_list) => {
@@ -222,10 +228,10 @@ class mainController {
 
 
     // 양파 상품 가져오기
-    async getOnionList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
-            
+    async getOnionList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+
             conn.query('select * from product, image where image.image_seq = 1 and product.product_num = image.fk_product_num and product_state = ? and product_sort = ?', [
                 '판매중', '양파'
             ], (err, onion_list) => {
@@ -240,10 +246,10 @@ class mainController {
 
 
     // 감자 상품 가져오기
-    async getPotatoList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
-            
+    async getPotatoList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+
             conn.query('select * from product, image where image.image_seq = 1 and product.product_num = image.fk_product_num and product_state = ? and product_sort = ?', [
                 '판매중', '감자'
             ], (err, potato_list) => {
@@ -258,10 +264,10 @@ class mainController {
 
 
     // 호박 상품 가져오기
-    async getPumkinList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
-            
+    async getPumkinList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+
             conn.query('select * from product, image where image.image_seq = 1 and product.product_num = image.fk_product_num and product_state = ? and product_sort = ?', [
                 '판매중', '호박'
             ], (err, pumkin_list) => {
@@ -276,10 +282,10 @@ class mainController {
 
 
     // 고구마 상품 가져오기
-    async getSweetList(req, res, next){
-        pool.getConnection((err, conn)=>{
-            if(err) throw err;
-            
+    async getSweetList(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+
             conn.query('select * from product, image where image.image_seq = 1 and product.product_num = image.fk_product_num and product_state = ? and product_sort = ?', [
                 '판매중', '고구마'
             ], (err, sweet_list) => {
@@ -386,9 +392,9 @@ class mainController {
                     conn.query(`select p.product_num, p.product_name,p.product_before_price, p.product_price, i.image_content from product p, image i 
                     where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중'`,[
-                        req.session.area_num
-                    ],
+                    and image_seq = 1 and p.product_state = '판매중'`, [
+                            req.session.area_num
+                        ],
                         (err, create_level) => {
                             if (err) throw err;
 
@@ -403,9 +409,9 @@ class mainController {
                     conn.query(`select p.product_num, p.product_name, p.product_price,p.product_before_price, i.image_content from product p, image i 
                     where company_num in(select company_num from company where area_num = ?) 
                     and product_num = fk_product_num 
-                    and image_seq = 1 and p.product_state = '판매중' order by p.product_price desc`,[
-                        req.session.area_num
-                    ],
+                    and image_seq = 1 and p.product_state = '판매중' order by p.product_price desc`, [
+                            req.session.area_num
+                        ],
                         (err, high_cost) => {
                             if (err) throw err;
 
@@ -424,7 +430,7 @@ class mainController {
                     and product_num = fk_product_num 
                     and image_seq = 1 and p.product_state = '판매중' order by p.product_price`, [
                         req.session.area_num
-                    ],(err, low_cost) => {
+                    ], (err, low_cost) => {
                         if (err) throw err;
 
                         req.sortProductList = low_cost
@@ -440,9 +446,9 @@ class mainController {
                     (select count(*) as review_count, review.product_num from review group by review.product_num) as r
                     on  p.product_num = r.product_num
                     where p.company_num in (select company_num from company where area_num = ?)) as rc, image as img where rc.product_num = img.fk_product_num 
-                    and img.image_seq = 1 and rc.product_state = '판매중' order by review_count desc`,[
-                        req.session.area_num
-                    ],
+                    and img.image_seq = 1 and rc.product_state = '판매중' order by review_count desc`, [
+                            req.session.area_num
+                        ],
                         (err, review_sort) => {
                             if (err) throw err;
 
