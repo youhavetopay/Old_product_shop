@@ -16,7 +16,8 @@ router.post('/', order.getOrderProduct,(req, res, next)=>{
         user_card:req.user_card, 
         count:req.body.product_count,
         totalMoney: req.total_money,
-        check_basket: req.basket_check
+        check_basket: req.basket_check,
+        check_area : req.check_area
     })
 })
 

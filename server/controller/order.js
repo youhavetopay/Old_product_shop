@@ -170,15 +170,27 @@ class orderController {
                         ], (err, user_card) => {
                             if (err) throw err;
 
+                            conn.query(`select area_num from company where 
+                            company_num = (select company_num from product where product_num = ?)`, [
+                                req.body.product_num
+                            ], (err, check_area) => {
+                                if (err) throw err;
 
-                            req.order_product_list = order_product_list;
-                            req.user_address = user_address;
-                            req.user_card = user_card;
-                            req.basket_check = false;
-                            req.total_money = order_product_list[0].new_price * req.body.product_count
+                                if (check_area[0].area_num == req.session.area_num) {
+                                    req.check_area = true;
+                                } else {
+                                    req.check_area = false;
+                                }
 
-                            conn.release();
-                            next();
+                                req.order_product_list = order_product_list;
+                                req.user_address = user_address;
+                                req.user_card = user_card;
+                                req.basket_check = false;
+                                req.total_money = order_product_list[0].new_price * req.body.product_count
+
+                                conn.release();
+                                next();
+                            })
 
                         })
                     })
@@ -207,20 +219,37 @@ class orderController {
                         ], (err, user_card) => {
                             if (err) throw err;
 
-                            var total_money = 0;
-                            for (var data of order_product_list) {
-                                total_money += data.new_price * data.bakset_sum
-                            }
+                            conn.query(`select area_num from company where 
+                            company_num in (select company_num from product where 
+                            product_num in (select product_num from baksetinfo where 
+                            basket_num = (select basket_num from bakset where user_id = ?)))`, [
+                                req.session.user_id
+                            ], (err, check_area) => {
+                                if (err) throw err;
 
+                                req.check_area = true;
+                                for (var i = 0; i < check_area.length; i++) {
+                                    if (req.session.area_num != check_area[i].area_num) {
+                                        req.check_area = false;
+                                        break;
+                                    }
+                                }
 
-                            req.order_product_list = order_product_list;
-                            req.user_address = user_address;
-                            req.user_card = user_card;
-                            req.basket_check = true;
-                            req.total_money = total_money
+                                var total_money = 0;
+                                for (var data of order_product_list) {
+                                    total_money += data.new_price * data.bakset_sum
+                                }
 
-                            conn.release();
-                            next();
+                                req.order_product_list = order_product_list;
+                                req.user_address = user_address;
+                                req.user_card = user_card;
+                                req.basket_check = true;
+                                req.total_money = total_money
+
+                                conn.release();
+                                next();
+
+                            })
 
                         })
                     })
@@ -495,11 +524,23 @@ class orderController {
 
                                         var temp_basket_info = basket_info;
 
+                                        if (((basket_info[0].product_price - basket_info[0].new_price) + temp_coupon_money) > basket_info[0].product_price) {
+                                            sales_money = basket_info[0].product_price
+                                            temp_coupon_money = temp_coupon_money - (basket_info[0].product_price - basket_info[0].new_price)
+                                        } else {
+                                            if (i == 0) {
+                                                sales_money = (basket_info[0].product_price - basket_info[0].new_price) + temp_coupon_money
+                                            } else {
+                                                sales_money = (basket_info[0].product_price - basket_info[0].new_price)
+                                            }
+
+                                        }
+
                                         console.log(' 1');
 
                                         for (var i = 0; i < basket_info.length; i++) {
                                             console.log(basket_info[i].bakset_sum, basket_info[i].product_num, i, "  i")
-                                            if(i == 0){
+                                            if (i == 0) {
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
@@ -509,11 +550,10 @@ class orderController {
                                                 ], (err) => {
                                                     if (err) throw err;
                                                     sales_money = 0;
-                                                    console.log(basket_info,' 3');
-                                                
+                                                    console.log(basket_info, ' 3');
+
                                                 })
-                                            }
-                                            else{
+                                            } else {
                                                 conn.query('insert into orderinfo values(?,?,?,?,?)', [
                                                     basket_info[i].product_num,
                                                     order_num[0].order_num,
@@ -523,13 +563,13 @@ class orderController {
                                                 ], (err) => {
                                                     if (err) throw err;
                                                     sales_money = 0;
-                                                    console.log(basket_info,' 3');
-                                                
+                                                    console.log(basket_info, ' 3');
+
                                                 })
                                             }
 
                                         }
-                                        for(var j= 0; j<basket_info.length; j++){
+                                        for (var j = 0; j < basket_info.length; j++) {
                                             console.log(basket_info[j].bakset_sum, basket_info[j].product_num, j, "  j")
                                             conn.query('update product set product_value = product_value - ? where product_num = ?', [
                                                 basket_info[j].bakset_sum, basket_info[j].product_num
@@ -606,12 +646,12 @@ class orderController {
                                                 ], (err) => {
                                                     if (err) throw err;
                                                     sales_money = 0;
-                                                    console.log(basket_info,' 3');
-                                                
+                                                    console.log(basket_info, ' 3');
+
                                                 })
 
                                             }
-                                            for(var j= 0; j<basket_info.length; j++){
+                                            for (var j = 0; j < basket_info.length; j++) {
                                                 console.log(basket_info[j].bakset_sum, basket_info[j].product_num, j, "  j")
                                                 conn.query('update product set product_value = product_value - ? where product_num = ?', [
                                                     basket_info[j].bakset_sum, basket_info[j].product_num

@@ -28,14 +28,13 @@ router.post('/updateProductState/:product_num', company.updateProductState, (req
 
 //공급업체 수정
 router.get('/updateProduct/:product_num', (req, res, next) => {
-    res.render('company/updateProduct.ejs')
+    res.render('company/updateProduct.ejs',{product_num : req.params.product_num})
 })
 
 router.post('/updateProduct/:product_num', company.updateProduct, (req, res, next) => {
-    res.send('<script type="text/javascript">alert("상품이 수정 되었습니다.);location.href="/company";</script>')
-})
+    res.send('<script type="text/javascript">alert("상품이 수정 되었습니다.");location.href="/company";</script>');
 
-
+});
 // //공급업체 배송 주문, 직거래 주문 목록
 // router.get('/selectOrder', company.selectOrder, (req, res, next) => {
 //     res.render('company/company_orderList.ejs', {sess:req.session.user_id, directY: req.directY, directN: req.directN})

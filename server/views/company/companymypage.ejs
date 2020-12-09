@@ -104,8 +104,8 @@
                                     <span class="order_info">판매마감기간 : <%= data.product_date %></span>
                                 </div>
                                 <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
-                                    <a href="#"><button class="order_btn" >판매종료</button></a>
-                                    <a href="#"><button class="order_btn" >수정</button></a>
+                                    <button class="order_btn"  onclick="stopSale(`<%= data.product_num%>`)">판매종료</button>
+                                    <a href="/company/updateProduct/<%= data.product_num%>"><button class="order_btn" >수정</button></a>
                                 </div>
                             </div>
                            
@@ -236,6 +236,20 @@
         </div>
     </div>
 
+
+    <script>
+        function stopSale(product_num){
+            var form = document.createElement('form');
+
+            form.setAttribute('method','post');
+            form.setAttribute('action', '/company/updateProductState/'+product_num);
+            document.charset = "utf-8";
+
+            document.body.appendChild(form);
+
+            form.submit();
+        }
+    </script>
 
 
 
