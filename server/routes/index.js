@@ -5,7 +5,7 @@ const main = new mainController();
 
 // 메인화면 렌더링
 router.get('/', main.getProductListMain, (req, res, next) =>{
-    res.render('index.ejs', {title: '아이즈원', sess : req.session.user_id, productinfo: req.main_product_list});
+    res.render('index.ejs', {title: '파지 팜', sess : req.session.user_id, productinfo: req.main_product_list});
   });
 
 

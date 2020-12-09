@@ -20,13 +20,28 @@ class companyController {
                         );
                     } else {
                         console.log("ssss", req.session.company_num);
-                        if (req.session.company_num == 0) {
+                        if (req.session.company_num == 0 || yn.length <= 0) {
                             console.log("sssdsff");
                             conn.release();
                             res.send(
                                 '<script type="text/javascript">alert("공급업체 회원이 아닙니다.");location.href="/";</script>'
                             );
-                        } else {
+                        } 
+                        else if(yn[yn.length-1].company_whether == 'N'){
+                            conn.release();
+                            if(yn[yn.length-1].company_reason == 'none'){
+                                res.send(
+                                    '<script type="text/javascript">alert("현재 검토 중입니다.");location.href="/";</script>'
+                                );
+                            }
+                            else{
+                                res.send(
+                                    '<script type="text/javascript">alert("거절 사유: '+yn[yn.length-1].company_reason+'");location.href="/";</script>'
+                                );
+                            }
+                        }
+                        
+                        else {
                             console.log(yn.length);
                             console.log(yn[0]);
                             console.log(yn[0].company_num);
@@ -278,7 +293,7 @@ class companyController {
                 }
 
                 // 날짜 검사해서 현재 날짜보다 전의 날짜 입력하면 전 페이지로 돌아가게 해야될 것 같음
-                const sql = `UPDATE product SET product_price = ?, product_value = ?, product_detail = ?, product_date == ? WHERE product_num = "${req.params.product_num}"`;
+                const sql = `UPDATE product SET product_price = ?, product_value = ?, product_detail = ?, product_date = ? WHERE product_num = "${req.params.product_num}"`;
                 const val = [
                     req.body.product_price,
                     req.body.product_value,

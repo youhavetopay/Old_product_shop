@@ -3,7 +3,9 @@ let moment = require("moment");
 require("moment-timezone");
 moment.tz.setDefault("Asia/Seoul");
 const e = require("express");
-const { post } = require("../routes/users");
+const {
+    post
+} = require("../routes/users");
 
 class userController {
     async selectArea(req, res, next) {
@@ -83,8 +85,26 @@ class userController {
                                                     (err) => {
                                                         if (err) throw err;
 
-                                                        conn.release();
-                                                        next();
+                                                        var last_use_day = moment(d.getTime())
+                                                            .add("1", "M")
+                                                            .format("YYYY-MM-DD");
+
+                                                        conn.query('insert into coupon values(?,?,?,?,?,?,?)', [
+                                                            null,
+                                                            '신규회원1천원할인쿠폰',
+                                                            last_use_day,
+                                                            1000,
+                                                            'N',
+                                                            moment().format('YYYY-MM-DD'),
+                                                            req.body.user_id
+                                                        ], (err) => {
+                                                            if (err) throw err;
+
+                                                            conn.release();
+                                                            next();
+                                                        })
+
+
                                                     }
                                                 );
                                             }
@@ -235,19 +255,19 @@ class userController {
 
                                     console.log(
                                         moment
-                                            .duration(
-                                                nowTime.diff(last_login_time)
-                                            )
-                                            .asDays()
+                                        .duration(
+                                            nowTime.diff(last_login_time)
+                                        )
+                                        .asDays()
                                     );
 
                                     //현재 시간이랑 비교하기
                                     if (
                                         moment
-                                            .duration(
-                                                nowTime.diff(last_login_time)
-                                            )
-                                            .asDays() >= 30
+                                        .duration(
+                                            nowTime.diff(last_login_time)
+                                        )
+                                        .asDays() >= 30
                                     ) {
                                         conn.query(
                                             "insert into coupon values (?,?,?,?,?,?,?)",
@@ -283,7 +303,7 @@ class userController {
                                                 // 추천한 수가 3배수 일때 쿠폰 지급
                                                 var count = parseInt(
                                                     count_recom[0].recomCount /
-                                                        3
+                                                    3
                                                 );
 
                                                 console.log(count);
@@ -296,9 +316,7 @@ class userController {
                                                         req.couponCheck = true;
 
                                                         for (
-                                                            var i = 0;
-                                                            i < count;
-                                                            i++
+                                                            var i = 0; i < count; i++
                                                         ) {
                                                             conn.query(
                                                                 "insert into coupon values (?,?,?,?,?,?,?)",
@@ -312,7 +330,7 @@ class userController {
                                                                         "YYYY-MM-DD"
                                                                     ),
                                                                     req.body
-                                                                        .user_id,
+                                                                    .user_id,
                                                                 ],
                                                                 (err) => {
                                                                     if (err)
@@ -822,29 +840,29 @@ class userController {
                 conn.query(sql, (err, row1) => {
                     if (err) throw err;
                     else {
-                        console.log("로그5"); 
+                        console.log("로그5");
                         console.log(row1);
                         console.log(req.params.order_num);
-                         
-                            const sql2 = `INSERT INTO review(review_score, review_content, review_date, review_image, user_id, product_num, order_num) VALUES(?,?,?,?,?,?,?)`;
-                            const val = [
-                                req.body.review_score,
-                                req.body.review_content,
-                                moment().format("YYYY-MM-DD"),
-                                req.file.filename,
-                                req.session.user_id,
-                                row1[0].product_num,
-                                req.params.order_num
-                            ];
 
-                            conn.query(sql2, val, (err, row2) => {
-                                if (err) throw err;
-                                else {
-                                    conn.release();
-                                    next();
-                                }
-                            });
-                        
+                        const sql2 = `INSERT INTO review(review_score, review_content, review_date, review_image, user_id, product_num, order_num) VALUES(?,?,?,?,?,?,?)`;
+                        const val = [
+                            req.body.review_score,
+                            req.body.review_content,
+                            moment().format("YYYY-MM-DD"),
+                            req.file.filename,
+                            req.session.user_id,
+                            row1[0].product_num,
+                            req.params.order_num
+                        ];
+
+                        conn.query(sql2, val, (err, row2) => {
+                            if (err) throw err;
+                            else {
+                                conn.release();
+                                next();
+                            }
+                        });
+
                     }
                 });
             }

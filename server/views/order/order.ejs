@@ -81,6 +81,12 @@
       cursor: pointer;
     }
 
+    #deliver_no_area{
+      margin: auto;
+      text-align: center;
+      cursor: pointer;
+    }
+
     .selelct_method span {
       font-size: 25px;
       padding: 10px;
@@ -246,12 +252,18 @@
         </div>
       </div> -->
           <div class="flex_row">
-            <div class="selelct_method" id="deliver_btn">
-              <span id="deliver_text">배송</span>
-            </div>
-            <div class="selelct_method" id="direct_btn">
-              <span id="direct_text">직거래</span>
-            </div>
+            <% if(check_area == true){%>
+              <div class="selelct_method" id="deliver_btn">
+                <span id="deliver_text">배송</span>
+              </div>
+              <div class="selelct_method" id="direct_btn">
+                <span id="direct_text">직거래</span>
+              </div>
+            <%}else{%>
+              <div class="selelct_method" id="deliver_no_area">
+                <span id="deliver_text">배송</span>
+              </div>
+            <%}%>
           </div>
 
           <select name="card_select_del" id="select_card" class="select_user_info"
