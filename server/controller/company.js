@@ -193,6 +193,15 @@ class companyController {
                     req.session.product_sort = "양파"
                 }
 
+                console.log(req.body.method);
+                if (req.body.method == 1) {
+                    req.session.product_method = "냉동"
+                } else if (req.body.method == 2) {
+                    req.session.product_method = "냉장"
+                } else if (req.body.method == 3) {
+                    req.session.product_method = "실온"
+                } 
+
                 // const sql = `INSERT INTO product(?,?,?,?,?,?,?,?,?) VALUES (?,?,?,?,?,?,?,?,?)`;
                 // const val = [
                 //     req.body.product_name,
@@ -215,7 +224,7 @@ class companyController {
                         req.session.product_sort,
                         req.body.product_date,
                         req.body.product_weight,
-                        req.body.product_method,
+                        req.session.product_method,
                         req.session.company_num,
                         '판매중',
                         req.body.product_before_price
