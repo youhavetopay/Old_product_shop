@@ -607,9 +607,8 @@ class userController {
                     req.body.place_num == "" ||
                     req.body.place_addr == "" ||
                     req.body.place_addrinfo == "" ||
-                    req.body.place_name == "" ||
-                    req.body.place_userNM == "" ||
-                    req.body.place_tel == ""
+                    req.body.place_name == "" 
+                    
                 ) {
                     res.send(
                         '<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>'
@@ -617,14 +616,13 @@ class userController {
                 }
 
                 // 배송지 추가하기
-                const sql = `INSERT INTO place(place_num, place_addr, place_addrinfo, place_name, place_userNM, place_tel, user_id) VALUES (?,?,?,?,?,?,?)`;
+                const sql = `INSERT INTO place(place_num, place_addr, place_addrinfo, place_name,  user_id) VALUES (?,?,?,?,?)`;
                 const val = [
                     req.body.place_num,
                     req.body.place_addr,
                     req.body.place_addrinfo,
                     req.body.place_name,
-                    req.body.place_userNM,
-                    req.body.place_tel,
+                    
                     req.session.user_id,
                 ];
 
@@ -667,9 +665,8 @@ class userController {
                 req.body.place_num == "" ||
                 req.body.place_addr == "" ||
                 req.body.place_addrinfo == "" ||
-                req.body.place_name == "" ||
-                req.body.place_userNM == "" ||
-                req.body.place_tel == ""
+                req.body.place_name == "" 
+               
             ) {
                 res.send(
                     '<script type="text/javascript">alert("정보를 입력해주세요.");history.back();</script>'
@@ -677,23 +674,21 @@ class userController {
             }
 
             // 배송지 수정하기
-            const sql = `UPDATE place SET place_num = ?, place_addr = ?, place_addrinfo = ?, place_name = ?, place_userNM = ?, place_tel = ? WHERE place_id = "${req.params.place_id}"`;
+            const sql = `UPDATE place SET place_num = ?, place_addr = ?, place_addrinfo = ?, place_name = ? WHERE place_id = "${req.params.place_id}"`;
             const val = [
                 req.body.place_num,
                 req.body.place_addr,
                 req.body.place_addrinfo,
                 req.body.place_name,
-                req.body.place_userNM,
-                req.body.place_tel,
+                
             ];
 
             if (
                 place.place_num == "" ||
                 place.place_addr == "" ||
                 place.place_addrinfo == "" ||
-                place.place_name == "" ||
-                place.place_userNM == "" ||
-                place.place_tel == ""
+                place.place_name == "" 
+                
             ) {
                 res.send(
                     '<script type="text/javascript">alert("정보를 다시 입력해주세요.");history.back();</script>'
