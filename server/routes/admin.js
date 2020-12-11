@@ -40,7 +40,7 @@ router.post('/insertCoupon', admin.insertCoupon, (req, res, next) => {
 
 
 //정산 - 업체 리스트 가져오기
-router.get('/selectCompany', admin.selectCompany, (req, res, next) => {
+router.get('/selectCompany', admin.selectCompany2, (req, res, next) => {
     res.render('admin/admin_selectCompany.ejs', {sess: req.session.user_id, companyinfo: req.companyinfo })
 })
 
