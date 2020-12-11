@@ -10,6 +10,28 @@ class adminController {
         pool.getConnection((err, conn) => {
             if (err) throw err;
             else {
+                const sql = `SELECT * FROM company as c, users as u WHERE c.user_id = u.user_id`
+
+                conn.query(sql, (err, row) => {
+                    if (err) throw err;
+                    else {
+                        req.companyinfo = row
+                        console.log(row);
+                        conn.release();
+                        next();
+                    }
+                })
+            }
+        })
+    }
+
+
+
+    //공급업체 승인완료 리스트 가져오기
+    async selectCompany2(req, res, next) {
+        pool.getConnection((err, conn) => {
+            if (err) throw err;
+            else {
                 const sql = `SELECT * FROM company as c, users as u WHERE c.user_id = u.user_id AND c.company_whether = "승인 완료"`
 
                 conn.query(sql, (err, row) => {
