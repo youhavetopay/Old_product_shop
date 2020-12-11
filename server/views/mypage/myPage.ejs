@@ -145,9 +145,9 @@
                     <a href="javascript:popupOpen2();" class="border border-secondary"> + 배송지 등록 </a>
                     <table class="table">
                         <thead>
-                            <th scope="col">배송지명<br>수령인</th>
+                            <th scope="col">배송지명</th>
                             <th scope="col">주소</th>
-                            <th scope="col">연락처</th>
+
                             <th scope="col">수정</th>
                             <th scope="col">삭제</th>
                         </thead>
@@ -160,9 +160,9 @@
 
                             <tr>
                             <% for(var i = 0; i < placeinfo.length; i++) { %>
-                                <td><%= placeinfo[i].place_name %><br><%= placeinfo[i].place_userNM %></td>
+                                <td><%= placeinfo[i].place_name %></td>
                                 <td><%= placeinfo[i].place_addr %><br><%= placeinfo[i].place_addrinfo %></td>
-                                <td><%= placeinfo[i].place_tel %></td>
+                                
                                 <td><button class="control_btn"><a href="/users/mypage/updatePlace/<%= placeinfo[i].place_id %>">수정</a></button></td>
                                 <td><button class="control_btn"><a href="/users/mypage/deletePlace/<%= placeinfo[i].place_id %>">삭제</a></button></td>
                             </tr> 
