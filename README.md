@@ -1,3 +1,1 @@
-# Old_product_shop
-
-# 시작하기 전에 npm install 하고 하기
+# 파지상품 판매 사이트
