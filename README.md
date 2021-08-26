@@ -1,7 +1,7 @@
 파지상품 판매 사이트
 ======================
 ---
-<img src="readme_Img/파지상품로그인화면.PNG" alt="login"></img><img src="readme_Img/파지상품메인화면.PNG" alt="login"></img><br/>
+<img src="readme_Img/파지상품로그인화면.PNG" width="441px" alt="login"></img>  <img src="readme_Img/파지상품메인화면.PNG" width="400px" alt="login"></img><br/>
 #### 서비스 소개
  농산물의 경우 모양이 이상하면 상품의 값어치가 떨어져 버려지는 경우가 많다. 
  이러한 상품들을 '파지 상품'이라고 합니다. 
@@ -18,7 +18,7 @@
 
 ### 1. 시스템 구성도
 
-구성도 사진 넣기
+
 
 * 프론트로는 HTML, CSS, JS, Bootstrap, jQuery 등을 이용하여 개발
 * 백엔드 서버로는 Node.js의 Express을 사용하여 개발
@@ -26,7 +26,7 @@
 
 ### 2. 데이터베이스 설계
 
-ERD 사진 넣기
+<img src="readme_Img/ERD.PNG" width="400px" alt="login"></img><br/>
 
 ### 3. 기능 소개
 * 회원 관리    
