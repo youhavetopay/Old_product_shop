@@ -52,6 +52,18 @@
        
         color: #565756;
     }
+
+    #order_btn2 {
+    border: 1px solid rgb(216, 216, 216);
+    background: none;
+    width: 200px;
+    height: 50px;
+    margin-left: 70px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+   
+}
 </style>
 
 <body>
@@ -92,7 +104,7 @@
                         <button onclick="location.href='/company/insertProduct'"class="btn btn-light2"> + 상품 등록</button>
                     </div>
                         <% for(var data of product){ %>
-                            <div class="product_image_box">
+                            <div class="product_image_box" onclick="gotoDetail(`<%= data.product_num%>`)">
                                 <div id="img" >
                                  
                                     <img src="/images/productImage/<%=data.image_content%>" onerror="this.src='/images/야채.png'" alt="" width="150" height="150">
@@ -104,8 +116,9 @@
                                     <span class="order_info">판매마감기간 : <%= data.product_date %></span>
                                 </div>
                                 <div style="flex-basis: 120px; display: flex; flex-direction: column; margin: auto;">
-                                    <a href="#"><button class="order_btn" >판매종료</button></a>
-                                    <a href="#"><button class="order_btn" >수정</button></a>
+                                    <button id="order_btn2"  onclick="stopSale(`<%= data.product_num%>`)">판매종료</button>
+                                    <a href="/product/<%= data.product_num%>"><button id="order_btn2" >리뷰</button></a>
+                                    <a href="/company/updateProduct/<%= data.product_num%>"><button id="order_btn2" >수정</button></a>
                                 </div>
                             </div>
                            
@@ -236,6 +249,27 @@
         </div>
     </div>
 
+
+    <script>
+
+        function gotoDetail(product_num){
+            var productNum = parseInt(product_num);
+            location.href="/product/"+product_num;
+
+        }
+
+        function stopSale(product_num){
+            var form = document.createElement('form');
+
+            form.setAttribute('method','post');
+            form.setAttribute('action', '/company/updateProductState/'+product_num);
+            document.charset = "utf-8";
+
+            document.body.appendChild(form);
+
+            form.submit();
+        }
+    </script>
 
 
 

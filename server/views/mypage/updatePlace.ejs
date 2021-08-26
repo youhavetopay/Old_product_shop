@@ -32,10 +32,7 @@
                 <label>배송지명</label>
                 <input class="placecss" name="place_name" type="text" size="30px" placeholder="배송지명" value="<%= data.place_name %>"/>
             </div>
-            <div class="place_css">
-                <label>수령인</label>
-                <input  class="placecss" name="place_userNM"  type="text" size="30px" placeholder="수령인" value="<%= data.place_userNM %>"/>
-            </div>
+            
             <div class="place_css">
                 <label>주소</label>
                 <input class="placecss_addr" name="place_num" type="text" size="20px" placeholder="우편번호" id="com_post_num" value="<%= data.place_num %>"/>
@@ -45,10 +42,7 @@
                 <br><br>
                 <input class="placecss_addr" name="place_addrinfo" type="text" size="50px" placeholder="상세주소" id="com_detail_address" value="<%= data.place_addrinfo %>"/>
             </div>            
-            <div class="place_css_tel">
-                <label>연락처</label>
-                <input  class="placecss" name="place_tel"  type="text" size="30px" placeholder="000-0000-0000" maxlength="13" id="com_input_phone" value="<%= data.place_tel %>"/>
-            </div>
+           
             <input type="submit" value="수정하기" class="btn btn-light"/>
             
         </form>

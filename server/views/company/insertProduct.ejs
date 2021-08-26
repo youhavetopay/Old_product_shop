@@ -161,6 +161,7 @@
                                 <input class="insert_css" name="product_value" type="number" size="30px" />
                             </div>
                             <div>
+                                <label>카테고리:</label>
                                 <select name="kind">
                                     <option value="1">감자</option>
                                     <option value="2">고구마</option>
@@ -174,8 +175,12 @@
                                 <input class="insert_css" name="product_weight" type="text" size="30px" />
                             </div>
                             <div>
-                                <label>보관방법:</label>
-                                <input class="insert_css" name="product_method" type="text" size="30px" />
+                                <label>보관 방법:</label>
+                                <select name="method">
+                                    <option value="1">냉동</option>
+                                    <option value="2">냉장</option>
+                                    <option value="3">실온</option>
+                                </select>
                             </div>
                             <div>
                                 <label>판매마감기간:</label>
@@ -192,8 +197,7 @@
                         </div>
                 </div>
                 <div class="product_mid">
-                    <textarea name="product_detail" id="" cols="30" rows="10" style="resize: none; padding: 20px;  width: 100%; border-radius: 20px;" >
-                    </textarea>        
+                    <textarea name="product_detail" id="" cols="30" rows="10" style="resize: none; padding: 20px;  width: 100%; border-radius: 20px;" ></textarea>        
                 </div>
                 <input type="submit" value="등록하기" class="insert_product_btn" />                                        
                 </form>

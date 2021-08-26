@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title><%= title %></title>
+  <title></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='bootstrap/css/bootstrap.css' />
 
@@ -262,13 +262,18 @@
 
             var product_img = document.createElement('img');
             
-              product_img.setAttribute("src", '../images/productImage/'+product[i].image_content);
-            
-              product_img.addEventListener("error", image_err(product_img));
-
-            function image_err(product_img){
-              product_img.setAttribute("src", '../images/야채.png');
+            if(product[i].image_content == '' || product[i].image_content == 'none'){
+              product_img.setAttribute("src", '/images/야채.png');
             }
+            else{
+              product_img.setAttribute("src", '/images/productImage/'+product[i].image_content);
+            }
+
+            // product_img.addEventListener("error", image_err(product_img));
+
+            // function image_err(product_img){
+            //   product_img.setAttribute("src", '/images/야채.png');
+            // }
 
             product_img.style.width = '200px';
             product_img.style.height = '200px';

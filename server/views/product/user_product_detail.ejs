@@ -87,6 +87,15 @@
             margin-top: auto;
         }
 
+        .flex_column{
+            display: flex;
+            flex-direction: column;
+        }
+        .flex_row{
+            display: flex;
+            flex-direction: row;
+        }
+
         #basket_add_btn {
             background-color: rgb(122, 153, 121);
         }
@@ -157,7 +166,6 @@
             flex-basis: 200px;
             width: 150px;
             height: 150px;
-            border: 1px solid black;
         }
 
         .my_btn {
@@ -211,19 +219,24 @@
                 <div class="product_body box_gradation">
                     <h3><%= productInfo[0].product_name%></h3>
                     <div class="product_top">
-                        <div id="product_img">
+                        <div class="flex_column" id="product_img">
                             
-                                <img src="/images/productImage/<%= imageList[0].image_content%>" onerror="this.src='/images/야채.png'" width="200" height="200" alt="">
+                                <img id="image_main" src="/images/productImage/<%= imageList[0].image_content%>" onerror="this.src='/images/야채.png'" width="200" height="200" alt="">
                                 <!-- <img src="/images/야채.png" width="200" height="200" alt=""> -->
-                            
+                                <div class="flex_row">
+                                    <% for(var i =1; i<imageList.length; i++){%>
+                                        <img id="sub_image<%= i%>"  src="/images/productImage/<%= imageList[i].image_content%>" onclick="changeImg(this,`<%= i%>`)" onerror="this.src='/images/야채.png'" width="75" height="75" alt="">
+                                    <%}%>
+                                </div>
                         </div>
                         <div id="product_detail">
                             <span>금액: <%= productInfo[0].product_price%></span>
                             <span>카테고리: <%= productInfo[0].product_sort%></span>
-                            <span>판매 단위: <%= productInfo[0].product_weight%></span>
+                            <span>판매 단위: <%= productInfo[0].product_weight%>Kg</span>
                             <span>보관방법: <%= productInfo[0].product_method%></span>
                             <span>판매마감기간: <%= productInfo[0].product_date%></span>
                             <span>판매자: <%= productInfo[0].company_name%></span>
+                            <span>재고량: <%= productInfo[0].product_value%></span>
                         </div>
                         <div id="product_addOrder_btn">
 
@@ -234,7 +247,7 @@
                                 <div>
                                     <div style="display: flex; flex-direction: row; margin-top: 10px;">
                                         <select name="order_count" id="order_count" style="width: 75px; height: 30px; margin: auto;">
-                                            <%for(var data = 1; data< productInfo[0].product_value; data++){%>
+                                            <%for(var data = 1; data<= productInfo[0].product_value; data++){%>
                                             <option value="<%= data%>"><%= data%></option>
                                             <%}%>
                                         </select>
@@ -328,6 +341,27 @@
 
 
 </body>
+
+<script>
+
+    // 이미지 바꾸기
+    function changeImg(imageBody,id){
+
+        console.log(jQuery('#image_main').attr("src"), ' 메인')
+        console.log(jQuery('#sub_image'+id).attr("src"), ' 서브')
+
+        var main_image = jQuery('#image_main').attr("src");
+        var sub_image = jQuery('#sub_image'+id).attr("src");
+        
+        var chang_image = imageBody
+
+        jQuery('#image_main').attr("src", sub_image)
+        //jQuery('#sub_image'+id).attr("src", image_main)
+        chang_image.setAttribute('src', main_image)
+
+
+    }
+</script>
 
 <script>
     function add_book_mark(product_num){

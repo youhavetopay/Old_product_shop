@@ -89,6 +89,7 @@
                     <h1 class="coupon_title">내가 보유한 쿠폰</h1>
                     <table class="table">
                         <thead>
+                            <th scope="col">쿠폰 번호</th>
                             <th scope="col">쿠폰명</th>
                             <th scope="col">할인 금액</th>
                             <th scope="col">사용기한</th>
@@ -101,6 +102,7 @@
                             <% } %>
                             <tr>
                             <% for(var i = 0; i < couponinfo.length; i++) { %>
+                                <td><%= couponinfo[i].coupon_num %></td>
                             <td><%= couponinfo[i].coupon_name %></td>
                             <td><%= couponinfo[i].coupon_sale_price %></td>
                             <td><%= couponinfo[i].coupon_date %></td>
@@ -118,7 +120,7 @@
                     <table class="table">
                         <thead>
                             <th>업체명</th>
-                            <th>주요 판매 상품</th>
+                            <th>사업자등록번호</th>
                             <th>관리</th>
                         </thead>
                         <% if(bookmarkinfo == null || bookmarkinfo.length == 0){%>
@@ -145,9 +147,9 @@
                     <a href="javascript:popupOpen2();" class="border border-secondary"> + 배송지 등록 </a>
                     <table class="table">
                         <thead>
-                            <th scope="col">배송지명<br>수령인</th>
+                            <th scope="col">배송지명</th>
                             <th scope="col">주소</th>
-                            <th scope="col">연락처</th>
+
                             <th scope="col">수정</th>
                             <th scope="col">삭제</th>
                         </thead>
@@ -160,9 +162,9 @@
 
                             <tr>
                             <% for(var i = 0; i < placeinfo.length; i++) { %>
-                                <td><%= placeinfo[i].place_name %><br><%= placeinfo[i].place_userNM %></td>
+                                <td><%= placeinfo[i].place_name %></td>
                                 <td><%= placeinfo[i].place_addr %><br><%= placeinfo[i].place_addrinfo %></td>
-                                <td><%= placeinfo[i].place_tel %></td>
+                                
                                 <td><button class="control_btn"><a href="/users/mypage/updatePlace/<%= placeinfo[i].place_id %>">수정</a></button></td>
                                 <td><button class="control_btn"><a href="/users/mypage/deletePlace/<%= placeinfo[i].place_id %>">삭제</a></button></td>
                             </tr> 
