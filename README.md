@@ -18,7 +18,7 @@
 
 ### 1. 시스템 구성도
 
-
+<img src="readme_Img/시스템구성도.PNG" width="400px" alt="login"></img><br/>
 
 * 프론트로는 HTML, CSS, JS, Bootstrap, jQuery 등을 이용하여 개발
 * 백엔드 서버로는 Node.js의 Express을 사용하여 개발
